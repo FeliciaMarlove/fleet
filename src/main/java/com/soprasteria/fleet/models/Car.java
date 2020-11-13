@@ -1,9 +1,6 @@
 package com.soprasteria.fleet.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -13,8 +10,8 @@ public class Car {
     @Column(name = "plate")
     private String plateNumber;
 
-    @Column(name = "immatriculation_date")
-    private LocalDate immatriculationDate;
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
 
     @Column(name = "kilometers")
     private Double kilometers;
@@ -31,6 +28,15 @@ public class Car {
     @Column(name = "fuel_card")
     private Integer fuelCardNumber;
 
-    @Column(name = "isPool")
+    @Column(name = "is_pool")
     private boolean isPool;
+
+    @ManyToOne(targetEntity = CarCategory.class)
+    @JoinColumn(name = "car_category_id", referencedColumnName = "car_category_id", foreignKey = @ForeignKey(name = "FK_car_car_category"))
+    private CarCategory carCategory;
+
+    @ManyToOne(targetEntity = LeasingCompany.class)
+    @JoinColumn(name = "leasing_id", referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
+    private LeasingCompany leasingCompany;
+
 }
