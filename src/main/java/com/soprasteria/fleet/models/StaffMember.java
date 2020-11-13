@@ -22,8 +22,4 @@ public class StaffMember {
 
     @Column(name = "language")
     private Language communicationLanguage;
-
-    @Column(name = "employee_level")
-    private EmployeeLevel employeeLevel;
-
 }
