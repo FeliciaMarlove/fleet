@@ -22,4 +22,8 @@ public class StaffMember {
 
     @Column(name = "language")
     private Language communicationLanguage;
+
+    @ManyToOne(targetEntity = EmployeeLevel.class)
+    @JoinColumn(name = "employee_level_id", referencedColumnName = "employee_level_id", foreignKey = @ForeignKey(name = "FK_staff_member_employee_level"))
+    private EmployeeLevel employeeLevel;
 }

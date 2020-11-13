@@ -23,4 +23,16 @@ public class CarInspection {
 
     @Column(name = "is_new")
     private boolean isNew;
+
+    @Column(name = "picture_1")
+    private byte[] picture1;
+
+    @Column(name = "picture_2")
+    private byte[] picture2;
+
+    @Column(name = "picture_3")
+    private byte[] picture3;
+
+    @Column(name = "inspection_report")
+    private byte[] inspection_report;
 }
