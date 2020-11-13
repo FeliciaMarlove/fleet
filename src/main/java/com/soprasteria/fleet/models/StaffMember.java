@@ -20,4 +20,10 @@ public class StaffMember {
     @Column(name = "has_car")
     private boolean hasCar;
 
+    @Column(name = "language")
+    private Language communicationLanguage;
+
+    @Column(name = "employee_level")
+    private EmployeeLevel employeeLevel;
+
 }
