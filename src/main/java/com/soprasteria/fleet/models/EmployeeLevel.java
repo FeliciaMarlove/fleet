@@ -3,7 +3,7 @@ package com.soprasteria.fleet.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employee_leve")
+@Table(name = "employee_level")
 public class EmployeeLevel {
     @Id
     @Column(name = "employee_level_id")
