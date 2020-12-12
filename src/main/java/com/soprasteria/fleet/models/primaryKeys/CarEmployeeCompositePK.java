@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.models;
+package com.soprasteria.fleet.models.primaryKeys;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

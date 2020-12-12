@@ -1,5 +1,7 @@
 package com.soprasteria.fleet.models;
 
+import com.soprasteria.fleet.enums.Language;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,10 +22,9 @@ public class StaffMember {
     @Column(name = "has_car")
     private boolean hasCar;
 
+    @Column(name = "corporate_email")
+    private String corporateEmail;
+
     @Column(name = "language")
     private Language communicationLanguage;
-
-    @ManyToOne(targetEntity = EmployeeLevel.class)
-    @JoinColumn(name = "employee_level_id", referencedColumnName = "employee_level_id", foreignKey = @ForeignKey(name = "FK_staff_member_employee_level"))
-    private EmployeeLevel employeeLevel;
 }

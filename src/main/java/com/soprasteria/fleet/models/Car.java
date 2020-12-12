@@ -1,5 +1,8 @@
 package com.soprasteria.fleet.models;
 
+import com.soprasteria.fleet.enums.Brand;
+import com.soprasteria.fleet.enums.FuelType;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -9,6 +12,9 @@ public class Car {
     @Id
     @Column(name = "plate")
     private String plateNumber;
+
+    @Column(name = "chassis_number")
+    private Integer chassisNumber;
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
@@ -25,15 +31,8 @@ public class Car {
     @Column(name = "fuel")
     private FuelType fuelType;
 
-    @Column(name = "fuel_card")
-    private Integer fuelCardNumber;
-
-    @Column(name = "is_pool")
-    private boolean isPool;
-
-    @ManyToOne(targetEntity = CarCategory.class)
-    @JoinColumn(name = "car_category_id", referencedColumnName = "car_category_id", foreignKey = @ForeignKey(name = "FK_car_car_category"))
-    private CarCategory carCategory;
+    @Column(name = "average_consumption")
+    private Double averageConsumption;
 
     @ManyToOne(targetEntity = LeasingCompany.class)
     @JoinColumn(name = "leasing_id", referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
