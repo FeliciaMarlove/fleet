@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.models;
+package com.soprasteria.fleet.enums;
 
 public enum Brand {
     Opel,
