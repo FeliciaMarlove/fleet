@@ -17,26 +17,11 @@ public class CarEmployeeLinking {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "km_at_start")
-    private Double kmAtStart;
-
     @Column(name = "km_at_end")
     private Double kmAtEnd;
 
     @Column(name = "ongoing")
     private boolean isOngoing;
-
-    /**
-     * Calculation of remaining transportation budget based on staff member monthly allowance and car monthly budget
-     */
-    @Column(name = "monthly_remaining_credit")
-    private Double monthlyRemainingCredit;
-
-    /**
-     * Calculation of personal participation based on staff member monthly allowance and car monthly budget
-     */
-    @Column(name = "personal_part")
-    private Double personalPart;
 
     @ManyToOne
     @MapsId("carPlate")
@@ -47,9 +32,6 @@ public class CarEmployeeLinking {
     @MapsId("staffMemberId")
     @JoinColumn(name = "staff_member_id")
     private StaffMember staffMember;
-
-    @OneToOne(mappedBy = "carEmployeeLinking", targetEntity = Inspection.class)
-    private Inspection inspection;
 
     public CarEmployeeCompositePK getCarEmployeeCompositePK() {
         return carEmployeeCompositePK;
@@ -75,14 +57,6 @@ public class CarEmployeeLinking {
         this.endDate = endDate;
     }
 
-    public Double getKmAtStart() {
-        return kmAtStart;
-    }
-
-    public void setKmAtStart(Double kmAtStart) {
-        this.kmAtStart = kmAtStart;
-    }
-
     public Double getKmAtEnd() {
         return kmAtEnd;
     }
@@ -99,22 +73,6 @@ public class CarEmployeeLinking {
         isOngoing = ongoing;
     }
 
-    public Double getMonthlyRemainingCredit() {
-        return monthlyRemainingCredit;
-    }
-
-    public void setMonthlyRemainingCredit(Double monthlyRemainingCredit) {
-        this.monthlyRemainingCredit = monthlyRemainingCredit;
-    }
-
-    public Double getPersonalPart() {
-        return personalPart;
-    }
-
-    public void setPersonalPart(Double personalPart) {
-        this.personalPart = personalPart;
-    }
-
     public Car getCar() {
         return car;
     }
@@ -129,13 +87,5 @@ public class CarEmployeeLinking {
 
     public void setStaffMember(StaffMember staffMember) {
         this.staffMember = staffMember;
-    }
-
-    public Inspection getInspection() {
-        return inspection;
-    }
-
-    public void setInspection(Inspection inspection) {
-        this.inspection = inspection;
     }
 }
