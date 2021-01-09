@@ -1,6 +1,7 @@
 package com.soprasteria.fleet.models;
 
 import com.soprasteria.fleet.enums.DiscrepancyLevel;
+import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.enums.FuelType;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class TankFilling {
 
     @Column(name = "discrepancy_level")
     private DiscrepancyLevel discrepancyLevel;
+
+    @Column(name = "discrepancy_type")
+    private DiscrepancyType discrepancyType;
 
     @Column(name = "date_time_filling")
     private LocalDateTime dateTimeFilling;
