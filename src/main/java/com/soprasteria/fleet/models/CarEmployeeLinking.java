@@ -50,4 +50,92 @@ public class CarEmployeeLinking {
 
     @OneToOne(mappedBy = "carEmployeeLinking", targetEntity = Inspection.class)
     private Inspection inspection;
+
+    public CarEmployeeCompositePK getCarEmployeeCompositePK() {
+        return carEmployeeCompositePK;
+    }
+
+    public void setCarEmployeeCompositePK(CarEmployeeCompositePK carEmployeeCompositePK) {
+        this.carEmployeeCompositePK = carEmployeeCompositePK;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Double getKmAtStart() {
+        return kmAtStart;
+    }
+
+    public void setKmAtStart(Double kmAtStart) {
+        this.kmAtStart = kmAtStart;
+    }
+
+    public Double getKmAtEnd() {
+        return kmAtEnd;
+    }
+
+    public void setKmAtEnd(Double kmAtEnd) {
+        this.kmAtEnd = kmAtEnd;
+    }
+
+    public boolean isOngoing() {
+        return isOngoing;
+    }
+
+    public void setOngoing(boolean ongoing) {
+        isOngoing = ongoing;
+    }
+
+    public Double getMonthlyRemainingCredit() {
+        return monthlyRemainingCredit;
+    }
+
+    public void setMonthlyRemainingCredit(Double monthlyRemainingCredit) {
+        this.monthlyRemainingCredit = monthlyRemainingCredit;
+    }
+
+    public Double getPersonalPart() {
+        return personalPart;
+    }
+
+    public void setPersonalPart(Double personalPart) {
+        this.personalPart = personalPart;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public StaffMember getStaffMember() {
+        return staffMember;
+    }
+
+    public void setStaffMember(StaffMember staffMember) {
+        this.staffMember = staffMember;
+    }
+
+    public Inspection getInspection() {
+        return inspection;
+    }
+
+    public void setInspection(Inspection inspection) {
+        this.inspection = inspection;
+    }
 }
