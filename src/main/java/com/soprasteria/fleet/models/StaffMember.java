@@ -27,4 +27,52 @@ public class StaffMember {
 
     @Column(name = "language")
     private Language communicationLanguage;
+
+    public Integer getStaffMemberId() {
+        return staffMemberId;
+    }
+
+    public void setStaffMemberId(Integer staffMemberId) {
+        this.staffMemberId = staffMemberId;
+    }
+
+    public String getStaffLastName() {
+        return staffLastName;
+    }
+
+    public void setStaffLastName(String staffLastName) {
+        this.staffLastName = staffLastName;
+    }
+
+    public String getStaffFirstName() {
+        return staffFirstName;
+    }
+
+    public void setStaffFirstName(String staffFirstName) {
+        this.staffFirstName = staffFirstName;
+    }
+
+    public boolean isHasCar() {
+        return hasCar;
+    }
+
+    public void setHasCar(boolean hasCar) {
+        this.hasCar = hasCar;
+    }
+
+    public String getCorporateEmail() {
+        return corporateEmail;
+    }
+
+    public void setCorporateEmail(String corporateEmail) {
+        this.corporateEmail = corporateEmail;
+    }
+
+    public Language getCommunicationLanguage() {
+        return communicationLanguage;
+    }
+
+    public void setCommunicationLanguage(Language communicationLanguage) {
+        this.communicationLanguage = communicationLanguage;
+    }
 }

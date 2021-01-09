@@ -34,9 +34,78 @@ public class Inspection {
     private byte[] inspection_report;
 
     @OneToOne
-    @JoinColumns( {
-            @JoinColumn(name = "car_plate", referencedColumnName = "car_plate", foreignKey = @ForeignKey(name = "FK_inspection_car")),
-            @JoinColumn(name = "staff_member_id", referencedColumnName = "staff_member_id", foreignKey = @ForeignKey(name = "FK_inspection_employee"))
-    })
-    private CarEmployeeLinking carEmployeeLinking;
+    @JoinColumn(name = "car_plate", referencedColumnName = "car_plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
+    private Car car;
+
+    public Integer getCarInspectionId() {
+        return carInspectionId;
+    }
+
+    public void setCarInspectionId(Integer carInspectionId) {
+        this.carInspectionId = carInspectionId;
+    }
+
+    public LocalDateTime getInspectionDate() {
+        return inspectionDate;
+    }
+
+    public void setInspectionDate(LocalDateTime inspectionDate) {
+        this.inspectionDate = inspectionDate;
+    }
+
+    public String getExpertisedBy() {
+        return expertisedBy;
+    }
+
+    public void setExpertisedBy(String expertisedBy) {
+        this.expertisedBy = expertisedBy;
+    }
+
+    public boolean isDamaged() {
+        return isDamaged;
+    }
+
+    public void setDamaged(boolean damaged) {
+        isDamaged = damaged;
+    }
+
+    public byte[] getPicture1() {
+        return picture1;
+    }
+
+    public void setPicture1(byte[] picture1) {
+        this.picture1 = picture1;
+    }
+
+    public byte[] getPicture2() {
+        return picture2;
+    }
+
+    public void setPicture2(byte[] picture2) {
+        this.picture2 = picture2;
+    }
+
+    public byte[] getPicture3() {
+        return picture3;
+    }
+
+    public void setPicture3(byte[] picture3) {
+        this.picture3 = picture3;
+    }
+
+    public byte[] getInspection_report() {
+        return inspection_report;
+    }
+
+    public void setInspection_report(byte[] inspection_report) {
+        this.inspection_report = inspection_report;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }

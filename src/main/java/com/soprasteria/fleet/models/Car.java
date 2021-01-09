@@ -38,4 +38,75 @@ public class Car {
     @JoinColumn(name = "leasing_id", referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
     private LeasingCompany leasingCompany;
 
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public Integer getChassisNumber() {
+        return chassisNumber;
+    }
+
+    public void setChassisNumber(Integer chassisNumber) {
+        this.chassisNumber = chassisNumber;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public Double getKilometers() {
+        return kilometers;
+    }
+
+    public void setKilometers(Double kilometers) {
+        this.kilometers = kilometers;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public FuelType getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(FuelType fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public Double getAverageConsumption() {
+        return averageConsumption;
+    }
+
+    public void setAverageConsumption(Double averageConsumption) {
+        this.averageConsumption = averageConsumption;
+    }
+
+    public LeasingCompany getLeasingCompany() {
+        return leasingCompany;
+    }
+
+    public void setLeasingCompany(LeasingCompany leasingCompany) {
+        this.leasingCompany = leasingCompany;
+    }
 }
