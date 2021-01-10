@@ -102,10 +102,10 @@ public class CarEmployeeLinking implements Serializable {
         this.freeText = freeText;
     }
 
-    public CarEmployeeLinking(LocalDate startDate, LocalDate endDate, boolean isOngoing, Car car, StaffMember staffMember) {
+    public CarEmployeeLinking(LocalDate startDate, LocalDate endDate, Car car, StaffMember staffMember) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isOngoing = isOngoing;
+        this.isOngoing = true;
         this.car = car;
         this.staffMember = staffMember;
         this.carEmployeeCompositePK = new CarEmployeeCompositePK(car.getPlateNumber(), staffMember.getStaffMemberId());
