@@ -4,11 +4,13 @@ import com.soprasteria.fleet.enums.Brand;
 import com.soprasteria.fleet.enums.FuelType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "car")
-public class Car {
+public class Car implements Serializable {
     @Id
     @Column(name = "plate")
     private String plateNumber;
@@ -108,5 +110,48 @@ public class Car {
 
     public void setLeasingCompany(LeasingCompany leasingCompany) {
         this.leasingCompany = leasingCompany;
+    }
+
+    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Double kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
+        this.plateNumber = plateNumber;
+        this.chassisNumber = chassisNumber;
+        this.registrationDate = registrationDate;
+        this.kilometers = kilometers;
+        this.brand = brand;
+        this.model = model;
+        this.fuelType = fuelType;
+        this.averageConsumption = averageConsumption;
+        this.leasingCompany = leasingCompany;
+    }
+
+    public Car() {
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "plateNumber='" + plateNumber + '\'' +
+                ", chassisNumber=" + chassisNumber +
+                ", registrationDate=" + registrationDate +
+                ", kilometers=" + kilometers +
+                ", brand=" + brand +
+                ", model='" + model + '\'' +
+                ", fuelType=" + fuelType +
+                ", averageConsumption=" + averageConsumption +
+                ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return plateNumber.equals(car.plateNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(plateNumber);
     }
 }

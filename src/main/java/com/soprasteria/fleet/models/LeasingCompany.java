@@ -1,10 +1,12 @@
 package com.soprasteria.fleet.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "leasing_company")
-public class LeasingCompany {
+public class LeasingCompany implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leasing_company_generator")
@@ -62,5 +64,41 @@ public class LeasingCompany {
 
     public void setLeasingCompanyEmail(String leasingCompanyEmail) {
         this.leasingCompanyEmail = leasingCompanyEmail;
+    }
+
+    public LeasingCompany(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail) {
+        this.leasingCompanyId = leasingCompanyId;
+        this.leasingCompanyName = leasingCompanyName;
+        this.leasingCompanyContactPerson = leasingCompanyContactPerson;
+        this.leasingCompanyPhone = leasingCompanyPhone;
+        this.leasingCompanyEmail = leasingCompanyEmail;
+    }
+
+    public LeasingCompany() {
+    }
+
+    @Override
+    public String toString() {
+        return "LeasingCompany{" +
+                "leasingCompanyId=" + leasingCompanyId +
+                ", leasingCompanyName='" + leasingCompanyName + '\'' +
+                ", leasingCompanyContactPerson='" + leasingCompanyContactPerson + '\'' +
+                ", leasingCompanyPhone='" + leasingCompanyPhone + '\'' +
+                ", leasingCompanyEmail='" + leasingCompanyEmail + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LeasingCompany that = (LeasingCompany) o;
+        return leasingCompanyId.equals(that.leasingCompanyId) ||
+                leasingCompanyName.equals(that.leasingCompanyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(leasingCompanyId, leasingCompanyName);
     }
 }

@@ -5,11 +5,13 @@ import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.enums.FuelType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tank_filling")
-public class TankFilling {
+public class TankFilling implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filling_generator")
     @SequenceGenerator(name = "filling_generator", allocationSize = 1)
@@ -122,5 +124,52 @@ public class TankFilling {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    public TankFilling(Integer tankFillingId, Integer kmBefore, Integer kmAfter, boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, Car car) {
+        this.tankFillingId = tankFillingId;
+        this.kmBefore = kmBefore;
+        this.kmAfter = kmAfter;
+        this.discrepancy = discrepancy;
+        this.discrepancyLevel = discrepancyLevel;
+        this.discrepancyType = discrepancyType;
+        this.dateTimeFilling = dateTimeFilling;
+        this.fuelType = fuelType;
+        this.liters = liters;
+        this.car = car;
+    }
+
+    public TankFilling() {
+    }
+
+    @Override
+    public String toString() {
+        return "TankFilling{" +
+                "tankFillingId=" + tankFillingId +
+                ", kmBefore=" + kmBefore +
+                ", kmAfter=" + kmAfter +
+                ", discrepancy=" + discrepancy +
+                ", discrepancyLevel=" + discrepancyLevel +
+                ", discrepancyType=" + discrepancyType +
+                ", dateTimeFilling=" + dateTimeFilling +
+                ", fuelType=" + fuelType +
+                ", liters=" + liters +
+                ", car=" + car.getPlateNumber() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TankFilling that = (TankFilling) o;
+        return tankFillingId.equals(that.tankFillingId) ||
+                (dateTimeFilling.equals(that.dateTimeFilling) &&
+                car.equals(that.car));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tankFillingId, dateTimeFilling, car);
     }
 }

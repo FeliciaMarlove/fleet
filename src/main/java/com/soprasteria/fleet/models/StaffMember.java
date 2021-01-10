@@ -3,10 +3,12 @@ package com.soprasteria.fleet.models;
 import com.soprasteria.fleet.enums.Language;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "staff_member")
-public class StaffMember {
+public class StaffMember implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "staff_member_generator")
     @SequenceGenerator(name = "staff_member_generator", allocationSize = 1)
@@ -74,5 +76,42 @@ public class StaffMember {
 
     public void setCommunicationLanguage(Language communicationLanguage) {
         this.communicationLanguage = communicationLanguage;
+    }
+
+    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, boolean hasCar, String corporateEmail, Language communicationLanguage) {
+        this.staffMemberId = staffMemberId;
+        this.staffLastName = staffLastName;
+        this.staffFirstName = staffFirstName;
+        this.hasCar = hasCar;
+        this.corporateEmail = corporateEmail;
+        this.communicationLanguage = communicationLanguage;
+    }
+
+    public StaffMember() {
+    }
+
+    @Override
+    public String toString() {
+        return "StaffMember{" +
+                "staffMemberId=" + staffMemberId +
+                ", staffLastName='" + staffLastName + '\'' +
+                ", staffFirstName='" + staffFirstName + '\'' +
+                ", hasCar=" + hasCar +
+                ", corporateEmail='" + corporateEmail + '\'' +
+                ", communicationLanguage=" + communicationLanguage +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StaffMember that = (StaffMember) o;
+        return staffMemberId.equals(that.staffMemberId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(staffMemberId);
     }
 }
