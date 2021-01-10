@@ -26,7 +26,7 @@ public class LeasingCompany implements Serializable {
     @Column(name = "leasing_email")
     private String leasingCompanyEmail;
 
-    @Column(name = "isActive")
+    @Column(name = "is_active")
     private boolean isActive;
 
     public Integer getLeasingCompanyId() {
