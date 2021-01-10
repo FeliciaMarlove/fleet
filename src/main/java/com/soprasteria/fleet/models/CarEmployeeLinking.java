@@ -25,6 +25,9 @@ public class CarEmployeeLinking implements Serializable {
     @Column(name = "ongoing")
     private boolean isOngoing;
 
+    @Column(name = "free_text")
+    private String freeText;
+
     @ManyToOne
     @MapsId("carPlate")
     @JoinColumn(name = "car_plate")
@@ -91,6 +94,14 @@ public class CarEmployeeLinking implements Serializable {
         this.staffMember = staffMember;
     }
 
+    public String getFreeText() {
+        return freeText;
+    }
+
+    public void setFreeText(String freeText) {
+        this.freeText = freeText;
+    }
+
     public CarEmployeeLinking(LocalDate startDate, LocalDate endDate, boolean isOngoing, Car car, StaffMember staffMember) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -111,6 +122,7 @@ public class CarEmployeeLinking implements Serializable {
                 ", endDate=" + endDate +
                 ", kmAtEnd=" + kmAtEnd +
                 ", isOngoing=" + isOngoing +
+                ", freeText=" + freeText +
                 '}';
     }
 
