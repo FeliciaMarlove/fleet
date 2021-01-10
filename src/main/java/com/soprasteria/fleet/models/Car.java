@@ -36,6 +36,9 @@ public class Car implements Serializable {
     @Column(name = "average_consumption")
     private Double averageConsumption;
 
+    @Column(name = "archived")
+    private boolean isArchived;
+
     @ManyToOne(targetEntity = LeasingCompany.class)
     @JoinColumn(name = "leasing_id", referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
     private LeasingCompany leasingCompany;
@@ -112,6 +115,10 @@ public class Car implements Serializable {
         this.leasingCompany = leasingCompany;
     }
 
+    public boolean isArchived() {
+        return isArchived;
+    }
+
     public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Double kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
@@ -122,6 +129,7 @@ public class Car implements Serializable {
         this.fuelType = fuelType;
         this.averageConsumption = averageConsumption;
         this.leasingCompany = leasingCompany;
+        this.isArchived = false;
     }
 
     public Car() {
@@ -139,6 +147,7 @@ public class Car implements Serializable {
                 ", fuelType=" + fuelType +
                 ", averageConsumption=" + averageConsumption +
                 ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
+                ", isArchived=" + isArchived +
                 '}';
     }
 
