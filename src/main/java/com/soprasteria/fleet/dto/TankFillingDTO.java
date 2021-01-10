@@ -32,6 +32,86 @@ public class TankFillingDTO implements DTOEntity {
         this.plateNumber = plateNumber;
     }
 
+    public Integer getTankFillingId() {
+        return tankFillingId;
+    }
+
+    public void setTankFillingId(Integer tankFillingId) {
+        this.tankFillingId = tankFillingId;
+    }
+
+    public Integer getKmBefore() {
+        return kmBefore;
+    }
+
+    public void setKmBefore(Integer kmBefore) {
+        this.kmBefore = kmBefore;
+    }
+
+    public Integer getKmAfter() {
+        return kmAfter;
+    }
+
+    public void setKmAfter(Integer kmAfter) {
+        this.kmAfter = kmAfter;
+    }
+
+    public boolean isDiscrepancy() {
+        return discrepancy;
+    }
+
+    public void setDiscrepancy(boolean discrepancy) {
+        this.discrepancy = discrepancy;
+    }
+
+    public DiscrepancyLevel getDiscrepancyLevel() {
+        return discrepancyLevel;
+    }
+
+    public void setDiscrepancyLevel(DiscrepancyLevel discrepancyLevel) {
+        this.discrepancyLevel = discrepancyLevel;
+    }
+
+    public DiscrepancyType getDiscrepancyType() {
+        return discrepancyType;
+    }
+
+    public void setDiscrepancyType(DiscrepancyType discrepancyType) {
+        this.discrepancyType = discrepancyType;
+    }
+
+    public LocalDateTime getDateTimeFilling() {
+        return dateTimeFilling;
+    }
+
+    public void setDateTimeFilling(LocalDateTime dateTimeFilling) {
+        this.dateTimeFilling = dateTimeFilling;
+    }
+
+    public FuelType getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(FuelType fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public Double getLiters() {
+        return liters;
+    }
+
+    public void setLiters(Double liters) {
+        this.liters = liters;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
     public TankFillingDTO() {
     }
 
