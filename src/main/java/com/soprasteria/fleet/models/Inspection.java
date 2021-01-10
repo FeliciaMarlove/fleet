@@ -37,7 +37,7 @@ public class Inspection implements Serializable {
     private byte[] picture3;
 
     @Column(name = "inspection_report")
-    private byte[] inspection_report;
+    private byte[] inspectionReport;
 
     @OneToOne
     @JoinColumn(name = "car_plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
@@ -99,12 +99,12 @@ public class Inspection implements Serializable {
         this.picture3 = picture3;
     }
 
-    public byte[] getInspection_report() {
-        return inspection_report;
+    public byte[] getInspectionReport() {
+        return inspectionReport;
     }
 
-    public void setInspection_report(byte[] inspection_report) {
-        this.inspection_report = inspection_report;
+    public void setInspectionReport(byte[] inspection_report) {
+        this.inspectionReport = inspection_report;
     }
 
     public Car getCar() {
@@ -115,7 +115,7 @@ public class Inspection implements Serializable {
         this.car = car;
     }
 
-    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean isDamaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspection_report, Car car) {
+    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean isDamaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
@@ -124,7 +124,7 @@ public class Inspection implements Serializable {
         this.picture1 = picture1;
         this.picture2 = picture2;
         this.picture3 = picture3;
-        this.inspection_report = inspection_report;
+        this.inspectionReport = inspectionReport;
         this.car = car;
     }
 
@@ -142,7 +142,7 @@ public class Inspection implements Serializable {
                 ", picture1=" + Arrays.toString(picture1) +
                 ", picture2=" + Arrays.toString(picture2) +
                 ", picture3=" + Arrays.toString(picture3) +
-                ", inspection_report=" + Arrays.toString(inspection_report) +
+                ", inspection_report=" + Arrays.toString(inspectionReport) +
                 ", car=" + car.getPlateNumber() +
                 '}';
     }
