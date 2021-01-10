@@ -30,6 +30,9 @@ public class StaffMember implements Serializable {
     @Column(name = "language")
     private Language communicationLanguage;
 
+    @Column(name = "actual_discrepancies")
+    private Integer numberActualDiscrepancies;
+
     public Integer getStaffMemberId() {
         return staffMemberId;
     }
@@ -78,6 +81,10 @@ public class StaffMember implements Serializable {
         this.communicationLanguage = communicationLanguage;
     }
 
+    public Integer getNumberActualDiscrepancies() {
+        return numberActualDiscrepancies;
+    }
+
     public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, boolean hasCar, String corporateEmail, Language communicationLanguage) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;
@@ -85,6 +92,7 @@ public class StaffMember implements Serializable {
         this.hasCar = hasCar;
         this.corporateEmail = corporateEmail;
         this.communicationLanguage = communicationLanguage;
+        this.numberActualDiscrepancies = 0;
     }
 
     public StaffMember() {
@@ -99,6 +107,7 @@ public class StaffMember implements Serializable {
                 ", hasCar=" + hasCar +
                 ", corporateEmail='" + corporateEmail + '\'' +
                 ", communicationLanguage=" + communicationLanguage +
+                ", numberDiscrepancies=" + numberActualDiscrepancies +
                 '}';
     }
 
