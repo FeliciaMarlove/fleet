@@ -22,6 +22,54 @@ public class LeasingCompanyDTO implements DTOEntity {
     public LeasingCompanyDTO() {
     }
 
+    public Integer getLeasingCompanyId() {
+        return leasingCompanyId;
+    }
+
+    public void setLeasingCompanyId(Integer leasingCompanyId) {
+        this.leasingCompanyId = leasingCompanyId;
+    }
+
+    public String getLeasingCompanyName() {
+        return leasingCompanyName;
+    }
+
+    public void setLeasingCompanyName(String leasingCompanyName) {
+        this.leasingCompanyName = leasingCompanyName;
+    }
+
+    public String getLeasingCompanyContactPerson() {
+        return leasingCompanyContactPerson;
+    }
+
+    public void setLeasingCompanyContactPerson(String leasingCompanyContactPerson) {
+        this.leasingCompanyContactPerson = leasingCompanyContactPerson;
+    }
+
+    public String getLeasingCompanyPhone() {
+        return leasingCompanyPhone;
+    }
+
+    public void setLeasingCompanyPhone(String leasingCompanyPhone) {
+        this.leasingCompanyPhone = leasingCompanyPhone;
+    }
+
+    public String getLeasingCompanyEmail() {
+        return leasingCompanyEmail;
+    }
+
+    public void setLeasingCompanyEmail(String leasingCompanyEmail) {
+        this.leasingCompanyEmail = leasingCompanyEmail;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Override
     public String toString() {
         return "LeasingCompanyDTO{" +

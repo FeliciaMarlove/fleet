@@ -34,6 +34,86 @@ public class CarDTO implements DTOEntity {
     public CarDTO() {
     }
 
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public Integer getChassisNumber() {
+        return chassisNumber;
+    }
+
+    public void setChassisNumber(Integer chassisNumber) {
+        this.chassisNumber = chassisNumber;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public Double getKilometers() {
+        return kilometers;
+    }
+
+    public void setKilometers(Double kilometers) {
+        this.kilometers = kilometers;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public FuelType getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(FuelType fuel) {
+        this.fuel = fuel;
+    }
+
+    public Double getAverageConsumption() {
+        return averageConsumption;
+    }
+
+    public void setAverageConsumption(Double averageConsumption) {
+        this.averageConsumption = averageConsumption;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
+    public Integer getLeasingCompanyId() {
+        return leasingCompanyId;
+    }
+
+    public void setLeasingCompanyId(Integer leasingCompanyId) {
+        this.leasingCompanyId = leasingCompanyId;
+    }
+
     @Override
     public String toString() {
         return "CarDTO{" +
