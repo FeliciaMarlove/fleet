@@ -50,14 +50,15 @@ public class CarEmployeeDTO implements DTOEntity {
     }
 
     public CarEmployeeDTO(Integer plateNumber, Integer staffMemberId, Double kmAtEnd, boolean isOngoing, String freeText) {
+        this();
         this.plateNumber = plateNumber;
         this.staffMemberId = staffMemberId;
         this.kmAtEnd = kmAtEnd;
-        this.isOngoing = isOngoing;
         this.freeText = freeText;
     }
 
     public CarEmployeeDTO() {
+        this.isOngoing = true;
     }
 
     @Override
