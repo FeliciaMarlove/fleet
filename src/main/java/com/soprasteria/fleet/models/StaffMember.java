@@ -85,14 +85,14 @@ public class StaffMember implements Serializable {
         return numberActualDiscrepancies;
     }
 
-    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, boolean hasCar, String corporateEmail, Language communicationLanguage) {
+    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;
         this.staffFirstName = staffFirstName;
         this.hasCar = hasCar;
         this.corporateEmail = corporateEmail;
         this.communicationLanguage = communicationLanguage;
-        this.numberActualDiscrepancies = 0;
+        this.numberActualDiscrepancies = numberActualDiscrepancies;
     }
 
     public StaffMember() {

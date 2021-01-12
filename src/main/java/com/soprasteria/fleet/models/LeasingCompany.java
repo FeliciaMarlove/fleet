@@ -78,15 +78,16 @@ public class LeasingCompany implements Serializable {
     }
 
     public LeasingCompany(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail) {
+        this();
         this.leasingCompanyId = leasingCompanyId;
         this.leasingCompanyName = leasingCompanyName;
         this.leasingCompanyContactPerson = leasingCompanyContactPerson;
         this.leasingCompanyPhone = leasingCompanyPhone;
         this.leasingCompanyEmail = leasingCompanyEmail;
-        this.isActive = true;
     }
 
     public LeasingCompany() {
+        this.isActive = true;
     }
 
     @Override

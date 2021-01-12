@@ -11,15 +11,16 @@ public class LeasingCompanyDTO implements DTOEntity {
     private boolean isActive;
 
     public LeasingCompanyDTO(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail, boolean isActive) {
+        this();
         this.leasingCompanyId = leasingCompanyId;
         this.leasingCompanyName = leasingCompanyName;
         this.leasingCompanyContactPerson = leasingCompanyContactPerson;
         this.leasingCompanyPhone = leasingCompanyPhone;
         this.leasingCompanyEmail = leasingCompanyEmail;
-        this.isActive = isActive;
     }
 
     public LeasingCompanyDTO() {
+        this.isActive = true;
     }
 
     public Integer getLeasingCompanyId() {
