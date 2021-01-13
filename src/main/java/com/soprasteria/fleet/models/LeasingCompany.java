@@ -27,7 +27,7 @@ public class LeasingCompany implements Serializable {
     private String leasingCompanyEmail;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     public Integer getLeasingCompanyId() {
         return leasingCompanyId;
@@ -69,11 +69,11 @@ public class LeasingCompany implements Serializable {
         this.leasingCompanyEmail = leasingCompanyEmail;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 
