@@ -85,6 +85,10 @@ public class StaffMember implements Serializable {
         return numberActualDiscrepancies;
     }
 
+    public void setNumberActualDiscrepancies(Integer numberActualDiscrepancies) {
+        this.numberActualDiscrepancies = numberActualDiscrepancies;
+    }
+
     public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;

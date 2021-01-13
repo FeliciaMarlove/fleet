@@ -2,13 +2,17 @@ package com.soprasteria.fleet.services;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.enums.DiscrepancyLevel;
 import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.models.Car;
+import com.soprasteria.fleet.models.CarEmployeeLinking;
+import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
+import com.soprasteria.fleet.repositories.CarEmployeeRepository;
 import com.soprasteria.fleet.repositories.CarRepository;
+import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
 import com.soprasteria.fleet.services.interfaces.TankFillingService;
+import com.soprasteria.fleet.utils.DiscrepancyMailComposer;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,10 +24,15 @@ import java.util.Optional;
 public class TankFillingServiceImpl implements TankFillingService {
     private final TankFillingRepository repository;
     private final CarRepository carRepository;
+    private final CarEmployeeRepository carEmployeeRepository;
+    private final StaffMemberRepository staffMemberRepository;
+    private final Integer tolerancePercentage = 15;
 
-    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository) {
+    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, CarEmployeeRepository carEmployeeRepository, StaffMemberRepository staffMemberRepository) {
         this.repository = repository;
         this.carRepository = carRepository;
+        this.carEmployeeRepository = carEmployeeRepository;
+        this.staffMemberRepository = staffMemberRepository;
     }
 
     @Override
@@ -43,29 +52,45 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
-        Optional<Car> car = carRepository.findById(tankFillingDTO.getPlateNumber());
+        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
-        tankFilling.setCar(car.get());
+        tankFilling.setCar(car);
+        tankFilling.setKmBefore(car.getKilometers());
+        car.setKilometers(tankFilling.getKmAfter());
         tankFilling.setDateTimeFilling(LocalDateTime.now());
+        Double consumption = (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
+        Double consumptionWithTolerance = consumption + (consumption / 100 * 15);
+        tankFilling.setConsumption(consumptionWithTolerance);
         checkForDiscrepancies(tankFilling);
         repository.save(tankFilling);
+        carRepository.save(car);
         return (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
     }
 
-    @Override
-    public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
-        // TODO affecter discrepancy (bool) + éventuellement changer level et +1 compteur du staff member dans les cas où une validation manuelle est requise
-        return null;
-    }
-
     private void checkForDiscrepancies(TankFilling tankFilling) {
-        if (tankFilling.getCar().getFuelType() != tankFilling.getFuelType()) {
+        Car car = tankFilling.getCar();
+        Optional<CarEmployeeLinking> carEmployeeLinking = carEmployeeRepository.getCarEmployeeLinkingByCarAndIsOngoing(car, true);
+        if (carEmployeeLinking.isPresent()) {
+            System.out.println(carEmployeeLinking);
+            StaffMember staffMember = carEmployeeLinking.get().getStaffMember();
+            if (car.getFuelType() != tankFilling.getFuelType()) {
+                tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
+            } else if (tankFilling.getKmBefore() > tankFilling.getKmAfter()) {
+                tankFilling.setDiscrepancyType(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER);
+            } else if (tankFilling.getConsumption() > car.getAverageConsumption()) {
+                tankFilling.setDiscrepancyType(DiscrepancyType.QUANTITY_TOO_HIGH);
+            } else {
+                return;
+            }
+            // executed if the app doesn't enter the "else" block (then for each case where a discrepancy occurs)
             tankFilling.setDiscrepancy(true);
-            tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
-            tankFilling.setDiscrepancyLevel(DiscrepancyLevel.SEVERE);
-            // TODO +1 compteur staff member
+            staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
+            staffMemberRepository.save(staffMember);
+
+            DiscrepancyMailComposer discrepancyMailComposer = new DiscrepancyMailComposer(tankFilling, staffMember);
+            discrepancyMailComposer.writeEmail();
+            // TODO créer un service email qui utilise le mailComposer (pas stocké)
         }
-        // calculs pour carbu et division acceptable/assumed/severe
-        // TODO logique discrepancy ici (affecter booléen, Level et Type)
+
     }
 }

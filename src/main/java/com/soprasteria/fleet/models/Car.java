@@ -22,7 +22,7 @@ public class Car implements Serializable {
     private LocalDate registrationDate;
 
     @Column(name = "kilometers")
-    private Double kilometers;
+    private Integer kilometers;
 
     @Column(name = "brand")
     private Brand brand;
@@ -67,11 +67,11 @@ public class Car implements Serializable {
         this.registrationDate = registrationDate;
     }
 
-    public Double getKilometers() {
+    public Integer getKilometers() {
         return kilometers;
     }
 
-    public void setKilometers(Double kilometers) {
+    public void setKilometers(Integer kilometers) {
         this.kilometers = kilometers;
     }
 
@@ -123,7 +123,7 @@ public class Car implements Serializable {
         isArchived = archived;
     }
 
-    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Double kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
+    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Integer kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
         this();
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;

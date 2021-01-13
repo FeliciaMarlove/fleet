@@ -1,6 +1,5 @@
 package com.soprasteria.fleet.models;
 
-import com.soprasteria.fleet.enums.DiscrepancyLevel;
 import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.enums.FuelType;
 
@@ -27,9 +26,6 @@ public class TankFilling implements Serializable {
     @Column(name = "is_discrepancy")
     private Boolean discrepancy;
 
-    @Column(name = "discrepancy_level")
-    private DiscrepancyLevel discrepancyLevel;
-
     @Column(name = "discrepancy_type")
     private DiscrepancyType discrepancyType;
 
@@ -41,6 +37,9 @@ public class TankFilling implements Serializable {
 
     @Column(name = "liters")
     private Double liters;
+
+    @Column(name = "consumption")
+    private Double consumption;
 
     @ManyToOne(targetEntity = Car.class)
     @JoinColumn(name = "plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_filling_car"))
@@ -70,20 +69,8 @@ public class TankFilling implements Serializable {
         this.kmAfter = kmAfter;
     }
 
-    public Boolean isDiscrepancy() {
-        return discrepancy;
-    }
-
     public void setDiscrepancy(Boolean discrepancy) {
         this.discrepancy = discrepancy;
-    }
-
-    public DiscrepancyLevel getDiscrepancyLevel() {
-        return discrepancyLevel;
-    }
-
-    public void setDiscrepancyLevel(DiscrepancyLevel discrepancyLevel) {
-        this.discrepancyLevel = discrepancyLevel;
     }
 
     public DiscrepancyType getDiscrepancyType() {
@@ -126,12 +113,23 @@ public class TankFilling implements Serializable {
         this.car = car;
     }
 
-    public TankFilling(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, Car car) {
+    public Boolean getDiscrepancy() {
+        return discrepancy;
+    }
+
+    public Double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(Double consumption) {
+        this.consumption = consumption;
+    }
+
+    public TankFilling(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, Car car) {
         this.tankFillingId = tankFillingId;
         this.kmBefore = kmBefore;
         this.kmAfter = kmAfter;
         this.discrepancy = discrepancy;
-        this.discrepancyLevel = discrepancyLevel;
         this.discrepancyType = discrepancyType;
         this.dateTimeFilling = dateTimeFilling;
         this.fuelType = fuelType;
@@ -149,7 +147,6 @@ public class TankFilling implements Serializable {
                 ", kmBefore=" + kmBefore +
                 ", kmAfter=" + kmAfter +
                 ", discrepancy=" + discrepancy +
-                ", discrepancyLevel=" + discrepancyLevel +
                 ", discrepancyType=" + discrepancyType +
                 ", dateTimeFilling=" + dateTimeFilling +
                 ", fuelType=" + fuelType +
