@@ -123,12 +123,11 @@ public class Car implements Serializable {
         isArchived = archived;
     }
 
-    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Integer kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
+    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
         this();
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
         this.registrationDate = registrationDate;
-        this.kilometers = kilometers;
         this.brand = brand;
         this.model = model;
         this.fuelType = fuelType;
@@ -138,6 +137,7 @@ public class Car implements Serializable {
 
     public Car() {
         this.isArchived = false;
+        this.kilometers = 0;
     }
 
     @Override

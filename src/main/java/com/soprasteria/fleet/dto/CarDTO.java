@@ -18,12 +18,11 @@ public class CarDTO implements DTOEntity {
     private Boolean isArchived;
     private Integer leasingCompanyId;
 
-    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Integer kilometers, Brand brand, String model, FuelType fuel, Double averageConsumption, Boolean isArchived, Integer leasingCompanyId) {
+    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuel, Double averageConsumption, Integer leasingCompanyId) {
         this();
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
         this.registrationDate = registrationDate;
-        this.kilometers = kilometers;
         this.brand = brand;
         this.model = model;
         this.fuel = fuel;
@@ -33,6 +32,7 @@ public class CarDTO implements DTOEntity {
 
     public CarDTO() {
         this.isArchived = false;
+        this.kilometers = 0;
     }
 
     public String getPlateNumber() {
