@@ -1,7 +1,6 @@
 package com.soprasteria.fleet.dto;
 
 import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
-import com.soprasteria.fleet.enums.DiscrepancyLevel;
 import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.enums.FuelType;
 
@@ -12,24 +11,27 @@ public class TankFillingDTO implements DTOEntity {
     private Integer kmBefore;
     private Integer kmAfter;
     private Boolean discrepancy;
-    private DiscrepancyLevel discrepancyLevel;
     private DiscrepancyType discrepancyType;
     private LocalDateTime dateTimeFilling;
     private FuelType fuelType;
     private Double liters;
     private String plateNumber;
+    private Double consumption;
 
-    public TankFillingDTO(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, String plateNumber) {
+    public TankFillingDTO(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, String plateNumber, Double consumption) {
         this.tankFillingId = tankFillingId;
         this.kmBefore = kmBefore;
         this.kmAfter = kmAfter;
         this.discrepancy = discrepancy;
-        this.discrepancyLevel = discrepancyLevel;
         this.discrepancyType = discrepancyType;
         this.dateTimeFilling = dateTimeFilling;
         this.fuelType = fuelType;
         this.liters = liters;
         this.plateNumber = plateNumber;
+        this.consumption = consumption;
+    }
+
+    public TankFillingDTO() {
     }
 
     public Integer getTankFillingId() {
@@ -62,18 +64,6 @@ public class TankFillingDTO implements DTOEntity {
 
     public void setDiscrepancy(Boolean discrepancy) {
         this.discrepancy = discrepancy;
-    }
-
-    public DiscrepancyLevel getDiscrepancyLevel() {
-        return discrepancyLevel;
-    }
-
-    public void setDiscrepancyLevel(DiscrepancyLevel discrepancyLevel) {
-        this.discrepancyLevel = discrepancyLevel;
-    }
-
-    public DiscrepancyType getDiscrepancyType() {
-        return discrepancyType;
     }
 
     public void setDiscrepancyType(DiscrepancyType discrepancyType) {
@@ -112,7 +102,16 @@ public class TankFillingDTO implements DTOEntity {
         this.plateNumber = plateNumber;
     }
 
-    public TankFillingDTO() {
+    public Boolean getDiscrepancy() {
+        return discrepancy;
+    }
+
+    public Double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(Double consumption) {
+        this.consumption = consumption;
     }
 
     @Override
@@ -122,7 +121,6 @@ public class TankFillingDTO implements DTOEntity {
                 ", kmBefore=" + kmBefore +
                 ", kmAfter=" + kmAfter +
                 ", discrepancy=" + discrepancy +
-                ", discrepancyLevel=" + discrepancyLevel +
                 ", discrepancyType=" + discrepancyType +
                 ", dateTimeFilling=" + dateTimeFilling +
                 ", fuelType=" + fuelType +

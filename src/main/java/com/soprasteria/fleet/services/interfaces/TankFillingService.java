@@ -8,5 +8,4 @@ public interface TankFillingService {
     TankFillingDTO read(Integer tankFillingId);
     List<TankFillingDTO> readAll();
     TankFillingDTO create(TankFillingDTO tankFillingDTO);
-    TankFillingDTO update(TankFillingDTO tankFillingDTO);
 }
