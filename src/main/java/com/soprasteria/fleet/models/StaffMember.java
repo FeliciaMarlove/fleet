@@ -57,7 +57,7 @@ public class StaffMember implements Serializable {
         this.staffFirstName = staffFirstName;
     }
 
-    public Boolean isHasCar() {
+    public Boolean hasCar() {
         return hasCar;
     }
 

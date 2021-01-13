@@ -36,7 +36,7 @@ public class StaffMemberDTO implements DTOEntity {
         this.staffFirstName = staffFirstName;
     }
 
-    public Boolean isHasCar() {
+    public Boolean hasCar() {
         return hasCar;
     }
 
