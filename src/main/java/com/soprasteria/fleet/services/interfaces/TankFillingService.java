@@ -7,5 +7,6 @@ import java.util.List;
 public interface TankFillingService {
     TankFillingDTO read(Integer tankFillingId);
     List<TankFillingDTO> readAll();
+    List<TankFillingDTO> readAllDiscrepancy();
     TankFillingDTO create(TankFillingDTO tankFillingDTO);
 }

@@ -26,8 +26,13 @@ public class TankFillingController {
         return service.readAll();
     }
 
+    @GetMapping
+    public List<TankFillingDTO> getFillupsWithDiscrepancy() {
+        return service.readAllDiscrepancy();
+    }
+
     @PostMapping
-    public TankFillingDTO putFillup(@RequestBody TankFillingDTO tankFillingDTO) {
+    public TankFillingDTO createFillup(@RequestBody TankFillingDTO tankFillingDTO) {
         return service.create(tankFillingDTO);
     }
 }
