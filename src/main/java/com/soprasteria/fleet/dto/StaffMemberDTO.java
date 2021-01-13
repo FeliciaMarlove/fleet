@@ -7,7 +7,7 @@ public class StaffMemberDTO implements DTOEntity {
     private Integer staffMemberId;
     private String staffLastName;
     private String staffFirstName;
-    private boolean hasCar;
+    private Boolean hasCar;
     private String corporateEmail;
     private Language communicationLanguage;
     private Integer numberActualDiscrepancies;
@@ -36,11 +36,11 @@ public class StaffMemberDTO implements DTOEntity {
         this.staffFirstName = staffFirstName;
     }
 
-    public boolean isHasCar() {
+    public Boolean isHasCar() {
         return hasCar;
     }
 
-    public void setHasCar(boolean hasCar) {
+    public void setHasCar(Boolean hasCar) {
         this.hasCar = hasCar;
     }
 
@@ -68,7 +68,7 @@ public class StaffMemberDTO implements DTOEntity {
         this.numberActualDiscrepancies = numberActualDiscrepancies;
     }
 
-    public StaffMemberDTO(Integer staffMemberId, String staffLastName, String staffFirstName, boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
+    public StaffMemberDTO(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;
         this.staffFirstName = staffFirstName;

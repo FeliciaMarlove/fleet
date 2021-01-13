@@ -25,7 +25,7 @@ public class TankFilling implements Serializable {
     private Integer kmAfter;
 
     @Column(name = "is_discrepancy")
-    private boolean discrepancy;
+    private Boolean discrepancy;
 
     @Column(name = "discrepancy_level")
     private DiscrepancyLevel discrepancyLevel;
@@ -70,11 +70,11 @@ public class TankFilling implements Serializable {
         this.kmAfter = kmAfter;
     }
 
-    public boolean isDiscrepancy() {
+    public Boolean isDiscrepancy() {
         return discrepancy;
     }
 
-    public void setDiscrepancy(boolean discrepancy) {
+    public void setDiscrepancy(Boolean discrepancy) {
         this.discrepancy = discrepancy;
     }
 
@@ -126,7 +126,7 @@ public class TankFilling implements Serializable {
         this.car = car;
     }
 
-    public TankFilling(Integer tankFillingId, Integer kmBefore, Integer kmAfter, boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, Car car) {
+    public TankFilling(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, Car car) {
         this.tankFillingId = tankFillingId;
         this.kmBefore = kmBefore;
         this.kmAfter = kmAfter;

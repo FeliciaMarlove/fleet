@@ -15,10 +15,10 @@ public class CarDTO implements DTOEntity {
     private String model;
     private FuelType fuel;
     private Double averageConsumption;
-    private boolean isArchived;
+    private Boolean isArchived;
     private Integer leasingCompanyId;
 
-    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Double kilometers, Brand brand, String model, FuelType fuel, Double averageConsumption, boolean isArchived, Integer leasingCompanyId) {
+    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Double kilometers, Brand brand, String model, FuelType fuel, Double averageConsumption, Boolean isArchived, Integer leasingCompanyId) {
         this();
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
@@ -99,11 +99,11 @@ public class CarDTO implements DTOEntity {
         this.averageConsumption = averageConsumption;
     }
 
-    public boolean isArchived() {
+    public Boolean isArchived() {
         return isArchived;
     }
 
-    public void setArchived(boolean archived) {
+    public void setArchived(Boolean archived) {
         isArchived = archived;
     }
 

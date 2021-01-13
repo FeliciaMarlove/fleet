@@ -23,7 +23,7 @@ public class CarEmployeeLinking implements Serializable {
     private Double kmAtEnd;
 
     @Column(name = "ongoing")
-    private boolean isOngoing;
+    private Boolean isOngoing;
 
     @Column(name = "free_text")
     private String freeText;
@@ -70,11 +70,11 @@ public class CarEmployeeLinking implements Serializable {
         this.kmAtEnd = kmAtEnd;
     }
 
-    public boolean isOngoing() {
+    public Boolean isOngoing() {
         return isOngoing;
     }
 
-    public void setOngoing(boolean ongoing) {
+    public void setOngoing(Boolean ongoing) {
         isOngoing = ongoing;
     }
 

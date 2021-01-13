@@ -6,7 +6,7 @@ public class CarEmployeeDTO implements DTOEntity {
     private Integer plateNumber;
     private Integer staffMemberId;
     private Double kmAtEnd;
-    private boolean isOngoing;
+    private Boolean isOngoing;
     private String freeText;
 
     public Integer getPlateNumber() {
@@ -33,11 +33,11 @@ public class CarEmployeeDTO implements DTOEntity {
         this.kmAtEnd = kmAtEnd;
     }
 
-    public boolean isOngoing() {
+    public Boolean isOngoing() {
         return isOngoing;
     }
 
-    public void setOngoing(boolean ongoing) {
+    public void setOngoing(Boolean ongoing) {
         isOngoing = ongoing;
     }
 
@@ -49,7 +49,7 @@ public class CarEmployeeDTO implements DTOEntity {
         this.freeText = freeText;
     }
 
-    public CarEmployeeDTO(Integer plateNumber, Integer staffMemberId, Double kmAtEnd, boolean isOngoing, String freeText) {
+    public CarEmployeeDTO(Integer plateNumber, Integer staffMemberId, Double kmAtEnd, Boolean isOngoing, String freeText) {
         this();
         this.plateNumber = plateNumber;
         this.staffMemberId = staffMemberId;
