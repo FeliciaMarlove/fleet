@@ -12,7 +12,6 @@ import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
 import com.soprasteria.fleet.services.interfaces.TankFillingService;
-import com.soprasteria.fleet.utils.DiscrepancyMailComposer;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -97,10 +96,6 @@ public class TankFillingServiceImpl implements TankFillingService {
             tankFilling.setDiscrepancy(true);
             staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
             staffMemberRepository.save(staffMember);
-
-            DiscrepancyMailComposer discrepancyMailComposer = new DiscrepancyMailComposer(tankFilling, staffMember);
-            discrepancyMailComposer.writeEmail();
-            // TODO créer un service email qui utilise le mailComposer (pas stocké)
         }
 
     }

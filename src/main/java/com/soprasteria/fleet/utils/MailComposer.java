@@ -2,16 +2,16 @@ package com.soprasteria.fleet.utils;
 
 import com.soprasteria.fleet.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
-import com.soprasteria.fleet.models.TankFilling;
 
-public class DiscrepancyMailComposer {
-    private final TankFilling tankFilling;
-    private final StaffMember staffMember;
+public class MailComposer {
+    private StaffMember staffMember;
     private StringBuilder stringBuilder = new StringBuilder();
 
-    public DiscrepancyMailComposer(TankFilling tankFilling, StaffMember staffMember) {
-        this.tankFilling = tankFilling;
+    public MailComposer(StaffMember staffMember) {
         this.staffMember = staffMember;
+    }
+
+    public MailComposer() {
     }
 
     public String writeEmail() {
@@ -24,7 +24,6 @@ public class DiscrepancyMailComposer {
         return stringBuilder.toString();
     }
 
-    // TODO : voir meilleure méthode (html? plain string?)
 
     private void writeNederlands() {
         // TODO
