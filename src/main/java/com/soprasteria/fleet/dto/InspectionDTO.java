@@ -9,7 +9,7 @@ public class InspectionDTO implements DTOEntity {
     private LocalDateTime inspectionDate;
     private LocalDateTime sentDate;
     private String expertisedBy;
-    private boolean isDamaged;
+    private Boolean isDamaged;
     /*
     DOC
     dealing with byte[] and Strings
@@ -57,11 +57,11 @@ public class InspectionDTO implements DTOEntity {
         this.expertisedBy = expertisedBy;
     }
 
-    public boolean isDamaged() {
+    public Boolean isDamaged() {
         return isDamaged;
     }
 
-    public void setDamaged(boolean damaged) {
+    public void setDamaged(Boolean damaged) {
         isDamaged = damaged;
     }
 
@@ -105,7 +105,7 @@ public class InspectionDTO implements DTOEntity {
         this.carPlate = carPlate;
     }
 
-    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean isDamaged, String picture1, String picture2, String picture3, String inspectionReport, String carPlate) {
+    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, String picture1, String picture2, String picture3, String inspectionReport, String carPlate) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;

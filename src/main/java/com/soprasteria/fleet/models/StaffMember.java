@@ -22,7 +22,7 @@ public class StaffMember implements Serializable {
     private String staffFirstName;
 
     @Column(name = "has_car")
-    private boolean hasCar;
+    private Boolean hasCar;
 
     @Column(name = "corporate_email")
     private String corporateEmail;
@@ -57,11 +57,11 @@ public class StaffMember implements Serializable {
         this.staffFirstName = staffFirstName;
     }
 
-    public boolean isHasCar() {
+    public Boolean isHasCar() {
         return hasCar;
     }
 
-    public void setHasCar(boolean hasCar) {
+    public void setHasCar(Boolean hasCar) {
         this.hasCar = hasCar;
     }
 
@@ -85,7 +85,7 @@ public class StaffMember implements Serializable {
         return numberActualDiscrepancies;
     }
 
-    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
+    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;
         this.staffFirstName = staffFirstName;

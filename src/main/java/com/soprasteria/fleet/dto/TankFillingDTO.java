@@ -11,7 +11,7 @@ public class TankFillingDTO implements DTOEntity {
     private Integer tankFillingId;
     private Integer kmBefore;
     private Integer kmAfter;
-    private boolean discrepancy;
+    private Boolean discrepancy;
     private DiscrepancyLevel discrepancyLevel;
     private DiscrepancyType discrepancyType;
     private LocalDateTime dateTimeFilling;
@@ -19,7 +19,7 @@ public class TankFillingDTO implements DTOEntity {
     private Double liters;
     private String plateNumber;
 
-    public TankFillingDTO(Integer tankFillingId, Integer kmBefore, Integer kmAfter, boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, String plateNumber) {
+    public TankFillingDTO(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyLevel discrepancyLevel, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, String plateNumber) {
         this.tankFillingId = tankFillingId;
         this.kmBefore = kmBefore;
         this.kmAfter = kmAfter;
@@ -56,11 +56,11 @@ public class TankFillingDTO implements DTOEntity {
         this.kmAfter = kmAfter;
     }
 
-    public boolean isDiscrepancy() {
+    public Boolean isDiscrepancy() {
         return discrepancy;
     }
 
-    public void setDiscrepancy(boolean discrepancy) {
+    public void setDiscrepancy(Boolean discrepancy) {
         this.discrepancy = discrepancy;
     }
 

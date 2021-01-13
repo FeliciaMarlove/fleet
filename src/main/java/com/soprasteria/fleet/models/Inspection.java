@@ -67,11 +67,11 @@ public class Inspection implements Serializable {
         this.expertisedBy = expertisedBy;
     }
 
-    public boolean isDamaged() {
+    public Boolean isDamaged() {
         return isDamaged;
     }
 
-    public void setDamaged(boolean damaged) {
+    public void setDamaged(Boolean damaged) {
         isDamaged = damaged;
     }
 
@@ -115,7 +115,7 @@ public class Inspection implements Serializable {
         this.car = car;
     }
 
-    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean isDamaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
+    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
