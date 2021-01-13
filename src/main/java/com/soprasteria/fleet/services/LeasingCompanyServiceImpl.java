@@ -62,11 +62,21 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     @Override
     public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) {
         LeasingCompany leasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId()).get();
-        leasingCompany.setActive(leasingCompanyDTO.isActive());
-        leasingCompany.setLeasingCompanyContactPerson(leasingCompanyDTO.getLeasingCompanyContactPerson());
-        leasingCompany.setLeasingCompanyEmail(leasingCompanyDTO.getLeasingCompanyEmail());
-        leasingCompany.setLeasingCompanyName(leasingCompanyDTO.getLeasingCompanyName());
-        leasingCompany.setLeasingCompanyPhone(leasingCompanyDTO.getLeasingCompanyPhone());
+        if (leasingCompanyDTO.isActive() != null) {
+            leasingCompany.setActive(leasingCompanyDTO.isActive());
+        }
+        if (leasingCompanyDTO.getLeasingCompanyContactPerson() != null) {
+            leasingCompany.setLeasingCompanyContactPerson(leasingCompanyDTO.getLeasingCompanyContactPerson());
+        }
+        if (leasingCompanyDTO.getLeasingCompanyEmail() != null) {
+            leasingCompany.setLeasingCompanyEmail(leasingCompanyDTO.getLeasingCompanyEmail());
+        }
+        if (leasingCompanyDTO.getLeasingCompanyName() != null) {
+            leasingCompany.setLeasingCompanyName(leasingCompanyDTO.getLeasingCompanyName());
+        }
+        if (leasingCompanyDTO.getLeasingCompanyPhone() != null) {
+            leasingCompany.setLeasingCompanyPhone(leasingCompanyDTO.getLeasingCompanyPhone());
+        }
         repository.save(leasingCompany);
         return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
     }
