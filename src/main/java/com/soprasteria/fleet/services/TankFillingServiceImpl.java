@@ -51,6 +51,17 @@ public class TankFillingServiceImpl implements TankFillingService {
     }
 
     @Override
+    public List<TankFillingDTO> readAllDiscrepancy() {
+        List<TankFillingDTO> tankFillings = new ArrayList<>();
+        for (TankFilling tankFilling : repository.findAll()) {
+            if (tankFilling.getDiscrepancy()) {
+                tankFillings.add((TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO()));
+            }
+        }
+        return tankFillings;
+    }
+
+    @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
         Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
@@ -59,7 +70,7 @@ public class TankFillingServiceImpl implements TankFillingService {
         car.setKilometers(tankFilling.getKmAfter());
         tankFilling.setDateTimeFilling(LocalDateTime.now());
         Double consumption = (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
-        Double consumptionWithTolerance = consumption + (consumption / 100 * 15);
+        Double consumptionWithTolerance = consumption + (consumption / 100 * tolerancePercentage);
         tankFilling.setConsumption(consumptionWithTolerance);
         checkForDiscrepancies(tankFilling);
         repository.save(tankFilling);
