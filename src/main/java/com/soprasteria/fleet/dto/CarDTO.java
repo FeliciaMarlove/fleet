@@ -21,8 +21,9 @@ public class CarDTO implements DTOEntity {
     private String freeText;
     private Integer leasingCompanyId;
     private Integer staffMemberId;
+    private Integer carInspectionId;
 
-    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String freeText, Integer leasingCompanyId, Integer staffMemberId) {
+    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
         this.registrationDate = registrationDate;
@@ -36,10 +37,19 @@ public class CarDTO implements DTOEntity {
         this.freeText = freeText;
         this.leasingCompanyId = leasingCompanyId;
         this.staffMemberId = staffMemberId;
+        this.carInspectionId = carInspectionId;
     }
 
     public CarDTO() {
         this.kilometers = 0;
+    }
+
+    public Integer getCarInspectionId() {
+        return carInspectionId;
+    }
+
+    public void setCarInspectionId(Integer carInspectionId) {
+        this.carInspectionId = carInspectionId;
     }
 
     public LocalDate getStartDate() {
@@ -171,6 +181,7 @@ public class CarDTO implements DTOEntity {
                 ", freeText='" + freeText + '\'' +
                 ", leasingCompanyId=" + leasingCompanyId +
                 ", staffMemberId=" + staffMemberId +
+                ", carInspectionId=" + carInspectionId +
                 '}';
     }
 }

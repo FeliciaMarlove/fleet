@@ -56,6 +56,17 @@ public class Car implements Serializable {
     @JoinColumn(name = "staff_id", referencedColumnName = "staff_id", foreignKey = @ForeignKey(name = "FK_car_staff_member"))
     private StaffMember staffMember;
 
+    @OneToOne(mappedBy = "car")
+    private Inspection inspection;
+
+    public Inspection getInspection() {
+        return inspection;
+    }
+
+    public void setInspection(Inspection inspection) {
+        this.inspection = inspection;
+    }
+
     public String getPlateNumber() {
         return plateNumber;
     }
@@ -205,6 +216,7 @@ public class Car implements Serializable {
                 ", freeText='" + freeText + '\'' +
                 ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
                 ", staffMember=" + staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName() +
+                ", inspection=" + (inspection != null ? inspection.getCarInspectionId() : null) +
                 '}';
     }
 
