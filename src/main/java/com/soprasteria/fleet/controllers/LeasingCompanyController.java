@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/leasingcomp")
+@RequestMapping(value = "/api/leasing")
 @CrossOrigin
 public class LeasingCompanyController {
     public final LeasingCompanyService service;

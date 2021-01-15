@@ -115,6 +115,18 @@ public class Inspection implements Serializable {
         this.car = car;
     }
 
+    public LocalDateTime getSentDate() {
+        return sentDate;
+    }
+
+    public void setSentDate(LocalDateTime sentDate) {
+        this.sentDate = sentDate;
+    }
+
+    public void setDamaged(boolean damaged) {
+        isDamaged = damaged;
+    }
+
     public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
