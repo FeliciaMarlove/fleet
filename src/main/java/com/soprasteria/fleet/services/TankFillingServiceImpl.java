@@ -4,10 +4,8 @@ import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.models.Car;
-import com.soprasteria.fleet.models.CarEmployeeLinking;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
-import com.soprasteria.fleet.repositories.CarEmployeeRepository;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
@@ -23,14 +21,12 @@ import java.util.Optional;
 public class TankFillingServiceImpl implements TankFillingService {
     private final TankFillingRepository repository;
     private final CarRepository carRepository;
-    private final CarEmployeeRepository carEmployeeRepository;
     private final StaffMemberRepository staffMemberRepository;
     private final Integer tolerancePercentage = 15;
 
-    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, CarEmployeeRepository carEmployeeRepository, StaffMemberRepository staffMemberRepository) {
+    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository) {
         this.repository = repository;
         this.carRepository = carRepository;
-        this.carEmployeeRepository = carEmployeeRepository;
         this.staffMemberRepository = staffMemberRepository;
     }
 
@@ -79,24 +75,19 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     private void checkForDiscrepancies(TankFilling tankFilling) {
         Car car = tankFilling.getCar();
-        Optional<CarEmployeeLinking> carEmployeeLinking = carEmployeeRepository.getCarEmployeeLinkingByCarAndIsOngoing(car, true);
-        if (carEmployeeLinking.isPresent()) {
-            System.out.println(carEmployeeLinking);
-            StaffMember staffMember = carEmployeeLinking.get().getStaffMember();
-            if (car.getFuelType() != tankFilling.getFuelType()) {
-                tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
-            } else if (tankFilling.getKmBefore() > tankFilling.getKmAfter()) {
-                tankFilling.setDiscrepancyType(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER);
-            } else if (tankFilling.getConsumption() > car.getAverageConsumption()) {
-                tankFilling.setDiscrepancyType(DiscrepancyType.QUANTITY_TOO_HIGH);
-            } else {
-                return;
-            }
-            // executed if the app doesn't enter the "else" block (then for each case where a discrepancy occurs)
-            tankFilling.setDiscrepancy(true);
-            staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
-            staffMemberRepository.save(staffMember);
+        StaffMember staffMember = car.getStaffMember();
+        if (car.getFuelType() != tankFilling.getFuelType()) {
+            tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
+        } else if (tankFilling.getKmBefore() > tankFilling.getKmAfter()) {
+            tankFilling.setDiscrepancyType(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER);
+        } else if (tankFilling.getConsumption() > car.getAverageConsumption()) {
+            tankFilling.setDiscrepancyType(DiscrepancyType.QUANTITY_TOO_HIGH);
+        } else {
+            return;
         }
-
+        // executed if the app doesn't enter the "else" block (then for each case where a discrepancy occurs)
+        tankFilling.setDiscrepancy(true);
+        staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
+        staffMemberRepository.save(staffMember);
     }
 }
