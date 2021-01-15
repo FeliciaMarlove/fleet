@@ -1,5 +1,6 @@
 package com.soprasteria.fleet.controllers;
 
+import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
 import com.soprasteria.fleet.services.interfaces.StaffMemberService;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,20 @@ public class StaffMemberController {
     @PutMapping
     public StaffMemberDTO updateStaffMember(@RequestBody StaffMemberDTO staffMemberDTO) {
         return service.update(staffMemberDTO);
+    }
+
+    @GetMapping("/cars")
+    public List<CarDTO> getCarsOfStaff(@PathVariable("id") Integer id) {
+        return service.getCarsOfStaffMember(id);
+    }
+
+    @GetMapping("/car")
+    public CarDTO getCurrentCarOfStaff(@PathVariable("id") Integer id) {
+        return service.getCurrentCarOfStaffMember(id);
+    }
+
+    @PostMapping("/{id}/car/{carId}")
+    public StaffMemberDTO setCarOfStaff(@PathVariable("id") Integer id, @PathVariable("carId") String carId) {
+        return service.setCarOfStaffMember(id, carId);
     }
 }

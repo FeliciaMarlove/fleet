@@ -36,12 +36,25 @@ public class Car implements Serializable {
     @Column(name = "average_consumption")
     private Double averageConsumption;
 
-    @Column(name = "archived")
-    private Boolean isArchived;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @Column(name = "ongoing")
+    private Boolean isOngoing;
+
+    @Column(name = "free_text")
+    private String freeText;
 
     @ManyToOne(targetEntity = LeasingCompany.class)
     @JoinColumn(name = "leasing_id", referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
     private LeasingCompany leasingCompany;
+
+    @ManyToOne(targetEntity = StaffMember.class)
+    @JoinColumn(name = "staff_id", referencedColumnName = "staff_id", foreignKey = @ForeignKey(name = "FK_car_staff_member"))
+    private StaffMember staffMember;
 
     public String getPlateNumber() {
         return plateNumber;
@@ -115,28 +128,63 @@ public class Car implements Serializable {
         this.leasingCompany = leasingCompany;
     }
 
-    public Boolean isArchived() {
-        return isArchived;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setArchived(Boolean archived) {
-        isArchived = archived;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuelType, Double averageConsumption, LeasingCompany leasingCompany) {
-        this();
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean getOngoing() {
+        return isOngoing;
+    }
+
+    public void setOngoing(Boolean ongoing) {
+        isOngoing = ongoing;
+    }
+
+    public String getFreeText() {
+        return freeText;
+    }
+
+    public void setFreeText(String freeText) {
+        this.freeText = freeText;
+    }
+
+    public StaffMember getStaffMember() {
+        return staffMember;
+    }
+
+    public void setStaffMember(StaffMember staffMember) {
+        this.staffMember = staffMember;
+    }
+
+    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Integer kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, String freeText, LeasingCompany leasingCompany, StaffMember staffMember) {
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
         this.registrationDate = registrationDate;
+        this.kilometers = kilometers;
         this.brand = brand;
         this.model = model;
         this.fuelType = fuelType;
         this.averageConsumption = averageConsumption;
+        this.startDate = startDate;
+        this.freeText = freeText;
         this.leasingCompany = leasingCompany;
+        this.staffMember = staffMember;
     }
 
     public Car() {
-        this.isArchived = false;
+        this.isOngoing = true;
         this.kilometers = 0;
     }
 
@@ -151,8 +199,12 @@ public class Car implements Serializable {
                 ", model='" + model + '\'' +
                 ", fuelType=" + fuelType +
                 ", averageConsumption=" + averageConsumption +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isOngoing=" + isOngoing +
+                ", freeText='" + freeText + '\'' +
                 ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
-                ", isArchived=" + isArchived +
+                ", staffMember=" + staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName() +
                 '}';
     }
 

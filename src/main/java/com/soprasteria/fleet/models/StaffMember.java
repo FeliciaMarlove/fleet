@@ -4,6 +4,8 @@ import com.soprasteria.fleet.enums.Language;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -32,6 +34,9 @@ public class StaffMember implements Serializable {
 
     @Column(name = "actual_discrepancies")
     private Integer numberActualDiscrepancies;
+
+    @OneToMany(mappedBy = "staffMember", targetEntity = Car.class)
+    List<Car> cars = new ArrayList<>();
 
     public Integer getStaffMemberId() {
         return staffMemberId;
@@ -87,6 +92,18 @@ public class StaffMember implements Serializable {
 
     public void setNumberActualDiscrepancies(Integer numberActualDiscrepancies) {
         this.numberActualDiscrepancies = numberActualDiscrepancies;
+    }
+
+    public Boolean getHasCar() {
+        return hasCar;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 
     public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {

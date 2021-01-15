@@ -26,7 +26,7 @@ public class TankFillingController {
         return service.readAll();
     }
 
-    @GetMapping
+    @GetMapping("/discrepancies")
     public List<TankFillingDTO> getFillupsWithDiscrepancy() {
         return service.readAllDiscrepancy();
     }

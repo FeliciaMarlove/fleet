@@ -13,26 +13,73 @@ public class CarDTO implements DTOEntity {
     private Integer kilometers;
     private Brand brand;
     private String model;
-    private FuelType fuel;
+    private FuelType fuelType;
     private Double averageConsumption;
-    private Boolean isArchived;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Boolean isOngoing;
+    private String freeText;
     private Integer leasingCompanyId;
+    private Integer staffMemberId;
 
-    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuel, Double averageConsumption, Integer leasingCompanyId) {
-        this();
+    public CarDTO(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String freeText, Integer leasingCompanyId, Integer staffMemberId) {
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
         this.registrationDate = registrationDate;
         this.brand = brand;
         this.model = model;
-        this.fuel = fuel;
+        this.fuelType = fuelType;
         this.averageConsumption = averageConsumption;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isOngoing = isOngoing;
+        this.freeText = freeText;
         this.leasingCompanyId = leasingCompanyId;
+        this.staffMemberId = staffMemberId;
     }
 
     public CarDTO() {
-        this.isArchived = false;
         this.kilometers = 0;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean getOngoing() {
+        return isOngoing;
+    }
+
+    public void setOngoing(Boolean ongoing) {
+        isOngoing = ongoing;
+    }
+
+    public String getFreeText() {
+        return freeText;
+    }
+
+    public void setFreeText(String freeText) {
+        this.freeText = freeText;
+    }
+
+    public Integer getStaffMemberId() {
+        return staffMemberId;
+    }
+
+    public void setStaffMemberId(Integer staffMemberId) {
+        this.staffMemberId = staffMemberId;
     }
 
     public String getPlateNumber() {
@@ -83,12 +130,12 @@ public class CarDTO implements DTOEntity {
         this.model = model;
     }
 
-    public FuelType getFuel() {
-        return fuel;
+    public FuelType getFuelType() {
+        return fuelType;
     }
 
-    public void setFuel(FuelType fuel) {
-        this.fuel = fuel;
+    public void setFuelType(FuelType fuelType) {
+        this.fuelType = fuelType;
     }
 
     public Double getAverageConsumption() {
@@ -97,14 +144,6 @@ public class CarDTO implements DTOEntity {
 
     public void setAverageConsumption(Double averageConsumption) {
         this.averageConsumption = averageConsumption;
-    }
-
-    public Boolean isArchived() {
-        return isArchived;
-    }
-
-    public void setArchived(Boolean archived) {
-        isArchived = archived;
     }
 
     public Integer getLeasingCompanyId() {
@@ -124,12 +163,14 @@ public class CarDTO implements DTOEntity {
                 ", kilometers=" + kilometers +
                 ", brand=" + brand +
                 ", model='" + model + '\'' +
-                ", fuel=" + fuel +
+                ", fuelType=" + fuelType +
                 ", averageConsumption=" + averageConsumption +
-                ", isArchived=" + isArchived +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isOngoing=" + isOngoing +
+                ", freeText='" + freeText + '\'' +
                 ", leasingCompanyId=" + leasingCompanyId +
+                ", staffMemberId=" + staffMemberId +
                 '}';
     }
-
-
 }
