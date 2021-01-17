@@ -116,7 +116,17 @@ public class StaffMember implements Serializable {
         this.numberActualDiscrepancies = numberActualDiscrepancies;
     }
 
+    public StaffMember(String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage) {
+        this();
+        this.staffLastName = staffLastName;
+        this.staffFirstName = staffFirstName;
+        this.hasCar = hasCar;
+        this.corporateEmail = corporateEmail;
+        this.communicationLanguage = communicationLanguage;
+    }
+
     public StaffMember() {
+        numberActualDiscrepancies = 0;
     }
 
     @Override
