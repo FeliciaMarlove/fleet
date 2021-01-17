@@ -10,6 +10,7 @@ public interface StaffMemberService {
     StaffMemberDTO read(Integer staffMemberId);
     List<StaffMemberDTO> readAll();
     List<StaffMemberDTO> readAllWithCar();
+    List<StaffMemberDTO> readAllWithoutCar();
     StaffMemberDTO update(StaffMemberDTO staffMemberDTO);
     List<CarDTO> getCarsOfStaffMember(Integer staffMemberId);
     StaffMemberDTO setCarOfStaffMember(Integer staffMemberId, String carPlate);

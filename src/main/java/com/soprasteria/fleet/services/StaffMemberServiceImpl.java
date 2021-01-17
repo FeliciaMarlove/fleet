@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +44,17 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
         for (StaffMember staffMember : repository.findAll()) {
             if (staffMember.hasCar()) {
+                staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
+            }
+        }
+        return staffMemberDTOS;
+    }
+
+    @Override
+    public List<StaffMemberDTO> readAllWithoutCar() {
+        List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
+        for (StaffMember staffMember : repository.findAll()) {
+            if (!staffMember.hasCar()) {
                 staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
             }
         }
