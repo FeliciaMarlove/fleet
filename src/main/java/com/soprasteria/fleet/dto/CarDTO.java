@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 public class CarDTO implements DTOEntity {
     private String plateNumber;
-    private Integer chassisNumber;
     private Integer kilometers;
     private Brand brand;
     private String model;
@@ -22,9 +21,8 @@ public class CarDTO implements DTOEntity {
     private Integer staffMemberId;
     private Integer carInspectionId;
 
-    public CarDTO(String plateNumber, Integer chassisNumber, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
+    public CarDTO(String plateNumber, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
         this.plateNumber = plateNumber;
-        this.chassisNumber = chassisNumber;
         this.brand = brand;
         this.model = model;
         this.fuelType = fuelType;
@@ -98,14 +96,6 @@ public class CarDTO implements DTOEntity {
         this.plateNumber = plateNumber;
     }
 
-    public Integer getChassisNumber() {
-        return chassisNumber;
-    }
-
-    public void setChassisNumber(Integer chassisNumber) {
-        this.chassisNumber = chassisNumber;
-    }
-
     public Integer getKilometers() {
         return kilometers;
     }
@@ -158,7 +148,6 @@ public class CarDTO implements DTOEntity {
     public String toString() {
         return "CarDTO{" +
                 "plateNumber='" + plateNumber + '\'' +
-                ", chassisNumber=" + chassisNumber +
                 ", kilometers=" + kilometers +
                 ", brand=" + brand +
                 ", model='" + model + '\'' +
