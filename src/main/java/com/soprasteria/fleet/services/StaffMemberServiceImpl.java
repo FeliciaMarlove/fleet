@@ -8,6 +8,7 @@ import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.interfaces.StaffMemberService;
+import com.soprasteria.fleet.services.utilServices.ExcelStaffDataService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ import java.util.stream.Collectors;
 public class StaffMemberServiceImpl implements StaffMemberService {
     private final StaffMemberRepository repository;
     private final CarRepository carRepository;
+    private final ExcelStaffDataService excelStaffDataService;
 
-    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository) {
+    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository, ExcelStaffDataService excelStaffDataService) {
         this.repository = repository;
         this.carRepository = carRepository;
+        this.excelStaffDataService = excelStaffDataService;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     public List<StaffMemberDTO> readAllWithCar() {
         List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
         for (StaffMember staffMember : repository.findAll()) {
-            if (staffMember.hasCar()) {
+            if (staffMember.getHasCar()) {
                 staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
             }
         }
@@ -54,7 +57,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     public List<StaffMemberDTO> readAllWithoutCar() {
         List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
         for (StaffMember staffMember : repository.findAll()) {
-            if (!staffMember.hasCar()) {
+            if (!staffMember.getHasCar()) {
                 staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
             }
         }
@@ -64,7 +67,8 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     @Override
     public StaffMemberDTO update(StaffMemberDTO staffMemberDTO) {
         StaffMember staffMember = repository.findById(staffMemberDTO.getStaffMemberId()).get();
-        staffMember.setHasCar(staffMemberDTO.hasCar());
+        staffMember.setHasCar(staffMemberDTO.getHasCar());
+        excelStaffDataService.updateHasCar(staffMember.getCorporateEmail(), staffMember.getHasCar());
         repository.save(staffMember);
         return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
     }
@@ -83,7 +87,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     public StaffMemberDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
         StaffMember staffMember = repository.findById(staffMemberId).get();
         staffMember.getCars().stream()
-                .filter(car -> car.getOngoing())
+                .filter(Car::getOngoing)
                 .findFirst()
                 .ifPresent(car -> {
                     car.setOngoing(false);

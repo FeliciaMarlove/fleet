@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.utils;
+package com.soprasteria.fleet.services.utilServices;
 
 import com.soprasteria.fleet.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
@@ -12,11 +12,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
 @Component
-public class MockExcelDataLoader implements ApplicationRunner {
+public class ExcelStaffDataService implements ApplicationRunner {
     private final StaffMemberRepository staffMemberRepository;
     private final String path = "./src/main/resources/dataloader.xlsx";
 
@@ -28,15 +29,44 @@ public class MockExcelDataLoader implements ApplicationRunner {
         COMM_LANGUAGE,
     }
 
-    public MockExcelDataLoader(StaffMemberRepository staffMemberRepository) {
+    public ExcelStaffDataService(StaffMemberRepository staffMemberRepository) {
         this.staffMemberRepository = staffMemberRepository;
+    }
+
+    public void updateHasCar(String corporateEmail, Boolean hasCar) {
+        XSSFWorkbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook(new FileInputStream(path));
+            XSSFSheet sheetT = workbook.getSheet("staff");
+            for (Iterator<Row> it = sheetT.rowIterator(); it.hasNext(); ) {
+                Row row = it.next();
+                if (row.getCell(Columns.CORPORATE_EMAIL.ordinal()).getStringCellValue().equalsIgnoreCase(corporateEmail)) {
+                    row.getCell(Columns.HAS_CAR.ordinal()).setCellValue(hasCar ? "yes" : "no");
+                    FileOutputStream outputStream = new FileOutputStream(path);
+                    workbook.write(outputStream);
+                    break;
+                }
+            }
+        } catch (FileNotFoundException fnf) {
+            System.out.println("File path is wrong or file is in use");
+        } catch (IOException ioe) {
+            System.out.println("IOException ".toUpperCase() + ioe.getMessage());
+        } catch (Exception e) {
+            System.out.println("Exception ".toUpperCase() + e.getMessage());
+        } finally {
+            try {
+                if (workbook != null) workbook.close();
+                System.out.println("Workbook closed");
+            } catch (IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+        }
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        XSSFWorkbook workbook = null;
         if (staffMemberRepository.count() == 0) {
-            FileInputStream inputStream = null;
-            XSSFWorkbook workbook = null;
             try {
                 workbook = new XSSFWorkbook(new FileInputStream(path));
                 XSSFSheet sheetT = workbook.getSheet("staff");
@@ -50,7 +80,7 @@ public class MockExcelDataLoader implements ApplicationRunner {
                             row.getCell(Columns.FIRST_NAME.ordinal()).getStringCellValue(),
                             row.getCell(Columns.HAS_CAR.ordinal()).getStringCellValue().equalsIgnoreCase("yes"),
                             row.getCell(Columns.CORPORATE_EMAIL.ordinal()).getStringCellValue(),
-                            Language.valueOf(row.getCell(Columns.COMM_LANGUAGE.ordinal()).getStringCellValue())
+                            Language.valueOf(row.getCell(Columns.COMM_LANGUAGE.ordinal()).getStringCellValue().toUpperCase())
                     ));
                 }
             } catch (FileNotFoundException fnf) {
