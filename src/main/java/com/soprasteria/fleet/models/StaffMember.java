@@ -62,7 +62,7 @@ public class StaffMember implements Serializable {
         this.staffFirstName = staffFirstName;
     }
 
-    public Boolean hasCar() {
+    public Boolean getHasCar() {
         return hasCar;
     }
 
@@ -92,10 +92,6 @@ public class StaffMember implements Serializable {
 
     public void setNumberActualDiscrepancies(Integer numberActualDiscrepancies) {
         this.numberActualDiscrepancies = numberActualDiscrepancies;
-    }
-
-    public Boolean getHasCar() {
-        return hasCar;
     }
 
     public List<Car> getCars() {
