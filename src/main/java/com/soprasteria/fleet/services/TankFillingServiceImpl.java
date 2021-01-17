@@ -3,6 +3,7 @@ package com.soprasteria.fleet.services;
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.DiscrepancyType;
+import com.soprasteria.fleet.enums.FuelType;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
@@ -85,7 +86,7 @@ public class TankFillingServiceImpl implements TankFillingService {
         } else {
             return;
         }
-        // executed if the app doesn't enter the "else" block (then for each case where a discrepancy occurs)
+        // executed if the app doesn't enter the "else" instruction:
         tankFilling.setDiscrepancy(true);
         staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
         staffMemberRepository.save(staffMember);

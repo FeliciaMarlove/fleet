@@ -89,9 +89,6 @@ public class CarServiceImpl implements CarService {
         if (carDTO.getModel() != null) {
             car.setModel(carDTO.getModel());
         }
-        if (carDTO.getChassisNumber() != null) {
-            car.setChassisNumber(carDTO.getChassisNumber());
-        }
         if (carDTO.getFuelType() != null) {
             car.setFuelType(carDTO.getFuelType());
         }
