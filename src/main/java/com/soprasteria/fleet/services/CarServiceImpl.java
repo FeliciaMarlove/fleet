@@ -66,10 +66,7 @@ public class CarServiceImpl implements CarService {
     public CarDTO create(CarDTO carDTO) {
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
         if (carDTO.getStaffMemberId() != null) {
-            StaffMember staffMember = staffMemberRepository.findById(carDTO.getStaffMemberId()).get();
-            car.setStaffMember(staffMember);
-            staffMemberService.setCarOfStaffMember(staffMember.getStaffMemberId(), car.getPlateNumber());
-            staffMemberRepository.save(staffMember);
+            setStaffMember(car, carDTO);
         }
         repository.save(car);
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
@@ -104,19 +101,20 @@ public class CarServiceImpl implements CarService {
         if (carDTO.getPlateNumber() != null) {
             car.setPlateNumber(carDTO.getPlateNumber());
         }
-        if (carDTO.getRegistrationDate() != null) {
-            car.setRegistrationDate(carDTO.getRegistrationDate());
-        }
         if (carDTO.getFreeText() != null) {
             car.setFreeText(car.getFreeText());
         }
         if (carDTO.getStaffMemberId() != null) {
-            StaffMember staffMember = staffMemberRepository.findById(carDTO.getStaffMemberId()).get();
-            car.setStaffMember(staffMember);
-            staffMemberService.setCarOfStaffMember(staffMember.getStaffMemberId(), car.getPlateNumber());
-            staffMemberRepository.save(staffMember);
+            setStaffMember(car, carDTO);
         }
         repository.save(car);
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
+    }
+
+    private void setStaffMember(Car car, CarDTO carDTO) {
+        StaffMember staffMember = staffMemberRepository.findById(carDTO.getStaffMemberId()).get();
+        car.setStaffMember(staffMember);
+        staffMemberService.setCarOfStaffMember(staffMember.getStaffMemberId(), car.getPlateNumber());
+        staffMemberRepository.save(staffMember);
     }
 }
