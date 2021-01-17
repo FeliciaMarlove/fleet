@@ -32,6 +32,11 @@ public class StaffMemberController {
         return service.readAllWithCar();
     }
 
+    @GetMapping("/withoutcar")
+    public List<StaffMemberDTO> getAllStaffWithoutCar() {
+        return service.readAllWithoutCar();
+    }
+
     @PutMapping
     public StaffMemberDTO updateStaffMember(@RequestBody StaffMemberDTO staffMemberDTO) {
         return service.update(staffMemberDTO);
