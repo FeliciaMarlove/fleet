@@ -18,9 +18,6 @@ public class Car implements Serializable {
     @Column(name = "chassis_number")
     private Integer chassisNumber;
 
-    @Column(name = "registration_date")
-    private LocalDate registrationDate;
-
     @Column(name = "kilometers")
     private Integer kilometers;
 
@@ -81,14 +78,6 @@ public class Car implements Serializable {
 
     public void setChassisNumber(Integer chassisNumber) {
         this.chassisNumber = chassisNumber;
-    }
-
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
     }
 
     public Integer getKilometers() {
@@ -179,10 +168,9 @@ public class Car implements Serializable {
         this.staffMember = staffMember;
     }
 
-    public Car(String plateNumber, Integer chassisNumber, LocalDate registrationDate, Integer kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, String freeText, LeasingCompany leasingCompany, StaffMember staffMember) {
+    public Car(String plateNumber, Integer chassisNumber, Integer kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, String freeText, LeasingCompany leasingCompany, StaffMember staffMember) {
         this.plateNumber = plateNumber;
         this.chassisNumber = chassisNumber;
-        this.registrationDate = registrationDate;
         this.kilometers = kilometers;
         this.brand = brand;
         this.model = model;
@@ -204,7 +192,6 @@ public class Car implements Serializable {
         return "Car{" +
                 "plateNumber='" + plateNumber + '\'' +
                 ", chassisNumber=" + chassisNumber +
-                ", registrationDate=" + registrationDate +
                 ", kilometers=" + kilometers +
                 ", brand=" + brand +
                 ", model='" + model + '\'' +
