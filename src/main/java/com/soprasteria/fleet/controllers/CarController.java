@@ -59,7 +59,7 @@ public class CarController {
     }
 
     @GetMapping("/fuel/{fuel}")
-    public List<CarDTO> getAllCarsByBrand(@PathVariable("fuel") FuelType fuelType) {
+    public List<CarDTO> getAllCarsByFuel(@PathVariable("fuel") FuelType fuelType) {
         return service.filterByFuel(fuelType);
     }
 }
