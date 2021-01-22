@@ -45,22 +45,20 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<CarDTO> readAllActive() {
         List<CarDTO> carDTOS = new ArrayList<>();
-        for(Car car: repository.findAll()) {
-            if (car.getOngoing()) {
-                carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-            }
-        }
+        List<Car> cars = repository.selectFromCarWhereOngoing();
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
         return carDTOS;
     }
 
     @Override
     public List<CarDTO> readAllArchived() {
         List<CarDTO> carDTOS = new ArrayList<>();
-        for(Car car: repository.findAll()) {
-            if (!car.getOngoing()) {
-                carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-            }
-        }
+        List<Car> cars = repository.selectFromCarWhereNotOngoing();
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
         return carDTOS;
     }
 
