@@ -97,7 +97,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         currentCar.setStaffMember(staffMember);
         currentCar.setOngoing(true);
         carRepository.save(currentCar);
-        return (StaffMemberDTO) new DtoUtils().convertToDto(currentCar, new CarDTO());
+        return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
     }
 
     @Override
