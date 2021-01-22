@@ -1,6 +1,8 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
+import com.soprasteria.fleet.enums.Brand;
+import com.soprasteria.fleet.enums.FuelType;
 import com.soprasteria.fleet.services.interfaces.CarService;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +51,15 @@ public class CarController {
     @PutMapping
     public CarDTO updateCar(@RequestBody CarDTO carDTO) {
         return service.update(carDTO);
+    }
+
+    @GetMapping("/brand/{brand}")
+    public List<CarDTO> getAllCarsByBrand(@PathVariable("brand") Brand brand) {
+        return service.filterByBrand(brand);
+    }
+
+    @GetMapping("/fuel/{fuel}")
+    public List<CarDTO> getAllCarsByBrand(@PathVariable("fuel") FuelType fuelType) {
+        return service.filterByFuel(fuelType);
     }
 }
