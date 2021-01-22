@@ -113,22 +113,20 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<CarDTO> filterByBrand(Brand brand) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        for(Car car: repository.findAll()) {
-            if (car.getBrand().equals(brand)) {
-                carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-            }
-        }
+        List<Car> cars = repository.selectFromCarWhereFuelIs(brand.ordinal());
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
         return carDTOS;
     }
 
     @Override
     public List<CarDTO> filterByFuel(FuelType fuelType) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        for(Car car: repository.findAll()) {
-            if (car.getFuelType().equals(fuelType)) {
-                carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-            }
-        }
+        List<Car> cars = repository.selectFromCarWhereFuelIs(fuelType.ordinal());
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
         return carDTOS;
     }
 
