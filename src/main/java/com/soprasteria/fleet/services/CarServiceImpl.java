@@ -2,6 +2,8 @@ package com.soprasteria.fleet.services;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.enums.Brand;
+import com.soprasteria.fleet.enums.FuelType;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
@@ -106,6 +108,28 @@ public class CarServiceImpl implements CarService {
         }
         repository.save(car);
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
+    }
+
+    @Override
+    public List<CarDTO> filterByBrand(Brand brand) {
+        List<CarDTO> carDTOS = new ArrayList<>();
+        for(Car car: repository.findAll()) {
+            if (car.getBrand().equals(brand)) {
+                carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+            }
+        }
+        return carDTOS;
+    }
+
+    @Override
+    public List<CarDTO> filterByFuel(FuelType fuelType) {
+        List<CarDTO> carDTOS = new ArrayList<>();
+        for(Car car: repository.findAll()) {
+            if (car.getFuelType().equals(fuelType)) {
+                carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+            }
+        }
+        return carDTOS;
     }
 
     private void setStaffMember(Car car, CarDTO carDTO) {

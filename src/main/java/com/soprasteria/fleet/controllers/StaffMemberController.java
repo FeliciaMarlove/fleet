@@ -53,7 +53,7 @@ public class StaffMemberController {
     }
 
     @PostMapping("/{id}/car/{carId}")
-    public StaffMemberDTO setCarOfStaff(@PathVariable("id") Integer id, @PathVariable("carId") String carId) {
+    public CarDTO setCarOfStaff(@PathVariable("id") Integer id, @PathVariable("carId") String carId) {
         return service.setCarOfStaffMember(id, carId);
     }
 }
