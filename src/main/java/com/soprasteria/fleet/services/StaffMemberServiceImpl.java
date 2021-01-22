@@ -84,7 +84,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     }
 
     @Override
-    public StaffMemberDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
+    public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
         StaffMember staffMember = repository.findById(staffMemberId).get();
         staffMember.getCars().stream()
                 .filter(Car::getOngoing)
@@ -97,7 +97,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         currentCar.setStaffMember(staffMember);
         currentCar.setOngoing(true);
         carRepository.save(currentCar);
-        return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
+        return (CarDTO) new DtoUtils().convertToDto(currentCar, new CarDTO());
     }
 
     @Override
