@@ -42,19 +42,16 @@ public class StaffMemberController {
         return service.update(staffMemberDTO);
     }
 
-    // TO TEST
-    @GetMapping("/cars")
+    @GetMapping("{id}/cars")
     public List<CarDTO> getCarsOfStaff(@PathVariable("id") Integer id) {
         return service.getCarsOfStaffMember(id);
     }
 
-    // TO TEST
-    @GetMapping("/car")
+    @GetMapping("{id}/car")
     public CarDTO getCurrentCarOfStaff(@PathVariable("id") Integer id) {
         return service.getCurrentCarOfStaffMember(id);
     }
 
-    // TO TEST
     @PostMapping("/{id}/car/{carId}")
     public StaffMemberDTO setCarOfStaff(@PathVariable("id") Integer id, @PathVariable("carId") String carId) {
         return service.setCarOfStaffMember(id, carId);
