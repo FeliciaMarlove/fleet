@@ -76,18 +76,23 @@ public class TankFillingServiceImpl implements TankFillingService {
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
         TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).get();
         TankFilling correctionTankFilling = cloneTankFilling(erroneousTankFilling);
-        Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).get();
-        correctionTankFilling.setKmAfter(tankFillingDTO.getKmAfter());
-        correctionTankFilling.setConsumption(getConsumption(correctionTankFilling));
-        Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
-        checkForDiscrepancies(correctionTankFilling, averageCarConsumptionWithTolerance);
-        car.setKilometers(correctionTankFilling.getKmAfter());
-        carRepository.save(car);
-        correctionTankFilling.setCorrectionForId(erroneousTankFilling.getTankFillingId());
-        repository.save(correctionTankFilling);
-        erroneousTankFilling.setCorrectedById(correctionTankFilling.getTankFillingId());
-        repository.save(erroneousTankFilling);
-        return (TankFillingDTO) new DtoUtils().convertToDto(correctionTankFilling, new TankFillingDTO());
+        if (erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER)
+        || erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.WRONG_FUEL)) {
+            Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).get();
+            correctionTankFilling.setKmAfter(tankFillingDTO.getKmAfter());
+            correctionTankFilling.setConsumption(getConsumption(correctionTankFilling));
+            Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
+            checkForDiscrepancies(correctionTankFilling, averageCarConsumptionWithTolerance);
+            car.setKilometers(correctionTankFilling.getKmAfter());
+            carRepository.save(car);
+            correctionTankFilling.setCorrectionForId(erroneousTankFilling.getTankFillingId());
+            repository.save(correctionTankFilling);
+            erroneousTankFilling.setCorrectedById(correctionTankFilling.getTankFillingId());
+            repository.save(erroneousTankFilling);
+            return (TankFillingDTO) new DtoUtils().convertToDto(correctionTankFilling, new TankFillingDTO());
+        } else {
+            return null;
+        }
     }
 
     private TankFilling cloneTankFilling(TankFilling tankFilling) {
