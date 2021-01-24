@@ -3,7 +3,6 @@ package com.soprasteria.fleet.services;
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.DiscrepancyType;
-import com.soprasteria.fleet.enums.FuelType;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
@@ -16,14 +15,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TankFillingServiceImpl implements TankFillingService {
     private final TankFillingRepository repository;
     private final CarRepository carRepository;
     private final StaffMemberRepository staffMemberRepository;
-    private final Integer tolerancePercentage = 15;
+    private final Integer TOLERANCE_PERCENTAGE = 15;
 
     public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository) {
         this.repository = repository;
@@ -60,33 +58,34 @@ public class TankFillingServiceImpl implements TankFillingService {
     @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
         Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
+        tankFillingDTO.setPlateNumber(car.getPlateNumber());
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
         car.setKilometers(tankFilling.getKmAfter());
         tankFilling.setDateTimeFilling(LocalDateTime.now());
         Double consumption = (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
-        Double consumptionWithTolerance = consumption + (consumption / 100 * tolerancePercentage);
-        tankFilling.setConsumption(consumptionWithTolerance);
-        checkForDiscrepancies(tankFilling);
+        Double averageCarConsumptionWithTolerance = car.getAverageConsumption() + (car.getAverageConsumption() / 100 * TOLERANCE_PERCENTAGE);
+        tankFilling.setConsumption(consumption);
+        checkForDiscrepancies(tankFilling, averageCarConsumptionWithTolerance);
         repository.save(tankFilling);
         carRepository.save(car);
         return (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
     }
 
-    private void checkForDiscrepancies(TankFilling tankFilling) {
+    private void checkForDiscrepancies(TankFilling tankFilling, Double consumptionWithTolerance) {
         Car car = tankFilling.getCar();
         StaffMember staffMember = car.getStaffMember();
         if (car.getFuelType() != tankFilling.getFuelType()) {
             tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
         } else if (tankFilling.getKmBefore() > tankFilling.getKmAfter()) {
             tankFilling.setDiscrepancyType(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER);
-        } else if (tankFilling.getConsumption() > car.getAverageConsumption()) {
+        } else if (tankFilling.getConsumption() > consumptionWithTolerance) {
             tankFilling.setDiscrepancyType(DiscrepancyType.QUANTITY_TOO_HIGH);
         } else {
             return;
         }
-        // executed if the app doesn't enter the "else" instruction:
+        // executed if the app doesn't enter the "else" instruction, thus in case of discrepancy:
         tankFilling.setDiscrepancy(true);
         staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
         staffMemberRepository.save(staffMember);
