@@ -11,6 +11,7 @@ import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
 import com.soprasteria.fleet.services.interfaces.TankFillingService;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,8 +58,8 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
-        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
+        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
         car.setKilometers(tankFilling.getKmAfter());
@@ -74,10 +75,29 @@ public class TankFillingServiceImpl implements TankFillingService {
     @Override
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
         TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).get();
-        erroneousTankFilling.setCorrectedById(); // retrouver id du nouveau then tester controller
-        // ! km before ?
-        tankFillingDTO.setCorrectionForId(erroneousTankFilling.getTankFillingId());
-        return create(tankFillingDTO);
+        TankFilling correctionTankFilling = cloneTankFilling(erroneousTankFilling);
+        Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).get();
+        correctionTankFilling.setKmAfter(tankFillingDTO.getKmAfter());
+        correctionTankFilling.setConsumption(getConsumption(correctionTankFilling));
+        Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
+        checkForDiscrepancies(correctionTankFilling, averageCarConsumptionWithTolerance);
+        car.setKilometers(correctionTankFilling.getKmAfter());
+        carRepository.save(car);
+        correctionTankFilling.setCorrectionForId(erroneousTankFilling.getTankFillingId());
+        repository.save(correctionTankFilling);
+        erroneousTankFilling.setCorrectedById(correctionTankFilling.getTankFillingId());
+        repository.save(erroneousTankFilling);
+        return (TankFillingDTO) new DtoUtils().convertToDto(correctionTankFilling, new TankFillingDTO());
+    }
+
+    private TankFilling cloneTankFilling(TankFilling tankFilling) {
+        TankFilling clone = new TankFilling();
+        clone.setCar(tankFilling.getCar());
+        clone.setKmBefore(tankFilling.getKmBefore());
+        clone.setLiters(tankFilling.getLiters());
+        clone.setFuelType(tankFilling.getCar().getFuelType());
+        clone.setDateTimeFilling(tankFilling.getDateTimeFilling());
+        return clone;
     }
 
     /*

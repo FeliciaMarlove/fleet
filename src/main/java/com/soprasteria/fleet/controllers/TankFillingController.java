@@ -37,7 +37,7 @@ public class TankFillingController {
         return service.create(tankFillingDTO);
     }
 
-    @PutMapping
+    @PostMapping("/correction")
     public TankFillingDTO updateFillup(@RequestBody TankFillingDTO tankFillingDTO) {
         return service.update(tankFillingDTO);
     }
