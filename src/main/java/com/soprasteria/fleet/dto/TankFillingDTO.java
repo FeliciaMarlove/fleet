@@ -34,6 +34,10 @@ public class TankFillingDTO implements DTOEntity {
     public TankFillingDTO() {
     }
 
+    public DiscrepancyType getDiscrepancyType() {
+        return discrepancyType;
+    }
+
     public Integer getTankFillingId() {
         return tankFillingId;
     }
