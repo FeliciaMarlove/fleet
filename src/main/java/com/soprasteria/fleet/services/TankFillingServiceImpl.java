@@ -82,6 +82,7 @@ public class TankFillingServiceImpl implements TankFillingService {
         } else if (tankFilling.getConsumption() > consumptionWithTolerance) {
             tankFilling.setDiscrepancyType(DiscrepancyType.QUANTITY_TOO_HIGH);
         } else {
+            tankFilling.setDiscrepancy(false);
             return;
         }
         // executed if the app doesn't enter the "else" instruction, thus in case of discrepancy:
