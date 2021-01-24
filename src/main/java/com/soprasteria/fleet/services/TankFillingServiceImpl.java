@@ -63,21 +63,36 @@ public class TankFillingServiceImpl implements TankFillingService {
         tankFilling.setKmBefore(car.getKilometers());
         car.setKilometers(tankFilling.getKmAfter());
         tankFilling.setDateTimeFilling(LocalDateTime.now());
-        Double consumption = (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
-        Double averageCarConsumptionWithTolerance = car.getAverageConsumption() + (car.getAverageConsumption() / 100 * TOLERANCE_PERCENTAGE);
-        tankFilling.setConsumption(consumption);
+        tankFilling.setConsumption(getConsumption(tankFilling));
+        Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
         checkForDiscrepancies(tankFilling, averageCarConsumptionWithTolerance);
         repository.save(tankFilling);
         carRepository.save(car);
         return (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
     }
 
+    /*
+     * returns the actual consumption in liters per 100 kilometers
+     */
+    private Double getConsumption(TankFilling tankFilling) {
+        return (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
+    }
+
+    /*
+     * returns the actual consumption in liters per 100 kilometers taking into account the tolerance margin
+     */
+    private Double getAverageCarConsumptionWithTolerance(Car car) {
+        return car.getAverageConsumption() + (car.getAverageConsumption() / 100 * TOLERANCE_PERCENTAGE);
+    }
+
     private void checkForDiscrepancies(TankFilling tankFilling, Double consumptionWithTolerance) {
         Car car = tankFilling.getCar();
         StaffMember staffMember = car.getStaffMember();
         if (car.getFuelType() != tankFilling.getFuelType()) {
+            tankFilling.setConsumption(0.0);
             tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
-        } else if (tankFilling.getKmBefore() > tankFilling.getKmAfter()) {
+        } else if (tankFilling.getKmBefore() >= tankFilling.getKmAfter()) {
+            tankFilling.setConsumption(0.0);
             tankFilling.setDiscrepancyType(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER);
         } else if (tankFilling.getConsumption() > consumptionWithTolerance) {
             tankFilling.setDiscrepancyType(DiscrepancyType.QUANTITY_TOO_HIGH);
