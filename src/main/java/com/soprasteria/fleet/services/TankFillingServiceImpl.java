@@ -1,5 +1,6 @@
 package com.soprasteria.fleet.services;
 
+import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.DiscrepancyType;
@@ -46,19 +47,17 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public List<TankFillingDTO> readAllDiscrepancy() {
-        List<TankFillingDTO> tankFillings = new ArrayList<>();
-        for (TankFilling tankFilling : repository.findAll()) {
-            if (tankFilling.getDiscrepancy()) {
-                tankFillings.add((TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO()));
-            }
-        }
-        return tankFillings;
+        List<TankFillingDTO> tankFillingDTOS = new ArrayList<>();
+        List<TankFilling> fillings = repository.selectTankFillingWhereDiscrepancyIsTrue();
+        fillings.forEach( filling -> {
+            tankFillingDTOS.add((TankFillingDTO) new DtoUtils().convertToDto(filling, new TankFillingDTO()));
+        });
+        return tankFillingDTOS;
     }
 
     @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
         Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
-        tankFillingDTO.setPlateNumber(car.getPlateNumber());
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
