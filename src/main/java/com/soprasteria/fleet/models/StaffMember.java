@@ -26,7 +26,7 @@ public class StaffMember implements Serializable {
     @Column(name = "has_car")
     private Boolean hasCar;
 
-    @Column(name = "corporate_email")
+    @Column(name = "corporate_email", unique = true)
     private String corporateEmail;
 
     @Column(name = "language")
