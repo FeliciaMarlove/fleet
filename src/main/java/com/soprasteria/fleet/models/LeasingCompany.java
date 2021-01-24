@@ -14,7 +14,7 @@ public class LeasingCompany implements Serializable {
     @Column(name = "leasing_id")
     private Integer leasingCompanyId;
 
-    @Column(name = "leasing_name")
+    @Column(name = "leasing_name", unique = true)
     private String leasingCompanyName;
 
     @Column(name = "leasing_contact")
