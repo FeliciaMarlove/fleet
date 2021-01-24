@@ -9,4 +9,5 @@ public interface TankFillingService {
     List<TankFillingDTO> readAll();
     List<TankFillingDTO> readAllDiscrepancy();
     TankFillingDTO create(TankFillingDTO tankFillingDTO);
+    TankFillingDTO update(TankFillingDTO tankFillingDTO);
 }

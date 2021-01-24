@@ -71,6 +71,14 @@ public class TankFillingServiceImpl implements TankFillingService {
         return (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
     }
 
+    @Override
+    public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
+        TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).get();
+        erroneousTankFilling.setCorrectedById(); // retrouver id du nouveau then tester controller
+        tankFillingDTO.setCorrectionForId(erroneousTankFilling.getTankFillingId());
+        return create(tankFillingDTO);
+    }
+
     /*
      * returns the actual consumption in liters per 100 kilometers
      */

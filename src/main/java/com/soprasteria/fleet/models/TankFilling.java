@@ -41,9 +41,31 @@ public class TankFilling implements Serializable {
     @Column(name = "consumption")
     private Double consumption;
 
+    @Column(name = "correction_for")
+    private Integer correctionForId;
+
+    @Column(name = "corrected_by")
+    private Integer correctedById;
+
     @ManyToOne(targetEntity = Car.class)
     @JoinColumn(name = "plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_filling_car"))
     private Car car;
+
+    public Integer getCorrectionForId() {
+        return correctionForId;
+    }
+
+    public void setCorrectionForId(Integer correctionForId) {
+        this.correctionForId = correctionForId;
+    }
+
+    public Integer getCorrectedById() {
+        return correctedById;
+    }
+
+    public void setCorrectedById(Integer correctedById) {
+        this.correctedById = correctedById;
+    }
 
     public Integer getTankFillingId() {
         return tankFillingId;
