@@ -4,6 +4,7 @@ import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
 import com.soprasteria.fleet.enums.DiscrepancyType;
 import com.soprasteria.fleet.enums.FuelType;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 public class TankFillingDTO implements DTOEntity {
@@ -17,8 +18,10 @@ public class TankFillingDTO implements DTOEntity {
     private Double liters;
     private String plateNumber;
     private Double consumption;
+    private Integer correctionForId;
+    private Integer correctedById;
 
-    public TankFillingDTO(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, String plateNumber, Double consumption) {
+    public TankFillingDTO(Integer tankFillingId, Integer kmBefore, Integer kmAfter, Boolean discrepancy, DiscrepancyType discrepancyType, LocalDateTime dateTimeFilling, FuelType fuelType, Double liters, String plateNumber, Double consumption, Integer correctionForId, Integer correctedById) {
         this.tankFillingId = tankFillingId;
         this.kmBefore = kmBefore;
         this.kmAfter = kmAfter;
@@ -29,6 +32,8 @@ public class TankFillingDTO implements DTOEntity {
         this.liters = liters;
         this.plateNumber = plateNumber;
         this.consumption = consumption;
+        this.correctionForId = correctionForId;
+        this.correctedById = correctedById;
     }
 
     public TankFillingDTO() {
@@ -36,6 +41,22 @@ public class TankFillingDTO implements DTOEntity {
 
     public DiscrepancyType getDiscrepancyType() {
         return discrepancyType;
+    }
+
+    public Integer getCorrectionForId() {
+        return correctionForId;
+    }
+
+    public void setCorrectionForId(Integer correctionForId) {
+        this.correctionForId = correctionForId;
+    }
+
+    public Integer getCorrectedById() {
+        return correctedById;
+    }
+
+    public void setCorrectedById(Integer correctedById) {
+        this.correctedById = correctedById;
     }
 
     public Integer getTankFillingId() {
@@ -129,7 +150,9 @@ public class TankFillingDTO implements DTOEntity {
                 ", dateTimeFilling=" + dateTimeFilling +
                 ", fuelType=" + fuelType +
                 ", liters=" + liters +
-                ", plateNumber='" + plateNumber + '\'' +
+                ", plateNumber=" + plateNumber +
+                ", correction for=" + correctionForId +
+                ", corrected by=" + correctedById +
                 '}';
     }
 }

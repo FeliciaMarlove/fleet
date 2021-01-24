@@ -1,6 +1,7 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
+import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.services.interfaces.TankFillingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,10 @@ public class TankFillingController {
     @PostMapping
     public TankFillingDTO createFillup(@RequestBody TankFillingDTO tankFillingDTO) {
         return service.create(tankFillingDTO);
+    }
+
+    @PutMapping
+    public TankFillingDTO updateFillup(@RequestBody TankFillingDTO tankFillingDTO) {
+        return service.update(tankFillingDTO);
     }
 }
