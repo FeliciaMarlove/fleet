@@ -11,23 +11,34 @@ public class EmailComposerServiceImpl implements EmailComposerService {
     public String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("A discrepancy has been detected:")
-                .append("\nDate: " + tankFilling.getDateTimeFilling())
-                .append("\nCar: " + tankFilling.getCar().getPlateNumber())
-                .append("\nStaff member: " + tankFilling.getCar().getStaffMember().getStaffFirstName() + " " + tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase())
-                .append("\nDiscrepancy: " + tankFilling.getDiscrepancyType());
+                .append("\nDate: ")
+                .append(tankFilling.getDateTimeFilling())
+                .append("\nCar: ")
+                .append(tankFilling.getCar().getPlateNumber())
+                .append("\nStaff member: ")
+                .append(tankFilling.getCar().getStaffMember().getStaffFirstName())
+                .append(" ").append(tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase())
+                .append("\nDiscrepancy: ")
+                .append(tankFilling.getDiscrepancyType());
 
         switch (tankFilling.getDiscrepancyType()) {
             case BEFORE_BIGGER_THAN_AFTER :
-                stringBuilder.append("\nKm after: " + tankFilling.getKmAfter())
-                        .append("\nKm before: " + tankFilling.getKmBefore());
+                stringBuilder.append("\nKm after: ")
+                        .append(tankFilling.getKmAfter())
+                        .append("\nKm before: ")
+                        .append(tankFilling.getKmBefore());
                 break;
             case WRONG_FUEL:
-                stringBuilder.append("\nFuel: " + tankFilling.getFuelType())
-                        .append("\nCar Fuel: " + tankFilling.getCar().getFuelType());
+                stringBuilder.append("\nFuel: ")
+                        .append(tankFilling.getFuelType())
+                        .append("\nCar Fuel: ")
+                        .append(tankFilling.getCar().getFuelType());
                 break;
             case QUANTITY_TOO_HIGH:
-                stringBuilder.append("\nConsumption: " + tankFilling.getConsumption())
-                        .append("\nCar consumption: " + tankFilling.getCar().getAverageConsumption());
+                stringBuilder.append("\nConsumption: ")
+                        .append(tankFilling.getConsumption())
+                        .append("\nCar consumption: ")
+                        .append(tankFilling.getCar().getAverageConsumption());
                 break;
         }
         return stringBuilder.toString();
@@ -58,7 +69,9 @@ public class EmailComposerServiceImpl implements EmailComposerService {
     }
 
     private void writeFrench(StringBuilder stringBuilder, StaffMember staffMember) {
-        stringBuilder.append("A l'attention de " + staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName().toUpperCase());
+        stringBuilder.append("A l'attention de ")
+                .append(staffMember.getStaffFirstName()).append(" ")
+                .append(staffMember.getStaffLastName().toUpperCase());
         // TODO
     }
 
