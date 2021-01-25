@@ -3,6 +3,7 @@ package com.soprasteria.fleet.services.utilServices;
 import com.soprasteria.fleet.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
+import com.soprasteria.fleet.services.interfaces.ExcelStaffDataService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 @Component
-public class ExcelStaffDataService implements ApplicationRunner {
+public class ExcelStaffDataServiceImpl implements ApplicationRunner, ExcelStaffDataService {
     private final StaffMemberRepository staffMemberRepository;
     private final String path = "./src/main/resources/dataloader.xlsx";
 
@@ -29,10 +30,11 @@ public class ExcelStaffDataService implements ApplicationRunner {
         COMM_LANGUAGE,
     }
 
-    public ExcelStaffDataService(StaffMemberRepository staffMemberRepository) {
+    public ExcelStaffDataServiceImpl(StaffMemberRepository staffMemberRepository) {
         this.staffMemberRepository = staffMemberRepository;
     }
 
+    @Override
     public void updateHasCar(String corporateEmail, Boolean hasCar) {
         XSSFWorkbook workbook = null;
         try {

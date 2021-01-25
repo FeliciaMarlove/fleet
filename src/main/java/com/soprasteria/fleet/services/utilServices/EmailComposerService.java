@@ -1,20 +1,13 @@
-package com.soprasteria.fleet.utils;
+package com.soprasteria.fleet.services.utilServices;
 
 import com.soprasteria.fleet.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 
-public class MailComposer {
+public class EmailComposerService {
     private StaffMember staffMember;
     private StringBuilder stringBuilder = new StringBuilder();
 
-    public MailComposer(StaffMember staffMember) {
-        this.staffMember = staffMember;
-    }
-
-    public MailComposer() {
-    }
-
-    public String writeEmail() {
+    public String writeEmailToStaffAboutInspection() {
         Language lg = staffMember.getCommunicationLanguage();
         switch (lg) {
             case FR : writeFrench(); break;
