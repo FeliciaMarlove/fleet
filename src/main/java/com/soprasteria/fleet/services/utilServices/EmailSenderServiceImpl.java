@@ -1,5 +1,6 @@
 package com.soprasteria.fleet.services.utilServices;
 
+import com.soprasteria.fleet.services.interfaces.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Properties;
 
 @Component
-public class EmailService {
+public class EmailSenderServiceImpl implements EmailSenderService {
     @Autowired
     private JavaMailSender emailSender;
     private static final String username = "fleet.tfe.2021@gmail.com";
@@ -30,6 +31,7 @@ public class EmailService {
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
     }
 
+    @Override
     public void sendSimpleMessage(String to, String subject, String text) {
         Session session = setSession(to, subject, text);
         try {
@@ -51,6 +53,7 @@ public class EmailService {
     /*
     TODO ? List of attachments might be of type byte[] according to storage chosen for files
      */
+    @Override
     public void sendMessageWithAttachments(String to, String subject, String text, List<String> attachments) {
         Session session = setSession(to, subject, text);setSession(to, subject, text);
         try {

@@ -4,7 +4,7 @@ import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.enums.Brand;
 import com.soprasteria.fleet.enums.FuelType;
 import com.soprasteria.fleet.services.interfaces.CarService;
-import com.soprasteria.fleet.services.utilServices.EmailService;
+import com.soprasteria.fleet.services.interfaces.EmailSenderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class CarController {
     private final CarService service;
 
-    public CarController(CarService service, EmailService emailService) {
+    public CarController(CarService service, EmailSenderService emailSenderService) {
         this.service = service;
     }
 
