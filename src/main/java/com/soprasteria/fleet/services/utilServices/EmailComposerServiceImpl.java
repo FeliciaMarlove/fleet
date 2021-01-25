@@ -17,7 +17,8 @@ public class EmailComposerServiceImpl implements EmailComposerService {
                 .append(tankFilling.getCar().getPlateNumber())
                 .append("\nStaff member: ")
                 .append(tankFilling.getCar().getStaffMember().getStaffFirstName())
-                .append(" ").append(tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase())
+                .append(" ")
+                .append(tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase())
                 .append("\nDiscrepancy: ")
                 .append(tankFilling.getDiscrepancyType());
 
