@@ -1,7 +1,6 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
-import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.services.interfaces.TankFillingService;
 import org.springframework.web.bind.annotation.*;
 
