@@ -37,7 +37,7 @@ public class Car implements Serializable {
     private LocalDate endDate;
 
     @Column(name = "ongoing")
-    private Boolean isOngoing;
+    private Boolean ongoing;
 
     @Column(name = "free_text")
     private String freeText;
@@ -134,11 +134,11 @@ public class Car implements Serializable {
     }
 
     public Boolean getOngoing() {
-        return isOngoing;
+        return ongoing;
     }
 
     public void setOngoing(Boolean ongoing) {
-        isOngoing = ongoing;
+        this.ongoing = ongoing;
     }
 
     public String getFreeText() {
@@ -172,7 +172,7 @@ public class Car implements Serializable {
     }
 
     public Car() {
-        this.isOngoing = true;
+        this.ongoing = true;
         this.kilometers = 0;
     }
 
@@ -187,7 +187,7 @@ public class Car implements Serializable {
                 ", averageConsumption=" + averageConsumption +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", isOngoing=" + isOngoing +
+                ", ongoing=" + ongoing +
                 ", freeText='" + freeText + '\'' +
                 ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
                 ", staffMember=" + staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName() +
