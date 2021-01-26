@@ -32,8 +32,8 @@ public class StaffMember implements Serializable {
     @Column(name = "language")
     private Language communicationLanguage;
 
-    @Column(name = "actual_discrepancies")
-    private Integer numberActualDiscrepancies;
+    @Column(name = "discrepancies")
+    private Integer numberDiscrepancies;
 
     @OneToMany(mappedBy = "staffMember", targetEntity = Car.class)
     List<Car> cars = new ArrayList<>();
@@ -86,12 +86,12 @@ public class StaffMember implements Serializable {
         this.communicationLanguage = communicationLanguage;
     }
 
-    public Integer getNumberActualDiscrepancies() {
-        return numberActualDiscrepancies;
+    public Integer getNumberDiscrepancies() {
+        return numberDiscrepancies;
     }
 
-    public void setNumberActualDiscrepancies(Integer numberActualDiscrepancies) {
-        this.numberActualDiscrepancies = numberActualDiscrepancies;
+    public void setNumberDiscrepancies(Integer numberActualDiscrepancies) {
+        this.numberDiscrepancies = numberActualDiscrepancies;
     }
 
     public List<Car> getCars() {
@@ -102,14 +102,14 @@ public class StaffMember implements Serializable {
         this.cars = cars;
     }
 
-    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
+    public StaffMember(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberDiscrepancies) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;
         this.staffFirstName = staffFirstName;
         this.hasCar = hasCar;
         this.corporateEmail = corporateEmail;
         this.communicationLanguage = communicationLanguage;
-        this.numberActualDiscrepancies = numberActualDiscrepancies;
+        this.numberDiscrepancies = numberDiscrepancies;
     }
 
     public StaffMember(String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage) {
@@ -122,7 +122,7 @@ public class StaffMember implements Serializable {
     }
 
     public StaffMember() {
-        numberActualDiscrepancies = 0;
+        numberDiscrepancies = 0;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class StaffMember implements Serializable {
                 ", hasCar=" + hasCar +
                 ", corporateEmail='" + corporateEmail + '\'' +
                 ", communicationLanguage=" + communicationLanguage +
-                ", numberDiscrepancies=" + numberActualDiscrepancies +
+                ", numberDiscrepancies=" + numberDiscrepancies +
                 '}';
     }
 

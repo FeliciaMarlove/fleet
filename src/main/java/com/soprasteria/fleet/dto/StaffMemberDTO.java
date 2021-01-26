@@ -10,7 +10,7 @@ public class StaffMemberDTO implements DTOEntity {
     private Boolean hasCar;
     private String corporateEmail;
     private Language communicationLanguage;
-    private Integer numberActualDiscrepancies;
+    private Integer numberDiscrepancies;
 
     public Integer getStaffMemberId() {
         return staffMemberId;
@@ -60,22 +60,22 @@ public class StaffMemberDTO implements DTOEntity {
         this.communicationLanguage = communicationLanguage;
     }
 
-    public Integer getNumberActualDiscrepancies() {
-        return numberActualDiscrepancies;
+    public Integer getNumberDiscrepancies() {
+        return numberDiscrepancies;
     }
 
-    public void setNumberActualDiscrepancies(Integer numberActualDiscrepancies) {
-        this.numberActualDiscrepancies = numberActualDiscrepancies;
+    public void setNumberDiscrepancies(Integer numberDiscrepancies) {
+        this.numberDiscrepancies = numberDiscrepancies;
     }
 
-    public StaffMemberDTO(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberActualDiscrepancies) {
+    public StaffMemberDTO(Integer staffMemberId, String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage, Integer numberDiscrepancies) {
         this.staffMemberId = staffMemberId;
         this.staffLastName = staffLastName;
         this.staffFirstName = staffFirstName;
         this.hasCar = hasCar;
         this.corporateEmail = corporateEmail;
         this.communicationLanguage = communicationLanguage;
-        this.numberActualDiscrepancies = numberActualDiscrepancies;
+        this.numberDiscrepancies = numberDiscrepancies;
     }
 
     public StaffMemberDTO() {
@@ -90,7 +90,7 @@ public class StaffMemberDTO implements DTOEntity {
                 ", hasCar=" + hasCar +
                 ", corporateEmail='" + corporateEmail + '\'' +
                 ", communicationLanguage=" + communicationLanguage +
-                ", numberActualDiscrepancies=" + numberActualDiscrepancies +
+                ", numberActualDiscrepancies=" + numberDiscrepancies +
                 '}';
     }
 }
