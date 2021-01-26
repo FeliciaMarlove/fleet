@@ -141,7 +141,7 @@ public class TankFillingServiceImpl implements TankFillingService {
         }
         // executed if the app doesn't enter the "else" instruction, thus in case of discrepancy:
         tankFilling.setDiscrepancy(true);
-        staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
+        staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() + 1);
         staffMemberRepository.save(staffMember);
         sendEmail(tankFilling);
     }
