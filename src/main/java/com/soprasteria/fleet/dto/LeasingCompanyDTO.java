@@ -8,9 +8,9 @@ public class LeasingCompanyDTO implements DTOEntity {
     private String leasingCompanyContactPerson;
     private String leasingCompanyPhone;
     private String leasingCompanyEmail;
-    private Boolean isActive;
+    private Boolean active;
 
-    public LeasingCompanyDTO(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail, Boolean isActive) {
+    public LeasingCompanyDTO(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail, Boolean active) {
         this();
         this.leasingCompanyId = leasingCompanyId;
         this.leasingCompanyName = leasingCompanyName;
@@ -20,7 +20,7 @@ public class LeasingCompanyDTO implements DTOEntity {
     }
 
     public LeasingCompanyDTO() {
-        this.isActive = true;
+        this.active = true;
     }
 
     public Integer getLeasingCompanyId() {
@@ -64,11 +64,11 @@ public class LeasingCompanyDTO implements DTOEntity {
     }
 
     public Boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class LeasingCompanyDTO implements DTOEntity {
                 ", leasingCompanyContactPerson='" + leasingCompanyContactPerson + '\'' +
                 ", leasingCompanyPhone='" + leasingCompanyPhone + '\'' +
                 ", leasingCompanyEmail='" + leasingCompanyEmail + '\'' +
-                ", isActive=" + isActive +
+                ", isActive=" + active +
                 '}';
     }
 }

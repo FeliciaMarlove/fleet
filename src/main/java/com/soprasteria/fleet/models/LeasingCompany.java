@@ -27,7 +27,7 @@ public class LeasingCompany implements Serializable {
     private String leasingCompanyEmail;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean active;
 
     public Integer getLeasingCompanyId() {
         return leasingCompanyId;
@@ -70,11 +70,11 @@ public class LeasingCompany implements Serializable {
     }
 
     public Boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public LeasingCompany(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail) {
@@ -87,7 +87,7 @@ public class LeasingCompany implements Serializable {
     }
 
     public LeasingCompany() {
-        this.isActive = true;
+        this.active = true;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class LeasingCompany implements Serializable {
                 ", leasingCompanyContactPerson='" + leasingCompanyContactPerson + '\'' +
                 ", leasingCompanyPhone='" + leasingCompanyPhone + '\'' +
                 ", leasingCompanyEmail='" + leasingCompanyEmail + '\'' +
-                ", isActive=" + isActive +
+                ", isActive=" + active +
                 '}';
     }
 
