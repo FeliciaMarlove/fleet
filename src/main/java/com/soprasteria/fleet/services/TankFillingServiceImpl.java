@@ -113,7 +113,8 @@ public class TankFillingServiceImpl implements TankFillingService {
      * returns the actual consumption in liters per 100 kilometers
      */
     private Double getConsumption(TankFilling tankFilling) {
-        return (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
+        double consumption = (tankFilling.getLiters() * 100) / (tankFilling.getKmAfter() - tankFilling.getKmBefore());
+        return (double)(Math.round(consumption * 100) / 100);
     }
 
     /*
