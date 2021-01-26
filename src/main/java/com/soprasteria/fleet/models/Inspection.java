@@ -25,7 +25,7 @@ public class Inspection implements Serializable {
     private String expertisedBy;
 
     @Column(name = "is_damaged")
-    private boolean isDamaged;
+    private boolean damaged;
 
     @Column(name = "picture_1")
     private byte[] picture1;
@@ -68,11 +68,11 @@ public class Inspection implements Serializable {
     }
 
     public Boolean isDamaged() {
-        return isDamaged;
+        return damaged;
     }
 
     public void setDamaged(Boolean damaged) {
-        isDamaged = damaged;
+        this.damaged = damaged;
     }
 
     public byte[] getPicture1() {
@@ -124,15 +124,15 @@ public class Inspection implements Serializable {
     }
 
     public void setDamaged(boolean damaged) {
-        isDamaged = damaged;
+        this.damaged = damaged;
     }
 
-    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
+    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
         this.expertisedBy = expertisedBy;
-        this.isDamaged = isDamaged;
+        this.damaged = damaged;
         this.picture1 = picture1;
         this.picture2 = picture2;
         this.picture3 = picture3;
@@ -150,7 +150,7 @@ public class Inspection implements Serializable {
                 ", inspectionDate=" + inspectionDate +
                 ", sentDate=" + sentDate +
                 ", expertisedBy='" + expertisedBy + '\'' +
-                ", isDamaged=" + isDamaged +
+                ", isDamaged=" + damaged +
                 ", picture1=" + Arrays.toString(picture1) +
                 ", picture2=" + Arrays.toString(picture2) +
                 ", picture3=" + Arrays.toString(picture3) +

@@ -9,7 +9,7 @@ public class InspectionDTO implements DTOEntity {
     private LocalDateTime inspectionDate;
     private LocalDateTime sentDate;
     private String expertisedBy;
-    private Boolean isDamaged;
+    private Boolean damaged;
     /*
     DOC
     dealing with byte[] and Strings
@@ -58,11 +58,11 @@ public class InspectionDTO implements DTOEntity {
     }
 
     public Boolean isDamaged() {
-        return isDamaged;
+        return damaged;
     }
 
     public void setDamaged(Boolean damaged) {
-        isDamaged = damaged;
+        this.damaged = damaged;
     }
 
     public String getPicture1() {
@@ -105,12 +105,12 @@ public class InspectionDTO implements DTOEntity {
         this.plateNumber = plateNumber;
     }
 
-    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, String picture1, String picture2, String picture3, String inspectionReport, String plateNumber) {
+    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picture1, String picture2, String picture3, String inspectionReport, String plateNumber) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
         this.expertisedBy = expertisedBy;
-        this.isDamaged = isDamaged;
+        this.damaged = damaged;
         this.picture1 = picture1;
         this.picture2 = picture2;
         this.picture3 = picture3;
@@ -128,7 +128,7 @@ public class InspectionDTO implements DTOEntity {
                 ", inspectionDate=" + inspectionDate +
                 ", sentDate=" + sentDate +
                 ", expertisedBy='" + expertisedBy + '\'' +
-                ", isDamaged=" + isDamaged +
+                ", isDamaged=" + damaged +
                 ", picture1='" + picture1 + '\'' +
                 ", picture2='" + picture2 + '\'' +
                 ", picture3='" + picture3 + '\'' +
