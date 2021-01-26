@@ -23,7 +23,7 @@ public class InspectionDTO implements DTOEntity {
     private String picture2;
     private String picture3;
     private String inspectionReport;
-    private String carPlate;
+    private String plateNumber;
 
     public Integer getCarInspectionId() {
         return carInspectionId;
@@ -97,15 +97,15 @@ public class InspectionDTO implements DTOEntity {
         this.inspectionReport = inspectionReport;
     }
 
-    public String getCarPlate() {
-        return carPlate;
+    public String getPlateNumber() {
+        return plateNumber;
     }
 
-    public void setCarPlate(String carPlate) {
-        this.carPlate = carPlate;
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
     }
 
-    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, String picture1, String picture2, String picture3, String inspectionReport, String carPlate) {
+    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean isDamaged, String picture1, String picture2, String picture3, String inspectionReport, String plateNumber) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
@@ -115,7 +115,7 @@ public class InspectionDTO implements DTOEntity {
         this.picture2 = picture2;
         this.picture3 = picture3;
         this.inspectionReport = inspectionReport;
-        this.carPlate = carPlate;
+        this.plateNumber = plateNumber;
     }
 
     public InspectionDTO() {
@@ -133,7 +133,7 @@ public class InspectionDTO implements DTOEntity {
                 ", picture2='" + picture2 + '\'' +
                 ", picture3='" + picture3 + '\'' +
                 ", inspectionReport='" + inspectionReport + '\'' +
-                ", carPlate='" + carPlate + '\'' +
+                ", carPlate='" + plateNumber + '\'' +
                 '}';
     }
 }

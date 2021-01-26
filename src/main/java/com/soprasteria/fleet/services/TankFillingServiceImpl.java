@@ -1,6 +1,5 @@
 package com.soprasteria.fleet.services;
 
-import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.DiscrepancyType;
@@ -10,8 +9,9 @@ import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
+import com.soprasteria.fleet.services.interfaces.EmailComposerService;
+import com.soprasteria.fleet.services.interfaces.EmailSenderService;
 import com.soprasteria.fleet.services.interfaces.TankFillingService;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,12 +23,16 @@ public class TankFillingServiceImpl implements TankFillingService {
     private final TankFillingRepository repository;
     private final CarRepository carRepository;
     private final StaffMemberRepository staffMemberRepository;
+    private final EmailComposerService emailComposerService;
+    private final EmailSenderService emailSenderService;
     private final Integer TOLERANCE_PERCENTAGE = 15;
 
-    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository) {
+    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository, EmailComposerService emailComposerService, EmailSenderService emailSenderService) {
         this.repository = repository;
         this.carRepository = carRepository;
         this.staffMemberRepository = staffMemberRepository;
+        this.emailComposerService = emailComposerService;
+        this.emailSenderService = emailSenderService;
     }
 
     @Override
@@ -138,5 +142,10 @@ public class TankFillingServiceImpl implements TankFillingService {
         tankFilling.setDiscrepancy(true);
         staffMember.setNumberActualDiscrepancies(staffMember.getNumberActualDiscrepancies() + 1);
         staffMemberRepository.save(staffMember);
+        sendEmail(tankFilling);
+    }
+
+    private void sendEmail(TankFilling tankFilling) {
+        emailSenderService.sendSimpleMessage("fleet.tfe.2021@gmail.com", "New discrepancy", emailComposerService.writeEmailToFleetManagerAboutDiscrepancy(tankFilling));
     }
 }

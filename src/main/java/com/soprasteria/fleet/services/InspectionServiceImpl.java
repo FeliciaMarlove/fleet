@@ -68,7 +68,7 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public InspectionDTO create(InspectionDTO inspectionDTO) {
         Inspection inspection = (Inspection) new DtoUtils().convertToEntity(new Inspection(), inspectionDTO);
-        Car car = carRepository.findById(inspectionDTO.getCarPlate()).get();
+        Car car = carRepository.findById(inspectionDTO.getPlateNumber()).get();
         inspection.setCar(car);
 
         car.setInspection(inspection);
