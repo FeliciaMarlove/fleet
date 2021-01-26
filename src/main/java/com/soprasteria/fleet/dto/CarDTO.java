@@ -15,13 +15,13 @@ public class CarDTO implements DTOEntity {
     private Double averageConsumption;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Boolean isOngoing;
+    private Boolean ongoing;
     private String freeText;
     private Integer leasingCompanyId;
     private Integer staffMemberId;
     private Integer carInspectionId;
 
-    public CarDTO(String plateNumber, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
+    public CarDTO(String plateNumber, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean ongoing, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
         this.plateNumber = plateNumber;
         this.brand = brand;
         this.model = model;
@@ -29,7 +29,7 @@ public class CarDTO implements DTOEntity {
         this.averageConsumption = averageConsumption;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isOngoing = isOngoing;
+        this.ongoing = ongoing;
         this.freeText = freeText;
         this.leasingCompanyId = leasingCompanyId;
         this.staffMemberId = staffMemberId;
@@ -65,11 +65,11 @@ public class CarDTO implements DTOEntity {
     }
 
     public Boolean getOngoing() {
-        return isOngoing;
+        return ongoing;
     }
 
     public void setOngoing(Boolean ongoing) {
-        isOngoing = ongoing;
+        this.ongoing = ongoing;
     }
 
     public String getFreeText() {
@@ -155,7 +155,7 @@ public class CarDTO implements DTOEntity {
                 ", averageConsumption=" + averageConsumption +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", isOngoing=" + isOngoing +
+                ", isOngoing=" + ongoing +
                 ", freeText='" + freeText + '\'' +
                 ", leasingCompanyId=" + leasingCompanyId +
                 ", staffMemberId=" + staffMemberId +
