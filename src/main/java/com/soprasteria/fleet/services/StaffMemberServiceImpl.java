@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,10 +78,10 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     @Override
     public List<CarDTO> getCarsOfStaffMember(Integer staffMemberId) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        StaffMember staffMember = repository.findById(staffMemberId).get();
-        for (Car car : staffMember.getCars()) {
+        List<Car> cars = repository.selectCarWhereStaffIdIs(staffMemberId);
+        cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-        }
+        });
         return carDTOS;
     }
 
@@ -103,19 +104,10 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public CarDTO getCurrentCarOfStaffMember(Integer staffMemberId) {
-        StaffMember staffMember = repository.findById(staffMemberId).get();
-        List<Car> cars = staffMember.getCars().stream()
-                .filter(Car::getOngoing)
-                .collect(Collectors.toList());
-        if (cars.size() == 1) {
-            return (CarDTO) new DtoUtils().convertToDto(cars.get(0), new CarDTO());
-        } else if (cars.size() > 1) {
-            // TODO logger
-            // ongoing cars should never be > 1
-            return null;
-        } else {
-            // staff member has no current car
-            return null;
+        Optional<Car> optionalCar = repository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        if (optionalCar.isPresent()) {
+            return (CarDTO) new DtoUtils().convertToDto(optionalCar.get(), new CarDTO());
         }
+        return null;
     }
 }
