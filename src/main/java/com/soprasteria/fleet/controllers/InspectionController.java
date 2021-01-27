@@ -22,17 +22,17 @@ public class InspectionController {
     }
 
     @GetMapping
-    public List<InspectionDTO> getAllInspection() {
+    public List<InspectionDTO> getAllInspections() {
         return service.readAll();
     }
 
     @GetMapping("/damaged")
-    public List<InspectionDTO> getAllInspectionWhereDamaged() {
+    public List<InspectionDTO> getAllInspectionsWhereDamaged() {
         return service.readAllWhereCarIsDamaged();
     }
 
-    @GetMapping("/{staffId}")
-    public List<InspectionDTO> getAllByStaffMember(@PathVariable("staffId") Integer staffId) {
+    @GetMapping("/staff/{staffId}")
+    public List<InspectionDTO> getAllInspectionsByStaffMember(@PathVariable("staffId") Integer staffId) {
         return service.readAllByStaffMember(staffId);
     }
 
