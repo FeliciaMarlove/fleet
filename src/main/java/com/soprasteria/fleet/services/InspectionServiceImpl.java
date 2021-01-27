@@ -1,5 +1,6 @@
 package com.soprasteria.fleet.services;
 
+import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.models.Car;
@@ -54,14 +55,11 @@ public class InspectionServiceImpl implements InspectionService {
 
     @Override
     public List<InspectionDTO> readAllByStaffMember(Integer staffMemberId) {
-        StaffMember staffMember = staffMemberRepository.findById(staffMemberId).get();
         List<InspectionDTO> inspectionDTOS = new ArrayList<>();
-        List<Car> cars = staffMember.getCars();
-        for (Car car: cars) {
-            if (car.getInspection() != null) {
-                inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(car.getInspection(), new InspectionDTO()));
-            }
-        }
+        List<Inspection> inspections = repository.selectInspectionWhereStaffIdIs(staffMemberId);
+        inspections.forEach( inspection -> {
+            inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new CarDTO()));
+        });
         return inspectionDTOS;
     }
 
