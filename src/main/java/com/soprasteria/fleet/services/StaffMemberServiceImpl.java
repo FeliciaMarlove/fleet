@@ -88,13 +88,13 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     @Override
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
         StaffMember staffMember = repository.findById(staffMemberId).get();
-        staffMember.getCars().stream()
-                .filter(Car::getOngoing)
-                .findFirst()
-                .ifPresent(car -> {
-                    car.setOngoing(false);
-                    carRepository.save(car);
-                });
+
+        Optional<Car> optionalCar = repository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        if (optionalCar.isPresent()) {
+            Car car = optionalCar.get();
+            car.setOngoing(false);
+            carRepository.save(car);
+        }
         Car currentCar = carRepository.findById(carPlate).get();
         currentCar.setStaffMember(staffMember);
         currentCar.setOngoing(true);
