@@ -52,7 +52,7 @@ public class StaffMemberController {
         return service.getCurrentCarOfStaffMember(id);
     }
 
-    @PostMapping("/{id}/car/{carId}")
+    @GetMapping("/{id}/car/{carId}")
     public CarDTO setCarOfStaff(@PathVariable("id") Integer id, @PathVariable("carId") String carId) {
         return service.setCarOfStaffMember(id, carId);
     }
