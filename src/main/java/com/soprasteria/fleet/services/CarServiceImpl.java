@@ -72,13 +72,13 @@ public class CarServiceImpl implements CarService {
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
 
-    @Override
-    public String delete(String plateNumber) {
-        Car car = repository.findById(plateNumber).get();
-        car.setOngoing(false);
-        repository.save(car);
-        return "Car " + plateNumber + " is archived";
-    }
+//    @Override
+//    public String delete(String plateNumber) {
+//        Car car = repository.findById(plateNumber).get();
+//        car.setOngoing(false);
+//        repository.save(car);
+//        return "Car " + plateNumber + " is archived";
+//    }
 
     @Override
     public CarDTO update(CarDTO carDTO) {

@@ -12,7 +12,7 @@ public interface CarService {
     List<CarDTO> readAllActive();
     List<CarDTO> readAllArchived();
     CarDTO create(CarDTO carDTO);
-    String delete(String plateNumber);
+    //String delete(String plateNumber);
     CarDTO update(CarDTO carDTO);
     List<CarDTO> filterByBrand(Brand brand);
     List<CarDTO> filterByFuel(FuelType fuelType);
