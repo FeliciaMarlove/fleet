@@ -44,10 +44,10 @@ public class CarController {
         return service.create(carDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public String archiveCar(@PathVariable("id") String id) {
-        return service.delete(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public String archiveCar(@PathVariable("id") String id) {
+//        return service.delete(id);
+//    }
 
     @PutMapping
     public CarDTO updateCar(@RequestBody CarDTO carDTO) {

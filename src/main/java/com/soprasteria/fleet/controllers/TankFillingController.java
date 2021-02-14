@@ -22,12 +22,12 @@ public class TankFillingController {
     }
 
     @GetMapping
-    public List<TankFillingDTO> getFillups() {
+    public List<TankFillingDTO> getAllFillups() {
         return service.readAll();
     }
 
     @GetMapping("/discrepancies")
-    public List<TankFillingDTO> getFillupsWithDiscrepancy() {
+    public List<TankFillingDTO> getAllFillupsWithDiscrepancy() {
         return service.readAllDiscrepancy();
     }
 
