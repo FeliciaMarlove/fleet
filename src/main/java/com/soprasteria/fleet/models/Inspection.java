@@ -27,17 +27,11 @@ public class Inspection implements Serializable {
     @Column(name = "is_damaged")
     private boolean damaged;
 
-    @Column(name = "picture_1")
-    private byte[] picture1;
-
-    @Column(name = "picture_2")
-    private byte[] picture2;
-
-    @Column(name = "picture_3")
-    private byte[] picture3;
+    @Column(name = "pictures")
+    private String picturesFolder;
 
     @Column(name = "inspection_report")
-    private byte[] inspectionReport;
+    private String inspectionReportFile;
 
     @OneToOne
     @JoinColumn(name = "car_plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
@@ -75,36 +69,20 @@ public class Inspection implements Serializable {
         this.damaged = damaged;
     }
 
-    public byte[] getPicture1() {
-        return picture1;
+    public String getPicturesFolder() {
+        return picturesFolder;
     }
 
-    public void setPicture1(byte[] picture1) {
-        this.picture1 = picture1;
+    public void setPicturesFolder(String picturesFolder) {
+        this.picturesFolder = picturesFolder;
     }
 
-    public byte[] getPicture2() {
-        return picture2;
+    public String getInspectionReportFile() {
+        return inspectionReportFile;
     }
 
-    public void setPicture2(byte[] picture2) {
-        this.picture2 = picture2;
-    }
-
-    public byte[] getPicture3() {
-        return picture3;
-    }
-
-    public void setPicture3(byte[] picture3) {
-        this.picture3 = picture3;
-    }
-
-    public byte[] getInspectionReport() {
-        return inspectionReport;
-    }
-
-    public void setInspectionReport(byte[] inspection_report) {
-        this.inspectionReport = inspection_report;
+    public void setInspectionReportFile(String inspectionReportFile) {
+        this.inspectionReportFile = inspectionReportFile;
     }
 
     public Car getCar() {
@@ -127,16 +105,14 @@ public class Inspection implements Serializable {
         this.damaged = damaged;
     }
 
-    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, byte[] picture1, byte[] picture2, byte[] picture3, byte[] inspectionReport, Car car) {
+    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean damaged, String picturesFolder, String inspectionReportFile, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
         this.expertisedBy = expertisedBy;
         this.damaged = damaged;
-        this.picture1 = picture1;
-        this.picture2 = picture2;
-        this.picture3 = picture3;
-        this.inspectionReport = inspectionReport;
+        this.picturesFolder = picturesFolder;
+        this.inspectionReportFile = inspectionReportFile;
         this.car = car;
     }
 
@@ -150,11 +126,9 @@ public class Inspection implements Serializable {
                 ", inspectionDate=" + inspectionDate +
                 ", sentDate=" + sentDate +
                 ", expertisedBy='" + expertisedBy + '\'' +
-                ", isDamaged=" + damaged +
-                ", picture1=" + Arrays.toString(picture1) +
-                ", picture2=" + Arrays.toString(picture2) +
-                ", picture3=" + Arrays.toString(picture3) +
-                ", inspection_report=" + Arrays.toString(inspectionReport) +
+                ", damaged=" + damaged +
+                ", picturesFolder='" + picturesFolder + '\'' +
+                ", inspectionReportFile='" + inspectionReportFile + '\'' +
                 ", car=" + car.getPlateNumber() +
                 '}';
     }
