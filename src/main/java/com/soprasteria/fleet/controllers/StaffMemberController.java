@@ -52,8 +52,8 @@ public class StaffMemberController {
         return service.getCurrentCarOfStaffMember(id);
     }
 
-    @GetMapping("/{id}/car/{carId}")
-    public CarDTO setCarOfStaff(@PathVariable("id") Integer id, @PathVariable("carId") String carId) {
+    @PutMapping("/{id}/car")
+    public CarDTO setCarOfStaff(@PathVariable("id") Integer id, @RequestBody String carId) {
         return service.setCarOfStaffMember(id, carId);
     }
 }
