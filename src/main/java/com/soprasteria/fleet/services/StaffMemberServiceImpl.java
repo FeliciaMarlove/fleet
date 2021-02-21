@@ -78,7 +78,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     @Override
     public List<CarDTO> getCarsOfStaffMember(Integer staffMemberId) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        List<Car> cars = repository.selectCarWhereStaffIdIs(staffMemberId);
+        List<Car> cars = carRepository.selectCarWhereStaffIdIs(staffMemberId);
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
@@ -89,9 +89,9 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
         StaffMember staffMember = repository.findById(staffMemberId).get();
 
-        Optional<Car> optionalCar = repository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
-        if (optionalCar.isPresent()) {
-            Car car = optionalCar.get();
+        Car optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        if (optionalCar != null) {
+            Car car = optionalCar;
             car.setOngoing(false);
             carRepository.save(car);
         }
@@ -104,9 +104,9 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public CarDTO getCurrentCarOfStaffMember(Integer staffMemberId) {
-        Optional<Car> optionalCar = repository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
-        if (optionalCar.isPresent()) {
-            return (CarDTO) new DtoUtils().convertToDto(optionalCar.get(), new CarDTO());
+        Car optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        if (optionalCar != null) {
+            return (CarDTO) new DtoUtils().convertToDto(optionalCar, new CarDTO());
         }
         return null;
     }

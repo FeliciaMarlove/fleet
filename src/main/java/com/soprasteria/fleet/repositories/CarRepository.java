@@ -26,4 +26,14 @@ public interface CarRepository extends CrudRepository<Car, String> {
             value = "SELECT * FROM car c WHERE c.ongoing = false",
             nativeQuery = true)
     List<Car> selectFromCarWhereNotOngoing();
+
+    @Query(
+            value = "SELECT * FROM car c WHERE c.staff_id = ?1",
+            nativeQuery = true)
+    List<Car> selectCarWhereStaffIdIs(Integer staffId);
+
+    @Query(
+            value = "SELECT * FROM car c WHERE c.staff_id = ?1 AND c.ongoing = true LIMIT 1",
+            nativeQuery = true)
+    Car selectCarWhereStaffIdIsAndOngoingTrue(Integer staffId);
 }
