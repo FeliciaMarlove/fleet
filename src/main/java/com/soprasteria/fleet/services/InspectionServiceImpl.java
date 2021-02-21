@@ -91,17 +91,11 @@ public class InspectionServiceImpl implements InspectionService {
         if (inspectionDTO.getExpertisedBy() != null) {
             inspection.setExpertisedBy(inspectionDTO.getExpertisedBy());
         }
-        if (inspectionDTO.getInspectionReport() != null) {
-            inspection.setInspectionReport(inspectionDTO.getInspectionReport().getBytes());
+        if (inspectionDTO.getInspectionReportFile() != null) {
+            inspection.setInspectionReportFile(inspectionDTO.getInspectionReportFile());
         }
-        if (inspectionDTO.getPicture1() != null) {
-            inspection.setPicture1(inspectionDTO.getPicture1().getBytes());
-        }
-        if (inspectionDTO.getPicture2() != null) {
-            inspection.setPicture2(inspectionDTO.getPicture2().getBytes());
-        }
-        if (inspectionDTO.getPicture3() != null) {
-            inspection.setPicture3(inspectionDTO.getPicture3().getBytes());
+        if (inspectionDTO.getPicturesFolder() != null) {
+            inspection.setPicturesFolder(inspectionDTO.getPicturesFolder());
         }
         if (inspectionDTO.getSentDate() != null) {
             inspection.setSentDate(inspectionDTO.getSentDate());
