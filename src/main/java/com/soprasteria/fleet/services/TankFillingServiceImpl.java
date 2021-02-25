@@ -38,7 +38,9 @@ public class TankFillingServiceImpl implements TankFillingService {
     @Override
     public TankFillingDTO read(Integer tankFillingId) {
         TankFilling tankFilling = repository.findById(tankFillingId).get();
-        return (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
+        return tfDTO;
     }
 
     @Override
