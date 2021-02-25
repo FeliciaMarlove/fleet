@@ -30,14 +30,18 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarDTO read(String plateNumber) {
         Car car = repository.findById(plateNumber).get();
-        return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
+        CarDTO carDTO = (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
+        carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
+        return carDTO;
     }
 
     @Override
     public List<CarDTO> readAll() {
         List<CarDTO> carDTOS = new ArrayList<>();
         for(Car car: repository.findAll()) {
-            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+            CarDTO carDTO = (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
+            carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
+            carDTOS.add(carDTO);
         }
         return carDTOS;
     }
