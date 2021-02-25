@@ -38,20 +38,28 @@ public class TankFillingServiceImpl implements TankFillingService {
     @Override
     public TankFillingDTO read(Integer tankFillingId) {
         TankFilling tankFilling = repository.findById(tankFillingId).get();
-        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
-        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
-        return tfDTO;
+        return getTankFillingDtoAndSetPlateNumber(tankFilling);
     }
 
     @Override
     public List<TankFillingDTO> readAll() {
         List<TankFillingDTO> tankFillings = new ArrayList<>();
         for (TankFilling tankFilling : repository.findAll()) {
-            TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
-            tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
-            tankFillings.add(tfDTO);
+
+            tankFillings.add(getTankFillingDtoAndSetPlateNumber(tankFilling));
         }
         return tankFillings;
+    }
+
+    /**
+     * Transform TankFilling into TankFillingDTO and set PlateNumber
+     * @param tankFilling The Cank filling to transform
+     * @return The Tank filling with Plate Number set
+     */
+    private TankFillingDTO getTankFillingDtoAndSetPlateNumber(TankFilling tankFilling) {
+        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
+        return tfDTO;
     }
 
     @Override
