@@ -1,7 +1,7 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.InspectionDTO;
-import com.soprasteria.fleet.services.interfaces.InspectionService;
+import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

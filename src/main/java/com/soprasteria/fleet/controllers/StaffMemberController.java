@@ -2,7 +2,7 @@ package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
-import com.soprasteria.fleet.services.interfaces.StaffMemberService;
+import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

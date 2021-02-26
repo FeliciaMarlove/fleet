@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services.interfaces;
+package com.soprasteria.fleet.services.utilServices.interfaces;
 
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;

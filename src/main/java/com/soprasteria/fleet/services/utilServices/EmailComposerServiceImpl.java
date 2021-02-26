@@ -3,9 +3,8 @@ package com.soprasteria.fleet.services.utilServices;
 import com.soprasteria.fleet.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
-import com.soprasteria.fleet.services.interfaces.EmailComposerService;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class EmailComposerServiceImpl implements EmailComposerService {

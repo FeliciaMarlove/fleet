@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services;
+package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
@@ -8,8 +8,8 @@ import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
-import com.soprasteria.fleet.services.interfaces.CarService;
-import com.soprasteria.fleet.services.interfaces.StaffMemberService;
+import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
+import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
