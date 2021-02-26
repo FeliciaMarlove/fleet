@@ -1,10 +1,12 @@
 package com.soprasteria.fleet.repositories;
 
 import com.soprasteria.fleet.models.Car;
+import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.models.TankFilling;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TankFillingRepository extends CrudRepository<TankFilling, Integer> {
@@ -12,4 +14,9 @@ public interface TankFillingRepository extends CrudRepository<TankFilling, Integ
             value = "SELECT * FROM tank_filling t WHERE t.is_discrepancy = true",
             nativeQuery = true)
     List<TankFilling> selectTankFillingWhereDiscrepancyIsTrue();
+
+    @Query(
+            value = "SELECT * FROM tank_filling t WHERE t.date_time_filling > ?1",
+            nativeQuery = true)
+    List<TankFilling> selectFillupWhereDateGreaterThan(LocalDateTime date);
 }

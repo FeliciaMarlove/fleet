@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TankFillingServiceImpl implements TankFillingService {
@@ -48,6 +49,10 @@ public class TankFillingServiceImpl implements TankFillingService {
             tankFillings.add(getTankFillingDtoAndSetPlateNumber(tankFilling));
         }
         return tankFillings;
+    }
+
+    public List<TankFillingDTO> readAllWithDateBiggerThan(LocalDateTime localDateTime) {
+        return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(fillup -> getTankFillingDtoAndSetPlateNumber(fillup)).collect(Collectors.toList());
     }
 
     /**
