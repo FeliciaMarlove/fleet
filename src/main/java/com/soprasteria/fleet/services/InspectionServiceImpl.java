@@ -5,7 +5,6 @@ import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.Inspection;
-import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.InspectionRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
@@ -30,16 +29,27 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public InspectionDTO read(Integer inspectionId) {
         Inspection inspection = repository.findById(inspectionId).get();
-        return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
+        return getInspectionDtoAndSetPlateNumber(inspection);
     }
 
     @Override
     public List<InspectionDTO> readAll() {
         List<InspectionDTO> inspectionDTOS = new ArrayList<>();
         for (Inspection inspection: repository.findAll()) {
-            inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO()));
+            inspectionDTOS.add(getInspectionDtoAndSetPlateNumber(inspection));
         }
         return inspectionDTOS;
+    }
+
+    /**
+     * Transform Inspection into InspectionDTO and set PlateNumber
+     * @param inspection The Inspection to transform
+     * @return The Inspection DTO with Plate Number set
+     */
+    private InspectionDTO getInspectionDtoAndSetPlateNumber(Inspection inspection) {
+        InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
+        inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
+        return inspectionDTO;
     }
 
     @Override

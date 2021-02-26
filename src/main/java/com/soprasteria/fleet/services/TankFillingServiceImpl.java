@@ -45,7 +45,6 @@ public class TankFillingServiceImpl implements TankFillingService {
     public List<TankFillingDTO> readAll() {
         List<TankFillingDTO> tankFillings = new ArrayList<>();
         for (TankFilling tankFilling : repository.findAll()) {
-
             tankFillings.add(getTankFillingDtoAndSetPlateNumber(tankFilling));
         }
         return tankFillings;
@@ -53,8 +52,8 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     /**
      * Transform TankFilling into TankFillingDTO and set PlateNumber
-     * @param tankFilling The Cank filling to transform
-     * @return The Tank filling with Plate Number set
+     * @param tankFilling The Tank filling to transform
+     * @return The Tank filling DTO with Plate Number set
      */
     private TankFillingDTO getTankFillingDtoAndSetPlateNumber(TankFilling tankFilling) {
         TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
