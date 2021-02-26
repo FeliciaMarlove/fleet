@@ -45,7 +45,7 @@ public class InspectionServiceImpl implements InspectionService {
 
     @Override
     public List<InspectionDTO> readAllWithDateBiggerThan(LocalDateTime localDate) {
-        return readAll().stream().filter(inspectionDTO -> inspectionDTO.getInspectionDate().compareTo(localDate) > 0).collect(Collectors.toList());
+        return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(insp -> getInspectionDtoAndSetPlateNumber(insp)).collect(Collectors.toList());
     }
 
     /**
