@@ -11,8 +11,10 @@ import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InspectionServiceImpl implements InspectionService {
@@ -39,6 +41,11 @@ public class InspectionServiceImpl implements InspectionService {
             inspectionDTOS.add(getInspectionDtoAndSetPlateNumber(inspection));
         }
         return inspectionDTOS;
+    }
+
+    @Override
+    public List<InspectionDTO> readAllWithDateBiggerThan(LocalDateTime localDate) {
+        return readAll().stream().filter(inspectionDTO -> inspectionDTO.getInspectionDate().compareTo(localDate) > 0).collect(Collectors.toList());
     }
 
     /**
