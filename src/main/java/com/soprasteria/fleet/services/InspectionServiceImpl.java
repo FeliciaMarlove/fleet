@@ -49,6 +49,7 @@ public class InspectionServiceImpl implements InspectionService {
     private InspectionDTO getInspectionDtoAndSetPlateNumber(Inspection inspection) {
         InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
         inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
+        inspectionDTO.setStaffMemberId(inspection.getCar().getStaffMember().getStaffMemberId());
         return inspectionDTO;
     }
 

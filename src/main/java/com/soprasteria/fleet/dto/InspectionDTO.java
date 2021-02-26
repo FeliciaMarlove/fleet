@@ -14,6 +14,7 @@ public class InspectionDTO implements DTOEntity {
     private String picturesFolder;
     private String inspectionReportFile;
     private String plateNumber;
+    private Integer staffMemberId;
 
     public Integer getCarInspectionId() {
         return carInspectionId;
@@ -83,7 +84,15 @@ public class InspectionDTO implements DTOEntity {
         this.plateNumber = plateNumber;
     }
 
-    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFolder, String inspectionReportFile, String plateNumber) {
+    public Integer getStaffMemberId() {
+        return staffMemberId;
+    }
+
+    public void setStaffMemberId(Integer staffMemberId) {
+        this.staffMemberId = staffMemberId;
+    }
+
+    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFolder, String inspectionReportFile, String plateNumber, Integer staffMemberId) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
@@ -92,6 +101,7 @@ public class InspectionDTO implements DTOEntity {
         this.picturesFolder = picturesFolder;
         this.inspectionReportFile = inspectionReportFile;
         this.plateNumber = plateNumber;
+        this.staffMemberId = staffMemberId;
     }
 
     public InspectionDTO() {
@@ -103,11 +113,12 @@ public class InspectionDTO implements DTOEntity {
                 "carInspectionId=" + carInspectionId +
                 ", inspectionDate=" + inspectionDate +
                 ", sentDate=" + sentDate +
-                ", expertisedBy='" + expertisedBy + '\'' +
+                ", expertisedBy='" + expertisedBy +
                 ", damaged=" + damaged +
-                ", picturesFolder='" + picturesFolder + '\'' +
-                ", inspectionReportFile='" + inspectionReportFile + '\'' +
-                ", plateNumber='" + plateNumber + '\'' +
+                ", picturesFolder='" + picturesFolder +
+                ", inspectionReportFile='" + inspectionReportFile +
+                ", plateNumber='" + plateNumber +
+                ", staffMember='" + staffMemberId +
                 '}';
     }
 }
