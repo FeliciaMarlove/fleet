@@ -1,10 +1,10 @@
-package com.soprasteria.fleet.services;
+package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.models.LeasingCompany;
 import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
-import com.soprasteria.fleet.services.interfaces.LeasingCompanyService;
+import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

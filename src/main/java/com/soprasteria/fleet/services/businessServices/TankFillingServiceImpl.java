@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services;
+package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
@@ -9,9 +9,9 @@ import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
-import com.soprasteria.fleet.services.interfaces.EmailComposerService;
-import com.soprasteria.fleet.services.interfaces.EmailSenderService;
-import com.soprasteria.fleet.services.interfaces.TankFillingService;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
+import com.soprasteria.fleet.services.businessServices.interfaces.TankFillingService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

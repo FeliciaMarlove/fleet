@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services;
+package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.InspectionDTO;
@@ -8,7 +8,7 @@ import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.InspectionRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
-import com.soprasteria.fleet.services.interfaces.InspectionService;
+import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

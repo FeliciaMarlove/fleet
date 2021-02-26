@@ -3,8 +3,8 @@ package com.soprasteria.fleet.controllers;
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.enums.Brand;
 import com.soprasteria.fleet.enums.FuelType;
-import com.soprasteria.fleet.services.interfaces.CarService;
-import com.soprasteria.fleet.services.interfaces.EmailSenderService;
+import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.soprasteria.fleet.services.utilServices;
 
-import com.soprasteria.fleet.services.interfaces.EmailSenderService;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;

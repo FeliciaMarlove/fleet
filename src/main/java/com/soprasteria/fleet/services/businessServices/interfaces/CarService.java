@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services.interfaces;
+package com.soprasteria.fleet.services.businessServices.interfaces;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.enums.Brand;

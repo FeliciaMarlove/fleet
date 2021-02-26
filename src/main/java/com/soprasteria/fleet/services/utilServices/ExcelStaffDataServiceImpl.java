@@ -3,7 +3,7 @@ package com.soprasteria.fleet.services.utilServices;
 import com.soprasteria.fleet.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
-import com.soprasteria.fleet.services.interfaces.ExcelStaffDataService;
+import com.soprasteria.fleet.services.utilServices.interfaces.ExcelStaffDataService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

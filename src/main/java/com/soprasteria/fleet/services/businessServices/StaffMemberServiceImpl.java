@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services;
+package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
@@ -7,15 +7,12 @@ import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
-import com.soprasteria.fleet.services.interfaces.ExcelStaffDataService;
-import com.soprasteria.fleet.services.interfaces.StaffMemberService;
-import com.soprasteria.fleet.services.utilServices.ExcelStaffDataServiceImpl;
+import com.soprasteria.fleet.services.utilServices.interfaces.ExcelStaffDataService;
+import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StaffMemberServiceImpl implements StaffMemberService {
