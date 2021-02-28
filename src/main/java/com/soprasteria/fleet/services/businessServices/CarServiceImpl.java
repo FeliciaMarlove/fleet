@@ -120,9 +120,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarDTO> filterByBrand(Brand brand) {
+    public List<CarDTO> filterByBrand(String brandName) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        List<Car> cars = repository.selectFromCarWhereFuelIs(brand.ordinal());
+        Brand brand = Brand.valueOf(brandName);
+        List<Car> cars = repository.selectFromCarWhereBrandIs(brand.ordinal());
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });

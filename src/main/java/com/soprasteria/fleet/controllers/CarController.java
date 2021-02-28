@@ -55,7 +55,7 @@ public class CarController {
     }
 
     @GetMapping("/brand/{brand}")
-    public List<CarDTO> getAllCarsByBrand(@PathVariable("brand") Brand brand) {
+    public List<CarDTO> getAllCarsByBrand(@PathVariable("brand") String brand) {
         return service.filterByBrand(brand);
     }
 
