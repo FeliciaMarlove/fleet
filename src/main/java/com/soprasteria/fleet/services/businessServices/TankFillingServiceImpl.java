@@ -3,6 +3,7 @@ package com.soprasteria.fleet.services.businessServices;
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.DiscrepancyType;
+import com.soprasteria.fleet.enums.filters.TankFillingFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
@@ -43,37 +44,9 @@ public class TankFillingServiceImpl implements TankFillingService {
     }
 
     @Override
-    public List<TankFillingDTO> readAll() {
-        List<TankFillingDTO> tankFillings = new ArrayList<>();
-        for (TankFilling tankFilling : repository.findAll()) {
-            tankFillings.add(getTankFillingDtoAndSetPlateNumber(tankFilling));
-        }
-        return tankFillings;
-    }
-
-    public List<TankFillingDTO> readAllWithDateBiggerThan(LocalDateTime localDateTime) {
-        return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(fillup -> getTankFillingDtoAndSetPlateNumber(fillup)).collect(Collectors.toList());
-    }
-
-    /**
-     * Transform TankFilling into TankFillingDTO and set PlateNumber
-     * @param tankFilling The Tank filling to transform
-     * @return The Tank filling DTO with Plate Number set
-     */
-    private TankFillingDTO getTankFillingDtoAndSetPlateNumber(TankFilling tankFilling) {
-        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
-        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
-        return tfDTO;
-    }
-
-    @Override
-    public List<TankFillingDTO> readAllDiscrepancy() {
+    public List<TankFillingDTO> read(String filter, String option) {
         List<TankFillingDTO> tankFillingDTOS = new ArrayList<>();
-        List<TankFilling> fillings = repository.selectTankFillingWhereDiscrepancyIsTrue();
-        fillings.forEach( filling -> {
-            tankFillingDTOS.add((TankFillingDTO) new DtoUtils().convertToDto(filling, new TankFillingDTO()));
-        });
-        return tankFillingDTOS;
+        return filter(filter, option, tankFillingDTOS);
     }
 
     @Override
@@ -115,15 +88,9 @@ public class TankFillingServiceImpl implements TankFillingService {
         }
     }
 
-    private TankFilling cloneTankFilling(TankFilling tankFilling) {
-        TankFilling clone = new TankFilling();
-        clone.setCar(tankFilling.getCar());
-        clone.setKmBefore(tankFilling.getKmBefore());
-        clone.setLiters(tankFilling.getLiters());
-        clone.setFuelType(tankFilling.getCar().getFuelType());
-        clone.setDateTimeFilling(tankFilling.getDateTimeFilling());
-        return clone;
-    }
+    /* PRIVATE METHODS */
+
+    // ------- CALCULATION UTILS -------
 
     /*
      * returns the actual consumption in liters per 100 kilometers
@@ -161,6 +128,67 @@ public class TankFillingServiceImpl implements TankFillingService {
         staffMemberRepository.save(staffMember);
         sendEmail(tankFilling);
     }
+
+    // ------- FILTERING -------
+
+    private List<TankFillingDTO> filter(String filter, String option, List<TankFillingDTO> tankFillingDTOS) {
+        try {
+            TankFillingFilter tankFillingFilter = TankFillingFilter.valueOf(filter);
+            switch (tankFillingFilter) {
+                case ALL: default: return getAllTankFillings(tankFillingDTOS);
+                case WITH_DISCREPANCY: return getAllWithDiscrepancy(tankFillingDTOS);
+                case DATE_ABOVE: return getAllWithDateBiggerThan(option);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return getAllTankFillings(tankFillingDTOS);
+        }
+    }
+
+    private List<TankFillingDTO> getAllTankFillings(List<TankFillingDTO> tankFillingsDTOs) {
+        for (TankFilling tankFilling : repository.findAll()) {
+            tankFillingsDTOs.add(getTankFillingDtoAndSetPlateNumber(tankFilling));
+        }
+        return tankFillingsDTOs;
+    }
+
+    private List<TankFillingDTO> getAllWithDateBiggerThan(String date) {
+        LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
+        return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
+    }
+
+    /**
+     * Transform TankFilling into TankFillingDTO and set PlateNumber
+     * @param tankFilling The Tank filling to transform
+     * @return The Tank filling DTO with Plate Number set
+     */
+    private TankFillingDTO getTankFillingDtoAndSetPlateNumber(TankFilling tankFilling) {
+        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
+        return tfDTO;
+    }
+
+    private List<TankFillingDTO> getAllWithDiscrepancy(List<TankFillingDTO> tankFillingDTOS) {
+        List<TankFilling> fillings = repository.selectTankFillingWhereDiscrepancyIsTrue();
+        fillings.forEach( filling -> {
+            tankFillingDTOS.add((TankFillingDTO) new DtoUtils().convertToDto(filling, new TankFillingDTO()));
+        });
+        return tankFillingDTOS;
+    }
+
+    // ------- DATA TRANSFORMATION -------
+
+    private TankFilling cloneTankFilling(TankFilling tankFilling) {
+        TankFilling clone = new TankFilling();
+        clone.setCar(tankFilling.getCar());
+        clone.setKmBefore(tankFilling.getKmBefore());
+        clone.setLiters(tankFilling.getLiters());
+        clone.setFuelType(tankFilling.getCar().getFuelType());
+        clone.setDateTimeFilling(tankFilling.getDateTimeFilling());
+        return clone;
+    }
+
+    // ------- EMAILING -------
 
     private void sendEmail(TankFilling tankFilling) {
         emailSenderService.sendSimpleMessage("fleet.tfe.2021@gmail.com", "New discrepancy", emailComposerService.writeEmailToFleetManagerAboutDiscrepancy(tankFilling));
