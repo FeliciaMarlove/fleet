@@ -4,6 +4,7 @@ import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.enums.Brand;
 import com.soprasteria.fleet.enums.FuelType;
+import com.soprasteria.fleet.enums.filters.CarFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
@@ -34,43 +35,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarDTO> readAll() {
+    public List<CarDTO> read(String filter, String option) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        for(Car car: repository.findAll()) {
-            carDTOS.add(getCarDtoAndSetMemberId(car));
-        }
-        return carDTOS;
-    }
-
-    /**
-     * Transform Car into CarDTO and set MemberID
-     * @param car The car to transform
-     * @return The CarDTO with MemberID set
-     */
-    private CarDTO getCarDtoAndSetMemberId(Car car) {
-        CarDTO carDTO = (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
-        carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
-        return carDTO;
-    }
-
-    @Override
-    public List<CarDTO> readAllActive() {
-        List<CarDTO> carDTOS = new ArrayList<>();
-        List<Car> cars = repository.selectFromCarWhereOngoing();
-        cars.forEach( car -> {
-            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-        });
-        return carDTOS;
-    }
-
-    @Override
-    public List<CarDTO> readAllArchived() {
-        List<CarDTO> carDTOS = new ArrayList<>();
-        List<Car> cars = repository.selectFromCarWhereNotOngoing();
-        cars.forEach( car -> {
-            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
-        });
-        return carDTOS;
+        return filter(filter, option, carDTOS);
     }
 
     @Override
@@ -82,14 +49,6 @@ public class CarServiceImpl implements CarService {
         }
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
-
-//    @Override
-//    public String delete(String plateNumber) {
-//        Car car = repository.findById(plateNumber).get();
-//        car.setOngoing(false);
-//        repository.save(car);
-//        return "Car " + plateNumber + " is archived";
-//    }
 
     @Override
     public CarDTO update(CarDTO carDTO) {
@@ -119,9 +78,35 @@ public class CarServiceImpl implements CarService {
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
 
-    @Override
-    public List<CarDTO> filterByBrand(String brandName) {
-        List<CarDTO> carDTOS = new ArrayList<>();
+
+    /* PRIVATE METHODS */
+
+    // ------- FILTERING -------
+
+    private List<CarDTO> getAllCars(List<CarDTO> carDTOS) {
+        for(Car car: repository.findAll()) {
+            carDTOS.add(getCarDtoAndSetMemberId(car));
+        }
+        return carDTOS;
+    }
+
+    private List<CarDTO> getAllActive(List<CarDTO> carDTOS) {
+        List<Car> cars = repository.selectFromCarWhereOngoing();
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
+        return carDTOS;
+    }
+
+    private List<CarDTO> getAllArchived(List<CarDTO> carDTOS) {
+        List<Car> cars = repository.selectFromCarWhereNotOngoing();
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
+        return carDTOS;
+    }
+
+    private List<CarDTO> getByBrand(List<CarDTO> carDTOS, String brandName) {
         Brand brand = Brand.valueOf(brandName);
         List<Car> cars = repository.selectFromCarWhereBrandIs(brand.ordinal());
         cars.forEach( car -> {
@@ -130,9 +115,8 @@ public class CarServiceImpl implements CarService {
         return carDTOS;
     }
 
-    @Override
-    public List<CarDTO> filterByFuel(FuelType fuelType) {
-        List<CarDTO> carDTOS = new ArrayList<>();
+    private List<CarDTO> getByFuel(List<CarDTO> carDTOS, String fuel) {
+        FuelType fuelType = FuelType.valueOf(fuel);
         List<Car> cars = repository.selectFromCarWhereFuelIs(fuelType.ordinal());
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
@@ -140,11 +124,40 @@ public class CarServiceImpl implements CarService {
         return carDTOS;
     }
 
+    private List<CarDTO> filter(String filter, String option, List<CarDTO> carDTOS) {
+        CarFilter carFilter = CarFilter.valueOf(filter);
+        try {
+            switch (carFilter) {
+                case ALL: default: return getAllCars(carDTOS);
+                case ACTIVE: return getAllActive(carDTOS);
+                case ARCHIVED: return getAllArchived(carDTOS);
+                case FUEL: return getByFuel(carDTOS, option);
+                case BRAND: return getByBrand(carDTOS, option);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return getAllCars(carDTOS);
+        }
+    }
+
+    // ------- DATA TRANSFORMATION -------
+
     private void setStaffMember(Car car, CarDTO carDTO) {
         StaffMember staffMember = staffMemberRepository.findById(carDTO.getStaffMemberId()).get();
         car.setStaffMember(staffMember);
         staffMemberService.setCarOfStaffMember(staffMember.getStaffMemberId(), car.getPlateNumber());
         staffMemberRepository.save(staffMember);
         repository.save(car);
+    }
+
+    /**
+     * Transform Car into CarDTO and set MemberID
+     * @param car The car to transform
+     * @return The CarDTO with MemberID set
+     */
+    private CarDTO getCarDtoAndSetMemberId(Car car) {
+        CarDTO carDTO = (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
+        carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
+        return carDTO;
     }
 }
