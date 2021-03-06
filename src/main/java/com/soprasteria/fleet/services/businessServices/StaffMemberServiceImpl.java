@@ -3,6 +3,7 @@ package com.soprasteria.fleet.services.businessServices;
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.enums.filters.StaffFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
@@ -33,34 +34,9 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     }
 
     @Override
-    public List<StaffMemberDTO> readAll() {
+    public List<StaffMemberDTO> read(String filter, String option) {
         List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
-        for (StaffMember staffMember : repository.findAll()) {
-            staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
-        }
-        return staffMemberDTOS;
-    }
-
-    @Override
-    public List<StaffMemberDTO> readAllWithCar() {
-        List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
-        for (StaffMember staffMember : repository.findAll()) {
-            if (staffMember.getHasCar()) {
-                staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
-            }
-        }
-        return staffMemberDTOS;
-    }
-
-    @Override
-    public List<StaffMemberDTO> readAllWithoutCar() {
-        List<StaffMemberDTO> staffMemberDTOS = new ArrayList<>();
-        for (StaffMember staffMember : repository.findAll()) {
-            if (!staffMember.getHasCar()) {
-                staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
-            }
-        }
-        return staffMemberDTOS;
+        return filter(filter, option, staffMemberDTOS);
     }
 
     @Override
@@ -106,5 +82,44 @@ public class StaffMemberServiceImpl implements StaffMemberService {
             return (CarDTO) new DtoUtils().convertToDto(optionalCar, new CarDTO());
         }
         return null;
+    }
+
+    /* PRIVATE METHODS */
+
+    // ------- FILTERING -------
+
+    private List<StaffMemberDTO> filter(String filter, String option, List<StaffMemberDTO> staffMemberDTOS) {
+        try {
+            StaffFilter staffFilter = StaffFilter.valueOf(filter);
+            switch (staffFilter) {
+                case ALL: default: return getAllStaff(staffMemberDTOS);
+                case WITH: return getAllWithCar(staffMemberDTOS);
+                case WITHOUT: return getAllWithoutCar(staffMemberDTOS);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return getAllStaff(staffMemberDTOS);
+        }
+    }
+
+    private List<StaffMemberDTO> getAllStaff(List<StaffMemberDTO> staffMemberDTOS) {
+        for (StaffMember staffMember : repository.findAll()) {
+            staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
+        }
+        return staffMemberDTOS;
+    }
+
+    private List<StaffMemberDTO> getAllWithCar(List<StaffMemberDTO> staffMemberDTOS) {
+        for (StaffMember staffMember : repository.selectFromStaffWhereCarTrue()) {
+                staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
+        }
+        return staffMemberDTOS;
+    }
+
+    private List<StaffMemberDTO> getAllWithoutCar(List<StaffMemberDTO> staffMemberDTOS) {
+        for (StaffMember staffMember : repository.selectFromStaffWhereCarFalse()) {
+                staffMemberDTOS.add((StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO()));
+        }
+        return staffMemberDTOS;
     }
 }

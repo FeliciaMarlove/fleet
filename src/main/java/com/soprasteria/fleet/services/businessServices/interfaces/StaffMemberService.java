@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface StaffMemberService {
     StaffMemberDTO read(Integer staffMemberId);
-    List<StaffMemberDTO> readAll();
-    List<StaffMemberDTO> readAllWithCar();
-    List<StaffMemberDTO> readAllWithoutCar();
+    List<StaffMemberDTO> read(String filter, String option);
     StaffMemberDTO update(StaffMemberDTO staffMemberDTO);
     List<CarDTO> getCarsOfStaffMember(Integer staffMemberId);
     CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate);
