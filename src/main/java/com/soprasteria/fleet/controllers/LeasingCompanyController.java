@@ -1,6 +1,5 @@
 package com.soprasteria.fleet.controllers;
 
-import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +21,9 @@ public class LeasingCompanyController {
         return service.read(id);
     }
 
-    @GetMapping
-    public List<LeasingCompanyDTO> getLeasingCompanies(@RequestBody FilterDTO filterDTO) {
-        return service.read(filterDTO.getFilter(), filterDTO.getOption());
+    @GetMapping("/{filter}/{option}")
+    public List<LeasingCompanyDTO> getLeasingCompanies(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+        return service.read(filter, option);
     }
 
     @PostMapping
