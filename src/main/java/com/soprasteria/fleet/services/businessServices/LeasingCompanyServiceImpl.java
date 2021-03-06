@@ -93,10 +93,8 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     }
 
     private List<LeasingCompanyDTO> readAllActive(List<LeasingCompanyDTO> leasingCompanyDTOS) {
-        for(LeasingCompany leasingCompany: repository.findAll()) {
-            if (leasingCompany.isActive()) {
+        for(LeasingCompany leasingCompany: repository.selectFromLeasingCompanyWhereActiveTrue()) {
                 leasingCompanyDTOS.add((LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO()));
-            }
         }
         return leasingCompanyDTOS;
     }
