@@ -1,7 +1,6 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +22,9 @@ public class CarController {
         return service.read(id);
     }
 
-    @GetMapping
-    public List<CarDTO> getCars(@RequestBody FilterDTO filterDTO) {
-        return service.read(filterDTO.getFilter(), filterDTO.getOption());
+    @GetMapping("/{filter}/{option}")
+    public List<CarDTO> getCars(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+        return service.read(filter, option);
     }
 
     @PostMapping

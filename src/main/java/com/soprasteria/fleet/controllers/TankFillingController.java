@@ -1,6 +1,5 @@
 package com.soprasteria.fleet.controllers;
 
-import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.TankFillingService;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +21,9 @@ public class TankFillingController {
         return service.read(id);
     }
 
-    @GetMapping
-    public List<TankFillingDTO> getFillups(@RequestBody FilterDTO filterDTO) {
-        return service.read(filterDTO.getFilter(), filterDTO.getOption());
+    @GetMapping("/{filter}/{option}")
+    public List<TankFillingDTO> getFillups(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+        return service.read(filter, option);
     }
 
     @PostMapping

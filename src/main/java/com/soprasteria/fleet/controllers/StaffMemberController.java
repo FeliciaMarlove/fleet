@@ -1,7 +1,6 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +22,9 @@ public class StaffMemberController {
         return service.read(id);
     }
 
-    @GetMapping
-    public List<StaffMemberDTO> getStaff(@RequestBody FilterDTO filterDTO) {
-        return service.read(filterDTO.getFilter(), filterDTO.getOption());
+    @GetMapping("/{filter}/{option}")
+    public List<StaffMemberDTO> getStaff(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+        return service.read(filter, option);
     }
 
     @PutMapping
