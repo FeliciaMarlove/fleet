@@ -24,7 +24,7 @@ public class CarController {
     }
 
     @GetMapping
-    public List<CarDTO> getAllCars(@RequestBody FilterDTO filterDTO) {
+    public List<CarDTO> getCars(@RequestBody FilterDTO filterDTO) {
         return service.read(filterDTO.getFilter(), filterDTO.getOption());
     }
 

@@ -3,6 +3,7 @@ package com.soprasteria.fleet.services.businessServices;
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.enums.filters.InspectionFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.repositories.CarRepository;
@@ -35,49 +36,9 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
-    public List<InspectionDTO> readAll() {
+    public List<InspectionDTO> read(String filter, String option) {
         List<InspectionDTO> inspectionDTOS = new ArrayList<>();
-        for (Inspection inspection: repository.findAll()) {
-            inspectionDTOS.add(getInspectionDtoAndSetPlateNumber(inspection));
-        }
-        return inspectionDTOS;
-    }
-
-    @Override
-    public List<InspectionDTO> readAllWithDateBiggerThan(LocalDateTime localDate) {
-        return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(insp -> getInspectionDtoAndSetPlateNumber(insp)).collect(Collectors.toList());
-    }
-
-    /**
-     * Transform Inspection into InspectionDTO and set PlateNumber
-     * @param inspection The Inspection to transform
-     * @return The Inspection DTO with Plate Number set
-     */
-    private InspectionDTO getInspectionDtoAndSetPlateNumber(Inspection inspection) {
-        InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
-        inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
-        return inspectionDTO;
-    }
-
-    @Override
-    public List<InspectionDTO> readAllWhereCarIsDamaged() {
-        List<InspectionDTO> inspectionDTOS = new ArrayList<>();
-        for (Inspection inspection: repository.findAll()) {
-            if (inspection.isDamaged()) {
-                inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO()));
-            }
-        }
-        return inspectionDTOS;
-    }
-
-    @Override
-    public List<InspectionDTO> readAllByStaffMember(Integer staffMemberId) {
-        List<InspectionDTO> inspectionDTOS = new ArrayList<>();
-        List<Inspection> inspections = repository.selectInspectionWhereStaffIdIs(staffMemberId);
-        inspections.forEach( inspection -> {
-            inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new CarDTO()));
-        });
-        return inspectionDTOS;
+        return filter(filter, option, inspectionDTOS);
     }
 
     @Override
@@ -96,7 +57,7 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     private void validateAndSendInspection(Inspection inspection) {
-        // TODO send e-mail
+        // TODO send e-mail puis mettre en bas avec les autres private
     }
 
     @Override
@@ -123,4 +84,67 @@ public class InspectionServiceImpl implements InspectionService {
         }
         return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
     }
+
+    /* PRIVATE METHODS */
+
+    // ------- FILTERING -------
+
+    private List<InspectionDTO> getAllInspections(List<InspectionDTO> inspectionDTOS) {
+        for (Inspection inspection: repository.findAll()) {
+            inspectionDTOS.add(getInspectionDtoAndSetPlateNumber(inspection));
+        }
+        return inspectionDTOS;
+    }
+
+    private List<InspectionDTO> getAllByStaffMember(String id, List<InspectionDTO> inspectionDTOS) {
+        Integer staffMemberId = Integer.valueOf(id);
+        List<Inspection> inspections = repository.selectInspectionWhereStaffIdIs(staffMemberId);
+        inspections.forEach( inspection -> {
+            inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new CarDTO()));
+        });
+        return inspectionDTOS;
+    }
+
+    private List<InspectionDTO> getAllWhereCarIsDamaged(List<InspectionDTO> inspectionDTOS) {
+        for (Inspection inspection: repository.findAll()) {
+            if (inspection.isDamaged()) {
+                inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO()));
+            }
+        }
+        return inspectionDTOS;
+    }
+
+    private List<InspectionDTO> getAllWithDateBiggerThan(String date, List<InspectionDTO> inspectionDTOS) {
+        LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
+        return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumber).collect(Collectors.toList());
+    }
+
+    private List<InspectionDTO> filter(String filter, String option, List<InspectionDTO> inspectionDTOS) {
+        InspectionFilter inspectionFilter = InspectionFilter.valueOf(filter);
+        try {
+            switch (inspectionFilter) {
+                case ALL: default: return getAllInspections(inspectionDTOS);
+                case STAFF: return getAllByStaffMember(option, inspectionDTOS);
+                case DAMAGED: return getAllWhereCarIsDamaged(inspectionDTOS);
+                case DATEABOVE: return getAllWithDateBiggerThan(option, inspectionDTOS);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return getAllInspections(inspectionDTOS);
+        }
+    }
+
+    // ------- DATA TRANSFORMATION -------
+
+    /**
+     * Transform Inspection into InspectionDTO and set PlateNumber
+     * @param inspection The Inspection to transform
+     * @return The Inspection DTO with Plate Number set
+     */
+    private InspectionDTO getInspectionDtoAndSetPlateNumber(Inspection inspection) {
+        InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
+        inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
+        return inspectionDTO;
+    }
+
 }
