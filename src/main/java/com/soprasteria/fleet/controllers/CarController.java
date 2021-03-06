@@ -1,8 +1,7 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.enums.Brand;
-import com.soprasteria.fleet.enums.FuelType;
+import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.web.bind.annotation.*;
@@ -25,18 +24,8 @@ public class CarController {
     }
 
     @GetMapping
-    public List<CarDTO> getAllCars() {
-        return service.readAll();
-    }
-
-    @GetMapping("/active")
-    public List<CarDTO> getAllCarsActive() {
-        return service.readAllActive();
-    }
-
-    @GetMapping("/archived")
-    public List<CarDTO> getAllCarsArchived() {
-        return service.readAllArchived();
+    public List<CarDTO> getAllCars(@RequestBody FilterDTO filterDTO) {
+        return service.read(filterDTO.getFilter(), filterDTO.getOption());
     }
 
     @PostMapping
@@ -44,23 +33,8 @@ public class CarController {
         return service.create(carDTO);
     }
 
-//    @DeleteMapping("/{id}")
-//    public String archiveCar(@PathVariable("id") String id) {
-//        return service.delete(id);
-//    }
-
     @PutMapping
     public CarDTO updateCar(@RequestBody CarDTO carDTO) {
         return service.update(carDTO);
-    }
-
-    @GetMapping("/brand/{brand}")
-    public List<CarDTO> getAllCarsByBrand(@PathVariable("brand") String brand) {
-        return service.filterByBrand(brand);
-    }
-
-    @GetMapping("/fuel/{fuel}")
-    public List<CarDTO> getAllCarsByFuel(@PathVariable("fuel") FuelType fuelType) {
-        return service.filterByFuel(fuelType);
     }
 }
