@@ -2,6 +2,7 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.enums.filters.LeasingFilter;
 import com.soprasteria.fleet.models.LeasingCompany;
 import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
@@ -25,23 +26,9 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     }
 
     @Override
-    public List<LeasingCompanyDTO> readAll() {
+    public List<LeasingCompanyDTO> read(String filter, String option) {
         List<LeasingCompanyDTO> leasingCompanies = new ArrayList<>();
-        for(LeasingCompany leasingCompany: repository.findAll()) {
-            leasingCompanies.add((LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO()));
-        }
-        return leasingCompanies;
-    }
-
-    @Override
-    public List<LeasingCompanyDTO> readAllActive() {
-        List<LeasingCompanyDTO> leasingCompanies = new ArrayList<>();
-        for(LeasingCompany leasingCompany: repository.findAll()) {
-            if (leasingCompany.isActive()) {
-                leasingCompanies.add((LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO()));
-            }
-        }
-        return leasingCompanies;
+        return filter(filter, option, leasingCompanies);
     }
 
     @Override
@@ -79,5 +66,38 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
         }
         repository.save(leasingCompany);
         return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
+    }
+
+    /* PRIVATE METHODS */
+
+    // ------- FILTERING -------
+
+    private List<LeasingCompanyDTO> filter(String filter, String option, List<LeasingCompanyDTO> leasingCompanyDTOS) {
+        try {
+            LeasingFilter leasingFilter = LeasingFilter.valueOf(filter);
+            switch (leasingFilter) {
+                case ALL: default: return getAll(leasingCompanyDTOS);
+                case ACTIVE: return readAllActive(leasingCompanyDTOS);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return getAll(leasingCompanyDTOS);
+        }
+    }
+
+    private List<LeasingCompanyDTO> getAll(List<LeasingCompanyDTO> leasingCompanyDTOS) {
+        for(LeasingCompany leasingCompany: repository.findAll()) {
+            leasingCompanyDTOS.add((LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO()));
+        }
+        return leasingCompanyDTOS;
+    }
+
+    private List<LeasingCompanyDTO> readAllActive(List<LeasingCompanyDTO> leasingCompanyDTOS) {
+        for(LeasingCompany leasingCompany: repository.findAll()) {
+            if (leasingCompany.isActive()) {
+                leasingCompanyDTOS.add((LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO()));
+            }
+        }
+        return leasingCompanyDTOS;
     }
 }

@@ -125,8 +125,8 @@ public class CarServiceImpl implements CarService {
     }
 
     private List<CarDTO> filter(String filter, String option, List<CarDTO> carDTOS) {
-        CarFilter carFilter = CarFilter.valueOf(filter);
         try {
+            CarFilter carFilter = CarFilter.valueOf(filter);
             switch (carFilter) {
                 case ALL: default: return getAllCars(carDTOS);
                 case ACTIVE: return getAllActive(carDTOS);
