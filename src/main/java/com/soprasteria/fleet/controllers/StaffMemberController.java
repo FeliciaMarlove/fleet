@@ -1,6 +1,7 @@
 package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
+import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,8 @@ public class StaffMemberController {
     }
 
     @GetMapping
-    public List<StaffMemberDTO> getAllStaff() {
-        return service.readAll();
-    }
-
-    @GetMapping("/withcar")
-    public List<StaffMemberDTO> getAllStaffWithCar() {
-        return service.readAllWithCar();
-    }
-
-    @GetMapping("/withoutcar")
-    public List<StaffMemberDTO> getAllStaffWithoutCar() {
-        return service.readAllWithoutCar();
+    public List<StaffMemberDTO> getStaff(@RequestBody FilterDTO filterDTO) {
+        return service.read(filterDTO.getFilter(), filterDTO.getOption());
     }
 
     @PutMapping
