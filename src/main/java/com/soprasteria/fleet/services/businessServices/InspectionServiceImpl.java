@@ -120,8 +120,8 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     private List<InspectionDTO> filter(String filter, String option, List<InspectionDTO> inspectionDTOS) {
-        InspectionFilter inspectionFilter = InspectionFilter.valueOf(filter);
         try {
+            InspectionFilter inspectionFilter = InspectionFilter.valueOf(filter);
             switch (inspectionFilter) {
                 case ALL: default: return getAllInspections(inspectionDTOS);
                 case STAFF: return getAllByStaffMember(option, inspectionDTOS);
