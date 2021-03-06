@@ -7,12 +7,7 @@ import java.util.List;
 
 public interface InspectionService {
     InspectionDTO read(Integer inspectionId);
-    List<InspectionDTO> readAll();
-
-    List<InspectionDTO> readAllWithDateBiggerThan(LocalDateTime localDate);
-
-    List<InspectionDTO> readAllWhereCarIsDamaged();
-    List<InspectionDTO> readAllByStaffMember(Integer staffMemberId);
+    List<InspectionDTO> read(String filter, String option);
     InspectionDTO create(InspectionDTO inspectionDTO);
     InspectionDTO update(InspectionDTO inspectionDTO);
 }

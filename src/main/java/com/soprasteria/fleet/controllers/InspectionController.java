@@ -1,10 +1,10 @@
 package com.soprasteria.fleet.controllers;
 
+import com.soprasteria.fleet.dto.FilterDTO;
 import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -23,18 +23,8 @@ public class InspectionController {
     }
 
     @GetMapping
-    public List<InspectionDTO> getAllInspections() {
-        return service.readAll();
-    }
-
-    @GetMapping("/damaged")
-    public List<InspectionDTO> getAllInspectionsWhereDamaged() {
-        return service.readAllWhereCarIsDamaged();
-    }
-
-    @GetMapping("/staff/{staffId}")
-    public List<InspectionDTO> getAllInspectionsByStaffMember(@PathVariable("staffId") Integer staffId) {
-        return service.readAllByStaffMember(staffId);
+    public List<InspectionDTO> getInspections(@RequestBody FilterDTO filterDTO) {
+        return service.read(filterDTO.getFilter(), filterDTO.getOption());
     }
 
     @PostMapping
