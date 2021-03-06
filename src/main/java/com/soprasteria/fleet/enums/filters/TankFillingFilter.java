@@ -1,8 +1,7 @@
 package com.soprasteria.fleet.enums.filters;
 
-public enum InspectionFilter {
-    DAMAGED,
-    STAFF,
+public enum TankFillingFilter {
+    WITH_DISCREPANCY,
     ALL,
     DATE_ABOVE
 }

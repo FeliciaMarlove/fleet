@@ -126,7 +126,7 @@ public class InspectionServiceImpl implements InspectionService {
                 case ALL: default: return getAllInspections(inspectionDTOS);
                 case STAFF: return getAllByStaffMember(option, inspectionDTOS);
                 case DAMAGED: return getAllWhereCarIsDamaged(inspectionDTOS);
-                case DATEABOVE: return getAllWithDateBiggerThan(option, inspectionDTOS);
+                case DATE_ABOVE: return getAllWithDateBiggerThan(option, inspectionDTOS);
             }
         } catch (Exception e) {
             System.out.println(e);
