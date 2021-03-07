@@ -19,4 +19,8 @@ public interface TankFillingRepository extends CrudRepository<TankFilling, Integ
             value = "SELECT * FROM tank_filling t WHERE t.date_time_filling > ?1",
             nativeQuery = true)
     List<TankFilling> selectFillupWhereDateGreaterThan(LocalDateTime date);
+    @Query(
+            value = "SELECT * FROM tank_filling t WHERE t.is_discrepancy = true AND t.corrected_by IS NULL",
+            nativeQuery = true)
+    List<TankFilling> selectFillupWhereWhereDiscrepancyIsTrueAndCorrectedByIsNull();
 }
