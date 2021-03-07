@@ -32,7 +32,7 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public InspectionDTO read(Integer inspectionId) {
         Inspection inspection = repository.findById(inspectionId).get();
-        return getInspectionDtoAndSetPlateNumber(inspection);
+        return getInspectionDtoAndSetPlateNumberAndStaffId(inspection);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class InspectionServiceImpl implements InspectionService {
 
     private List<InspectionDTO> getAllInspections(List<InspectionDTO> inspectionDTOS) {
         for (Inspection inspection: repository.findAll()) {
-            inspectionDTOS.add(getInspectionDtoAndSetPlateNumber(inspection));
+            inspectionDTOS.add(getInspectionDtoAndSetPlateNumberAndStaffId(inspection));
         }
         return inspectionDTOS;
     }
@@ -116,7 +116,7 @@ public class InspectionServiceImpl implements InspectionService {
 
     private List<InspectionDTO> getAllWithDateBiggerThan(String date, List<InspectionDTO> inspectionDTOS) {
         LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
-        return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumber).collect(Collectors.toList());
+        return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
     }
 
     private List<InspectionDTO> filter(String filter, String option, List<InspectionDTO> inspectionDTOS) {
@@ -137,13 +137,14 @@ public class InspectionServiceImpl implements InspectionService {
     // ------- DATA TRANSFORMATION -------
 
     /**
-     * Transform Inspection into InspectionDTO and set PlateNumber
+     * Transform Inspection into InspectionDTO and set PlateNumber and staff member Id
      * @param inspection The Inspection to transform
      * @return The Inspection DTO with Plate Number set
      */
-    private InspectionDTO getInspectionDtoAndSetPlateNumber(Inspection inspection) {
+    private InspectionDTO getInspectionDtoAndSetPlateNumberAndStaffId(Inspection inspection) {
         InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
         inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
+        inspectionDTO.setStaffMemberId(inspection.getCar().getStaffMember().getStaffMemberId());
         return inspectionDTO;
     }
 
