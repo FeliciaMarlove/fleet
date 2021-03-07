@@ -138,6 +138,7 @@ public class TankFillingServiceImpl implements TankFillingService {
                 case ALL: default: return getAllTankFillings(tankFillingDTOS);
                 case WITH_DISCREPANCY: return getAllWithDiscrepancy(tankFillingDTOS);
                 case DATE_ABOVE: return getAllWithDateBiggerThan(option);
+                case WITH_DISCREPANCY_NOT_CORRECTED: return getAllWithDiscrepancyAndNotCorrected(tankFillingDTOS);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -157,15 +158,12 @@ public class TankFillingServiceImpl implements TankFillingService {
         return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
     }
 
-    /**
-     * Transform TankFilling into TankFillingDTO and set PlateNumber
-     * @param tankFilling The Tank filling to transform
-     * @return The Tank filling DTO with Plate Number set
-     */
-    private TankFillingDTO getTankFillingDtoAndSetPlateNumber(TankFilling tankFilling) {
-        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
-        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
-        return tfDTO;
+    private List<TankFillingDTO> getAllWithDiscrepancyAndNotCorrected(List<TankFillingDTO> tankFillingDTOS) {
+        List<TankFilling> fillings = repository.selectFillupWhereWhereDiscrepancyIsTrueAndCorrectedByIsNull();
+        fillings.forEach( filling -> {
+            tankFillingDTOS.add((TankFillingDTO) new DtoUtils().convertToDto(filling, new TankFillingDTO()));
+        });
+        return tankFillingDTOS;
     }
 
     private List<TankFillingDTO> getAllWithDiscrepancy(List<TankFillingDTO> tankFillingDTOS) {
@@ -177,6 +175,17 @@ public class TankFillingServiceImpl implements TankFillingService {
     }
 
     // ------- DATA TRANSFORMATION -------
+
+    /**
+     * Transform TankFilling into TankFillingDTO and set PlateNumber
+     * @param tankFilling The Tank filling to transform
+     * @return The Tank filling DTO with Plate Number set
+     */
+    private TankFillingDTO getTankFillingDtoAndSetPlateNumber(TankFilling tankFilling) {
+        TankFillingDTO tfDTO = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        tfDTO.setPlateNumber(tankFilling.getCar().getPlateNumber());
+        return tfDTO;
+    }
 
     private TankFilling cloneTankFilling(TankFilling tankFilling) {
         TankFilling clone = new TankFilling();
