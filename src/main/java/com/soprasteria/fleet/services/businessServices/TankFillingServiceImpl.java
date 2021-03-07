@@ -136,9 +136,9 @@ public class TankFillingServiceImpl implements TankFillingService {
             TankFillingFilter tankFillingFilter = TankFillingFilter.valueOf(filter);
             switch (tankFillingFilter) {
                 case ALL: default: return getAllTankFillings(tankFillingDTOS);
-                case WITH_DISCREPANCY: return getAllWithDiscrepancy(tankFillingDTOS);
+                case WITH_DISCREPANCY: return getAllWithDiscrepancy();
                 case DATE_ABOVE: return getAllWithDateBiggerThan(option);
-                case WITH_DISCREPANCY_NOT_CORRECTED: return getAllWithDiscrepancyAndNotCorrected(tankFillingDTOS);
+                case WITH_DISCREPANCY_NOT_CORRECTED: return getAllWithDiscrepancyAndNotCorrected();
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -158,20 +158,12 @@ public class TankFillingServiceImpl implements TankFillingService {
         return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
     }
 
-    private List<TankFillingDTO> getAllWithDiscrepancyAndNotCorrected(List<TankFillingDTO> tankFillingDTOS) {
-        List<TankFilling> fillings = repository.selectFillupWhereWhereDiscrepancyIsTrueAndCorrectedByIsNull();
-        fillings.forEach( filling -> {
-            tankFillingDTOS.add((TankFillingDTO) new DtoUtils().convertToDto(filling, new TankFillingDTO()));
-        });
-        return tankFillingDTOS;
+    private List<TankFillingDTO> getAllWithDiscrepancyAndNotCorrected() {
+        return repository.selectFillupWhereWhereDiscrepancyIsTrueAndCorrectedByIsNull().stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
     }
 
-    private List<TankFillingDTO> getAllWithDiscrepancy(List<TankFillingDTO> tankFillingDTOS) {
-        List<TankFilling> fillings = repository.selectTankFillingWhereDiscrepancyIsTrue();
-        fillings.forEach( filling -> {
-            tankFillingDTOS.add((TankFillingDTO) new DtoUtils().convertToDto(filling, new TankFillingDTO()));
-        });
-        return tankFillingDTOS;
+    private List<TankFillingDTO> getAllWithDiscrepancy() {
+        return repository.selectTankFillingWhereDiscrepancyIsTrue().stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
     }
 
     // ------- DATA TRANSFORMATION -------
