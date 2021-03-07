@@ -96,13 +96,9 @@ public class InspectionServiceImpl implements InspectionService {
         return inspectionDTOS;
     }
 
-    private List<InspectionDTO> getAllByStaffMember(String id, List<InspectionDTO> inspectionDTOS) {
+    private List<InspectionDTO> getAllByStaffMember(String id) {
         Integer staffMemberId = Integer.valueOf(id);
-        List<Inspection> inspections = repository.selectInspectionWhereStaffIdIs(staffMemberId);
-        inspections.forEach( inspection -> {
-            inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new CarDTO()));
-        });
-        return inspectionDTOS;
+        return repository.selectInspectionWhereStaffIdIs(staffMemberId).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
     }
 
     private List<InspectionDTO> getAllWhereCarIsDamaged() {
@@ -119,7 +115,7 @@ public class InspectionServiceImpl implements InspectionService {
             InspectionFilter inspectionFilter = InspectionFilter.valueOf(filter);
             switch (inspectionFilter) {
                 case ALL: default: return getAllInspections(inspectionDTOS);
-                case STAFF: return getAllByStaffMember(option, inspectionDTOS);
+                case STAFF: return getAllByStaffMember(option);
                 case DAMAGED: return getAllWhereCarIsDamaged();
                 case DATE_ABOVE: return getAllWithDateBiggerThan(option);
             }
