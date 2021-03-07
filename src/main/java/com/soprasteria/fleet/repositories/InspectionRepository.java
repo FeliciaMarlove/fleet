@@ -18,4 +18,8 @@ public interface InspectionRepository extends CrudRepository<Inspection, Integer
             value = "SELECT * FROM car_inspection c WHERE c.inspection_date > ?1",
             nativeQuery = true)
     List<Inspection> selectInspectionWhereDateGreaterThan(LocalDateTime date);
+    @Query(
+            value = "SELECT * FROM car_inspection c WHERE c.is_damaged = true",
+            nativeQuery = true)
+    List<Inspection> selectInspectionWhereIsDamagedTrue();
 }

@@ -105,16 +105,11 @@ public class InspectionServiceImpl implements InspectionService {
         return inspectionDTOS;
     }
 
-    private List<InspectionDTO> getAllWhereCarIsDamaged(List<InspectionDTO> inspectionDTOS) {
-        for (Inspection inspection: repository.findAll()) {
-            if (inspection.isDamaged()) {
-                inspectionDTOS.add((InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO()));
-            }
-        }
-        return inspectionDTOS;
+    private List<InspectionDTO> getAllWhereCarIsDamaged() {
+        return repository.selectInspectionWhereIsDamagedTrue().stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
     }
 
-    private List<InspectionDTO> getAllWithDateBiggerThan(String date, List<InspectionDTO> inspectionDTOS) {
+    private List<InspectionDTO> getAllWithDateBiggerThan(String date) {
         LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
         return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
     }
@@ -125,8 +120,8 @@ public class InspectionServiceImpl implements InspectionService {
             switch (inspectionFilter) {
                 case ALL: default: return getAllInspections(inspectionDTOS);
                 case STAFF: return getAllByStaffMember(option, inspectionDTOS);
-                case DAMAGED: return getAllWhereCarIsDamaged(inspectionDTOS);
-                case DATE_ABOVE: return getAllWithDateBiggerThan(option, inspectionDTOS);
+                case DAMAGED: return getAllWhereCarIsDamaged();
+                case DATE_ABOVE: return getAllWithDateBiggerThan(option);
             }
         } catch (Exception e) {
             System.out.println(e);
