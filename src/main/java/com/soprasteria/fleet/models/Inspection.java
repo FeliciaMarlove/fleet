@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Inspection implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_inspection_generator")
-    @SequenceGenerator(name = "car_inspection_generator", allocationSize = 1)
+    @SequenceGenerator(name = "car_inspection_generator", allocationSize = 1, initialValue = 100)
     @Column(name = "car_inspection_id")
     private Integer carInspectionId;
 

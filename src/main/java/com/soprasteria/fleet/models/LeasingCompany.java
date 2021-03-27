@@ -10,7 +10,7 @@ public class LeasingCompany implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leasing_company_generator")
-    @SequenceGenerator(name = "leasing_company_generator", allocationSize = 1)
+    @SequenceGenerator(name = "leasing_company_generator", allocationSize = 1, initialValue = 100)
     @Column(name = "leasing_id")
     private Integer leasingCompanyId;
 

@@ -13,7 +13,7 @@ import java.util.Objects;
 public class TankFilling implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filling_generator")
-    @SequenceGenerator(name = "filling_generator", allocationSize = 1)
+    @SequenceGenerator(name = "filling_generator", allocationSize = 1, initialValue = 100)
     @Column(name = "tank_filling_id")
     private Integer tankFillingId;
 
