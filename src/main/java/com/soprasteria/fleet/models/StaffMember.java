@@ -13,7 +13,7 @@ import java.util.Objects;
 public class StaffMember implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "staff_member_generator")
-    @SequenceGenerator(name = "staff_member_generator", allocationSize = 1)
+    @SequenceGenerator(name = "staff_member_generator", allocationSize = 1, initialValue = 100)
     @Column(name = "staff_id")
     private Integer staffMemberId;
 
