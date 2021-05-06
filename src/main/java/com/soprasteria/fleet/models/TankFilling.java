@@ -189,6 +189,6 @@ public class TankFilling implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tankFillingId, dateTimeFilling, car);
+        return Objects.hash(tankFillingId, dateTimeFilling);
     }
 }

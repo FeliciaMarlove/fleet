@@ -113,6 +113,6 @@ public class LeasingCompany implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(leasingCompanyId, leasingCompanyName);
+        return Objects.hash(leasingCompanyId);
     }
 }
