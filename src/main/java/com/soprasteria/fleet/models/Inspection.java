@@ -145,6 +145,6 @@ public class Inspection implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(carInspectionId, inspectionDate, car);
+        return Objects.hash(carInspectionId, inspectionDate);
     }
 }
