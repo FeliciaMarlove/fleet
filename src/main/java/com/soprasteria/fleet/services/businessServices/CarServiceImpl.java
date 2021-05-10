@@ -157,7 +157,9 @@ public class CarServiceImpl implements CarService {
      */
     private CarDTO getCarDtoAndSetMemberId(Car car) {
         CarDTO carDTO = (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
-        carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
+        if (car.getStaffMember() != null) {
+            carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
+        }
         return carDTO;
     }
 }

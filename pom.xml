@@ -12,7 +12,7 @@
     <artifactId>fleet</artifactId>
     <version>0.0.1</version>
     <name>fleet</name>
-    <description>Fleet management application for Sopra Steria developped by Florence Mary</description>
+    <description>Fleet management application developed by Florence Mary</description>
 
     <properties>
         <java.version>11</java.version>
