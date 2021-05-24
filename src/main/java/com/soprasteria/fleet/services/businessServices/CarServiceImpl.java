@@ -69,10 +69,13 @@ public class CarServiceImpl implements CarService {
             car.setPlateNumber(carDTO.getPlateNumber());
         }
         if (carDTO.getFreeText() != null) {
-            car.setFreeText(car.getFreeText());
+            car.setFreeText(carDTO.getFreeText());
         }
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
+        }
+        if (carDTO.getEndDate() != null) {
+            car.setEndDate(carDTO.getEndDate());
         }
         repository.save(car);
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
