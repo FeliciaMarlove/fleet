@@ -72,6 +72,10 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         currentCar.setStaffMember(staffMember);
         currentCar.setOngoing(true);
         carRepository.save(currentCar);
+        if (!staffMember.getHasCar()) {
+            staffMember.setHasCar(true);
+            repository.save(staffMember);
+        }
         return (CarDTO) new DtoUtils().convertToDto(currentCar, new CarDTO());
     }
 
