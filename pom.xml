@@ -12,6 +12,7 @@
     <artifactId>fleet</artifactId>
     <version>0.0.1</version>
     <name>fleet</name>
+    <packaging>jar</packaging>
     <description>Fleet management application developed by Florence Mary</description>
 
     <properties>
@@ -74,6 +75,20 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <executable>true</executable>
+                            <classifier>spring-boot</classifier>
+                            <mainClass>
+                                com.soprasteria.fleet.FleetApplication
+                            </mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
