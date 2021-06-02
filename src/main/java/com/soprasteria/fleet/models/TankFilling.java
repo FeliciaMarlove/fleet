@@ -173,7 +173,7 @@ public class TankFilling implements Serializable {
                 ", dateTimeFilling=" + dateTimeFilling +
                 ", fuelType=" + fuelType +
                 ", liters=" + liters +
-                ", car=" + car.getPlateNumber() +
+                ", car=" + (car != null ? car.getPlateNumber() : "no car") +
                 '}';
     }
 
