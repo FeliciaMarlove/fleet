@@ -62,7 +62,9 @@ public class TankFillingServiceImpl implements TankFillingService {
         checkForDiscrepancies(tankFilling, averageCarConsumptionWithTolerance);
         repository.save(tankFilling);
         carRepository.save(car);
-        return (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        TankFillingDTO dto = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
+        dto.setPlateNumber(car.getPlateNumber());
+        return dto;
     }
 
     @Override
