@@ -13,12 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {FleetApplication.class})
 @SpringBootTest
 public class TankFillingTest {
     @Autowired
