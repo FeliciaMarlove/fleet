@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StaffMemberServiceImpl implements StaffMemberService {
@@ -60,32 +61,34 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
-        StaffMember staffMember = repository.findById(staffMemberId).get();
+        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow();
 
-        Car optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
-        if (optionalCar != null) {
-            Car car = optionalCar;
+        Optional<Car> optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        if (optionalCar.isPresent()) {
+            Car car = optionalCar.orElseThrow();
             car.setOngoing(false);
             carRepository.save(car);
         }
-        Car currentCar = carRepository.findById(carPlate).get();
-        currentCar.setStaffMember(staffMember);
-        currentCar.setOngoing(true);
-        carRepository.save(currentCar);
-        if (!staffMember.getHasCar()) {
-            staffMember.setHasCar(true);
-            repository.save(staffMember);
+
+        if (carPlate != null) {
+            Car currentCar = carRepository.findById(carPlate).orElseThrow();
+            currentCar.setStaffMember(staffMember);
+            currentCar.setOngoing(true);
+            carRepository.save(currentCar);
+            if (!staffMember.getHasCar()) {
+                staffMember.setHasCar(true);
+                repository.save(staffMember);
+            }
+            return (CarDTO) new DtoUtils().convertToDto(currentCar, new CarDTO());
+        } else {
+            return null;
         }
-        return (CarDTO) new DtoUtils().convertToDto(currentCar, new CarDTO());
     }
 
     @Override
     public CarDTO getCurrentCarOfStaffMember(Integer staffMemberId) {
-        Car optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
-        if (optionalCar != null) {
-            return (CarDTO) new DtoUtils().convertToDto(optionalCar, new CarDTO());
-        }
-        return null;
+        Optional<Car> optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        return optionalCar.map(car -> (CarDTO) new DtoUtils().convertToDto(car, new CarDTO())).orElse(null);
     }
 
     /* PRIVATE METHODS */

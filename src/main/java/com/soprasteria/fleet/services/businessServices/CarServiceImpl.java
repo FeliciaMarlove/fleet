@@ -44,10 +44,10 @@ public class CarServiceImpl implements CarService {
     public CarDTO create(CarDTO carDTO) {
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
         car.setKilometers(0);
-        repository.save(car);
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
         }
+        repository.save(car);
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
 
