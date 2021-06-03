@@ -43,19 +43,35 @@ public class CarAssignmentTest {
     static CarDTO firstCar = new CarDTO("0-AAA-666", Brand.Audi, "A3", FuelType.DIESEL, 7.8, LocalDate.parse("2021-04-01"), null, false, null, 1, null, null);
     static CarDTO secondCar = new CarDTO("0-AAA-777", Brand.Citroen, "C5", FuelType.DIESEL, 5.0, LocalDate.now(), null, false, null, 1, null, null);
 
+    /**
+     * Après assignement d'une voiture (car) à un membre du personnel (staffMember)
+     * staffMember.hasCar == true
+     * car.ongoing == true
+     * car.staffMember == staffMember
+     * current car of staffMember == car
+     */
     @Test
     public void setCarDoesntHaveCar() {
         StaffMember staffMember = repository.save(CarAssignmentTest.staffMember);
         carService.create(firstCar);
         service.setCarOfStaffMember(staffMember.getStaffMemberId(), firstCar.getPlateNumber());
         Car car = carRepository.findById(firstCar.getPlateNumber()).get();
-        staffMember = repository.findById(staffMember.getStaffMemberId()).get();
         assertTrue(staffMember.getHasCar());
         assertTrue(car.getOngoing());
         assertEquals(staffMember, car.getStaffMember());
         assertEquals(car.getPlateNumber(), service.getCurrentCarOfStaffMember(staffMember.getStaffMemberId()).getPlateNumber());
     }
 
+    /**
+     * Après assignement d'une voiture (car2) à un membre du personnel (staffMember) à qui une voiture était déjà assignée (car1)
+     * staffMember.hasCar == true
+     * car2.ongoing == true
+     * car1.ongoing == false
+     * car2.staffMember == staffMember
+     * car1.staffMember == staffMember - l'historique des voitures est conservé
+     * current car of staffMember == car2
+     * current car of staffMember != car1
+     */
     @Test
     public void setCarHasCar() {
         StaffMember staffMember = repository.save(CarAssignmentTest.staffMember);
@@ -63,7 +79,6 @@ public class CarAssignmentTest {
         service.setCarOfStaffMember(staffMember.getStaffMemberId(), firstCar.getPlateNumber());
         carService.create(secondCar);
         service.setCarOfStaffMember(staffMember.getStaffMemberId(), secondCar.getPlateNumber());
-        staffMember = repository.findById(staffMember.getStaffMemberId()).get();
         Car car1 = carRepository.findById(firstCar.getPlateNumber()).get();
         Car car2 = carRepository.findById(secondCar.getPlateNumber()).get();
         assertTrue(staffMember.getHasCar());
