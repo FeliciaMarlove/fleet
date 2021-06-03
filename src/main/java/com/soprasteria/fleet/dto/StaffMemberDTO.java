@@ -79,6 +79,7 @@ public class StaffMemberDTO implements DTOEntity {
     }
 
     public StaffMemberDTO() {
+        this.numberDiscrepancies = 0;
     }
 
     @Override
