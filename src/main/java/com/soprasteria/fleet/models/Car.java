@@ -190,7 +190,7 @@ public class Car implements Serializable {
                 ", ongoing=" + ongoing +
                 ", freeText='" + freeText + '\'' +
                 ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
-                ", staffMember=" + staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName() +
+                ", staffMember=" + (staffMember != null ?staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName() : "No staff member") +
                 ", inspection=" + (inspection != null ? inspection.getCarInspectionId() : null) +
                 '}';
     }
