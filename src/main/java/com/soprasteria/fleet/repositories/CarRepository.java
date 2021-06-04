@@ -31,10 +31,16 @@ public interface CarRepository extends CrudRepository<Car, String> {
     @Query(
             value = "SELECT * FROM car c WHERE c.staff_id = ?1",
             nativeQuery = true)
-    List<Car> selectCarWhereStaffIdIs(Integer staffId);
+    List<Car> selectFromCarWhereStaffIdIs(Integer staffId);
 
     @Query(
             value = "SELECT * FROM car c WHERE c.staff_id = ?1 AND c.ongoing = true LIMIT 1",
             nativeQuery = true)
     Optional<Car> selectCarWhereStaffIdIsAndOngoingTrue(Integer staffId);
+
+    @Query(
+            value = "SELECT * FROM car WHERE end_date <= now() AND end_date > now() - INTERVAL '6 MONTH'",
+            nativeQuery = true
+    )
+    List<Car> selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgo();
 }

@@ -128,6 +128,14 @@ public class CarServiceImpl implements CarService {
         return carDTOS;
     }
 
+    private List<CarDTO> getInspectables(List<CarDTO> carDTOS) {
+        List<Car> cars = repository.selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgo();
+        cars.forEach( car -> {
+            carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
+        });
+        return carDTOS;
+    }
+
     private List<CarDTO> filter(String filter, String option, List<CarDTO> carDTOS) {
         try {
             CarFilter carFilter = CarFilter.valueOf(filter);
@@ -137,6 +145,7 @@ public class CarServiceImpl implements CarService {
                 case ARCHIVED: return getAllArchived(carDTOS);
                 case FUEL: return getByFuel(carDTOS, option);
                 case BRAND: return getByBrand(carDTOS, option);
+                case INSPECTABLE: return getInspectables(carDTOS);
             }
         } catch (Exception e) {
             System.out.println(e);

@@ -5,5 +5,6 @@ public enum CarFilter {
     ACTIVE,
     ARCHIVED,
     FUEL,
+    INSPECTABLE,
     ALL
 }
