@@ -129,7 +129,7 @@ public class CarServiceImpl implements CarService {
     }
 
     private List<CarDTO> getInspectables(List<CarDTO> carDTOS) {
-        List<Car> cars = repository.selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgo();
+        List<Car> cars = repository.selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgoAndNoInspection();
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });

@@ -39,8 +39,8 @@ public interface CarRepository extends CrudRepository<Car, String> {
     Optional<Car> selectCarWhereStaffIdIsAndOngoingTrue(Integer staffId);
 
     @Query(
-            value = "SELECT * FROM car WHERE end_date <= now() AND end_date > now() - INTERVAL '6 MONTH'",
+            value = "SELECT * FROM car WHERE end_date <= now() AND end_date > now() - INTERVAL '6 MONTH' AND plate NOT IN (SELECT car_plate FROM car_inspection)",
             nativeQuery = true
     )
-    List<Car> selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgo();
+    List<Car> selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgoAndNoInspection();
 }
