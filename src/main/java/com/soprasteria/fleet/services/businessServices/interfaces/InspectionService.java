@@ -9,5 +9,4 @@ public interface InspectionService {
     InspectionDTO read(Integer inspectionId);
     List<InspectionDTO> read(String filter, String option);
     InspectionDTO create(InspectionDTO inspectionDTO);
-    InspectionDTO update(InspectionDTO inspectionDTO);
 }
