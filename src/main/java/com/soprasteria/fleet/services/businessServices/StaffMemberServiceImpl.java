@@ -20,12 +20,10 @@ import java.util.Optional;
 public class StaffMemberServiceImpl implements StaffMemberService {
     private final StaffMemberRepository repository;
     private final CarRepository carRepository;
-    private final ExcelStaffDataService excelStaffDataService;
 
-    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository, ExcelStaffDataService excelStaffDataService) {
+    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository) {
         this.repository = repository;
         this.carRepository = carRepository;
-        this.excelStaffDataService = excelStaffDataService;
     }
 
     @Override
@@ -44,7 +42,6 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     public StaffMemberDTO update(StaffMemberDTO staffMemberDTO) {
         StaffMember staffMember = repository.findById(staffMemberDTO.getStaffMemberId()).get();
         staffMember.setHasCar(staffMemberDTO.getHasCar());
-        excelStaffDataService.updateHasCar(staffMember.getCorporateEmail(), staffMember.getHasCar());
         repository.save(staffMember);
         return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
     }
