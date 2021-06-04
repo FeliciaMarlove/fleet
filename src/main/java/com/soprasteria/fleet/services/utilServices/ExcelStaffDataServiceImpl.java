@@ -35,37 +35,6 @@ public class ExcelStaffDataServiceImpl implements ApplicationRunner, ExcelStaffD
     }
 
     @Override
-    public void updateHasCar(String corporateEmail, Boolean hasCar) {
-        XSSFWorkbook workbook = null;
-        try {
-            workbook = new XSSFWorkbook(new FileInputStream(path));
-            XSSFSheet sheetT = workbook.getSheet("staff");
-            for (Iterator<Row> it = sheetT.rowIterator(); it.hasNext(); ) {
-                Row row = it.next();
-                if (row.getCell(Columns.CORPORATE_EMAIL.ordinal()).getStringCellValue().equalsIgnoreCase(corporateEmail)) {
-                    row.getCell(Columns.HAS_CAR.ordinal()).setCellValue(hasCar ? "yes" : "no");
-                    FileOutputStream outputStream = new FileOutputStream(path);
-                    workbook.write(outputStream);
-                    break;
-                }
-            }
-        } catch (FileNotFoundException fnf) {
-            System.out.println("File path is wrong or file is in use");
-        } catch (IOException ioe) {
-            System.out.println("IOException ".toUpperCase() + ioe.getMessage());
-        } catch (Exception e) {
-            System.out.println("Exception ".toUpperCase() + e.getMessage());
-        } finally {
-            try {
-                if (workbook != null) workbook.close();
-                System.out.println("Workbook closed");
-            } catch (IOException ioe) {
-                System.out.println(ioe.getMessage());
-            }
-        }
-    }
-
-    @Override
     public void run(ApplicationArguments args) throws Exception {
         XSSFWorkbook workbook = null;
         if (staffMemberRepository.count() == 0) {
@@ -101,4 +70,35 @@ public class ExcelStaffDataServiceImpl implements ApplicationRunner, ExcelStaffD
             }
         }
     }
+
+//    @Override
+//    public void updateHasCar(String corporateEmail, Boolean hasCar) {
+//        XSSFWorkbook workbook = null;
+//        try {
+//            workbook = new XSSFWorkbook(new FileInputStream(path));
+//            XSSFSheet sheetT = workbook.getSheet("staff");
+//            for (Iterator<Row> it = sheetT.rowIterator(); it.hasNext(); ) {
+//                Row row = it.next();
+//                if (row.getCell(Columns.CORPORATE_EMAIL.ordinal()).getStringCellValue().equalsIgnoreCase(corporateEmail)) {
+//                    row.getCell(Columns.HAS_CAR.ordinal()).setCellValue(hasCar ? "yes" : "no");
+//                    FileOutputStream outputStream = new FileOutputStream(path);
+//                    workbook.write(outputStream);
+//                    break;
+//                }
+//            }
+//        } catch (FileNotFoundException fnf) {
+//            System.out.println("File path is wrong or file is in use");
+//        } catch (IOException ioe) {
+//            System.out.println("IOException ".toUpperCase() + ioe.getMessage());
+//        } catch (Exception e) {
+//            System.out.println("Exception ".toUpperCase() + e.getMessage());
+//        } finally {
+//            try {
+//                if (workbook != null) workbook.close();
+//                System.out.println("Workbook closed");
+//            } catch (IOException ioe) {
+//                System.out.println(ioe.getMessage());
+//            }
+//        }
+//    }
 }
