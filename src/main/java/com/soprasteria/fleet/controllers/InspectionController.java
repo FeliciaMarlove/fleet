@@ -30,9 +30,4 @@ public class InspectionController {
     public InspectionDTO createInspection(@RequestBody InspectionDTO inspectionDTO) {
         return service.create(inspectionDTO);
     }
-
-    @PutMapping
-    public InspectionDTO updateInspection(@RequestBody InspectionDTO inspectionDTO) {
-        return service.update(inspectionDTO);
-    }
 }
