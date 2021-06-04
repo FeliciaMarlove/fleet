@@ -8,7 +8,6 @@ import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
-import com.soprasteria.fleet.services.utilServices.interfaces.ExcelStaffDataService;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +48,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     @Override
     public List<CarDTO> getCarsOfStaffMember(Integer staffMemberId) {
         List<CarDTO> carDTOS = new ArrayList<>();
-        List<Car> cars = carRepository.selectCarWhereStaffIdIs(staffMemberId);
+        List<Car> cars = carRepository.selectFromCarWhereStaffIdIs(staffMemberId);
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
