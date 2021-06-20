@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  fleet-back:
+    image: fleet:latest
+    # image: tfefleet.azurecr.io/fleet-back:latest
+    container_name: tfe-fleet-back
+    # build:
+    #   context: .
+    #   dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://fleet-flex.postgres.database.azure.com:5432/fleetManagement?ssl=true&sslmode=require
+      - SPRING_DATASOURCE_USERNAME=fleetapi
+      - SPRING_DATASOURCE_PASSWORD=FloThi7000!   
+  fleet-front:
+    image: fleetfront:latest
+    # image: tfefleet.azurecr.io/fleet-front:latest
+    container_name: tfe-fleet-front
+    # build:
+    #   context: .
+    #   dockerfile: ../fleet-front/Dockerfile
+    links:
+      - "fleet-back"
+    depends_on:
+      - "fleet-back"
+    ports:
+      - "8181:8181"      
