@@ -58,7 +58,7 @@ public class LeasingCompany implements Serializable {
     }
 
     public void setLeasingCompanyPhone(String leasingCompanyPhone) {
-        this.leasingCompanyPhone = leasingCompanyPhone;
+        this.leasingCompanyPhone = leasingCompanyPhone.replaceAll("\\s","");
     }
 
     public String getLeasingCompanyEmail() {
