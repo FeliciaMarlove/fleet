@@ -22,6 +22,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
+/**
+ * Test class on car assignment to staff members
+ * Check the results of a tank filling on data update
+ * Some tests include data operations, therefore the context of the class is set to Transactional to rollback all operations after tests
+ */
+
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {FleetApplication.class})
 @SpringBootTest
@@ -39,12 +45,15 @@ public class CarAssignmentTest {
     @Autowired
     private CarRepository carRepository;
 
-    static StaffMember staffMember = new StaffMember(1, "Dupont", "Jean", true, "jean@test.com", Language.FR, null);
-    static CarDTO firstCar = new CarDTO("0-AAA-666", Brand.Audi, "A3", FuelType.DIESEL, 7.8, LocalDate.parse("2021-04-01"), null, false, null, 1, null, null);
-    static CarDTO secondCar = new CarDTO("0-AAA-777", Brand.Citroen, "C5", FuelType.DIESEL, 5.0, LocalDate.now(), null, false, null, 1, null, null);
+    /*
+    Static creation of objects for test purpose
+     */
+    static StaffMember staffMember = new StaffMember(99999, "Dupont", "Jean", true, "jean@test.com", Language.FR, null);
+    static CarDTO firstCar = new CarDTO("9-ZZZ-999", Brand.Audi, "A3", FuelType.DIESEL, 7.8, LocalDate.parse("2021-04-01"), null, false, null, 1, null, null);
+    static CarDTO secondCar = new CarDTO("9-YYY-999", Brand.Citroen, "C5", FuelType.DIESEL, 5.0, LocalDate.now(), null, false, null, 1, null, null);
 
     /**
-     * Après assignement d'une voiture (car) à un membre du personnel (staffMember)
+     * Check state of car and staff member after staff member without car is assigned a car
      * staffMember.hasCar == true
      * car.ongoing == true
      * car.staffMember == staffMember
@@ -63,12 +72,12 @@ public class CarAssignmentTest {
     }
 
     /**
-     * Après assignement d'une voiture (car2) à un membre du personnel (staffMember) à qui une voiture était déjà assignée (car1)
+     * Check state of car and staff member after staff member with a car is assigned a car
      * staffMember.hasCar == true
      * car2.ongoing == true
      * car1.ongoing == false
      * car2.staffMember == staffMember
-     * car1.staffMember == staffMember - l'historique des voitures est conservé
+     * car1.staffMember == staffMember (history of car ownership is retained)
      * current car of staffMember == car2
      * current car of staffMember != car1
      */

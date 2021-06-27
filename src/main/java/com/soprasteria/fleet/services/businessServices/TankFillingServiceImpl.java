@@ -39,7 +39,7 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public TankFillingDTO read(Integer tankFillingId) {
-        TankFilling tankFilling = repository.findById(tankFillingId).get();
+        TankFilling tankFilling = repository.findById(tankFillingId).orElseThrow(); // TODO throw adequate error
         return getTankFillingDtoAndSetPlateNumber(tankFilling);
     }
 
@@ -52,7 +52,7 @@ public class TankFillingServiceImpl implements TankFillingService {
     @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
-        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).get();
+        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).orElseThrow(); // TODO throw adequate error
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
         car.setKilometers(tankFilling.getKmAfter());
@@ -69,11 +69,11 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
-        TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).get();
+        TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).orElseThrow(); // TODO throw adequate error
         TankFilling correctionTankFilling = cloneTankFilling(erroneousTankFilling);
         if (erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER)
         || erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.WRONG_FUEL)) {
-            Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).get();
+            Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).orElseThrow(); // TODO throw adequate error
             correctionTankFilling.setKmAfter(tankFillingDTO.getKmAfter());
             correctionTankFilling.setConsumption(getConsumption(correctionTankFilling));
             Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
@@ -126,8 +126,12 @@ public class TankFillingServiceImpl implements TankFillingService {
         }
         // executed if the app doesn't enter the "else" instruction, thus in case of discrepancy:
         tankFilling.setDiscrepancy(true);
-        staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ? 1 : staffMember.getNumberDiscrepancies() + 1);
-        staffMemberRepository.save(staffMember);
+        if (staffMember != null) {
+            staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ? 1 : staffMember.getNumberDiscrepancies() + 1);
+            staffMemberRepository.save(staffMember);
+        } else {
+            // TODO throw adequate error
+        }
         sendEmail(tankFilling);
     }
 
