@@ -21,6 +21,10 @@ public class LeasingCompanyTest {
     static LeasingCompany leasingCompany = new LeasingCompany(99999, "Test company", "Contact perso", "050225588", "somemail@test.com");
     static LeasingCompanyDTO leasingCompanyDTO = new LeasingCompanyDTO(99999, "Test company", "Contact perso", "050225588", "somemail@test.com", true);
 
+    /**
+     * Phone number is saved as a string. Front-end client may send phone number with white spaces in it.
+     * The back-end service must save leasing company objects' phone number without any white space.
+     */
     @Test
     public void stripPhoneNumber() {
         leasingCompany.setLeasingCompanyPhone("060 22 33 44");
