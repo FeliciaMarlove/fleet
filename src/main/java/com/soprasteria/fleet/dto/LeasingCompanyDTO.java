@@ -52,7 +52,7 @@ public class LeasingCompanyDTO implements DTOEntity {
     }
 
     public void setLeasingCompanyPhone(String leasingCompanyPhone) {
-        this.leasingCompanyPhone = leasingCompanyPhone;
+        this.leasingCompanyPhone = leasingCompanyPhone.replaceAll("\\s","");
     }
 
     public String getLeasingCompanyEmail() {
