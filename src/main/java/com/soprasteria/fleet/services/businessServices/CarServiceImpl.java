@@ -46,6 +46,8 @@ public class CarServiceImpl implements CarService {
         car.setKilometers(0);
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
+        } else {
+            // TODO throw adequate error
         }
         repository.save(car);
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());

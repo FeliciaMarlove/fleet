@@ -27,7 +27,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public StaffMemberDTO read(Integer staffMemberId) {
-        StaffMember staffMember = repository.findById(staffMemberId).get();
+        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow(); // TODO throw adequate error
         return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
     }
 
@@ -39,7 +39,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public StaffMemberDTO update(StaffMemberDTO staffMemberDTO) {
-        StaffMember staffMember = repository.findById(staffMemberDTO.getStaffMemberId()).get();
+        StaffMember staffMember = repository.findById(staffMemberDTO.getStaffMemberId()).orElseThrow(); // TODO throw adequate error
         staffMember.setHasCar(staffMemberDTO.getHasCar());
         repository.save(staffMember);
         return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
@@ -57,7 +57,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
-        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow();
+        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow(); // TODO throw adequate error
 
         Optional<Car> optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
         if (optionalCar.isPresent()) {
@@ -67,7 +67,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         }
 
         if (carPlate != null) {
-            Car currentCar = carRepository.findById(carPlate).orElseThrow();
+            Car currentCar = carRepository.findById(carPlate).orElseThrow(); // TODO throw adequate error
             currentCar.setStaffMember(staffMember);
             currentCar.setOngoing(true);
             carRepository.save(currentCar);

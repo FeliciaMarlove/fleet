@@ -5,17 +5,17 @@ import com.soprasteria.fleet.models.LeasingCompany;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.transaction.Transactional;
-
+/**
+ * Test class on leasing company
+ * Check data validation and sanitization
+ */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {FleetApplication.class})
 @SpringBootTest
-@Transactional
 public class LeasingCompanyTest {
 
     static LeasingCompany leasingCompany = new LeasingCompany(99999, "Test company", "Contact perso", "050225588", "somemail@test.com");

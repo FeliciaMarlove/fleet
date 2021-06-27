@@ -11,6 +11,10 @@ public class EmailComposerServiceImpl implements EmailComposerService {
 
     @Override
     public String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling) {
+        if (tankFilling.getCar().getStaffMember() == null) {
+            return "null"; // temporary workaround
+            // TODO throw adequate error
+        }
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("A discrepancy has been detected:")
                 .append("\nDate: ")
