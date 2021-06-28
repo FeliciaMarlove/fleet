@@ -1,9 +1,9 @@
 package com.soprasteria.fleet;
 
 import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.enums.Brand;
-import com.soprasteria.fleet.enums.FuelType;
-import com.soprasteria.fleet.enums.Language;
+import com.soprasteria.fleet.models.enums.Brand;
+import com.soprasteria.fleet.models.enums.FuelType;
+import com.soprasteria.fleet.models.enums.Language;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;

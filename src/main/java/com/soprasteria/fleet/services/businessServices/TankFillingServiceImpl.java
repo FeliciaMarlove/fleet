@@ -2,8 +2,8 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.enums.DiscrepancyType;
-import com.soprasteria.fleet.enums.filters.TankFillingFilter;
+import com.soprasteria.fleet.models.enums.DiscrepancyType;
+import com.soprasteria.fleet.models.enums.filters.TankFillingFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
@@ -72,7 +72,7 @@ public class TankFillingServiceImpl implements TankFillingService {
         TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).orElseThrow(); // TODO throw adequate error
         TankFilling correctionTankFilling = cloneTankFilling(erroneousTankFilling);
         if (erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER)
-        || erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.WRONG_FUEL)) {
+        || erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.QUANTITY_TOO_HIGH)) {
             Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).orElseThrow(); // TODO throw adequate error
             correctionTankFilling.setKmAfter(tankFillingDTO.getKmAfter());
             correctionTankFilling.setConsumption(getConsumption(correctionTankFilling));

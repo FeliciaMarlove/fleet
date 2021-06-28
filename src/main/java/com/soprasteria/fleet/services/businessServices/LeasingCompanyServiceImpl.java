@@ -2,7 +2,7 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.enums.filters.LeasingFilter;
+import com.soprasteria.fleet.models.enums.filters.LeasingFilter;
 import com.soprasteria.fleet.models.LeasingCompany;
 import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;

@@ -1,10 +1,9 @@
 package com.soprasteria.fleet.dto;
 
 import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
-import com.soprasteria.fleet.enums.DiscrepancyType;
-import com.soprasteria.fleet.enums.FuelType;
+import com.soprasteria.fleet.models.enums.DiscrepancyType;
+import com.soprasteria.fleet.models.enums.FuelType;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 public class TankFillingDTO implements DTOEntity {
