@@ -34,7 +34,7 @@ public class Inspection implements Serializable {
     private String inspectionReportFile;
 
     @OneToOne
-    @JoinColumn(name = "car_plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
+    @JoinColumn(name = "car_plate", nullable = false, referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
     private Car car;
 
     public Integer getCarInspectionId() {
