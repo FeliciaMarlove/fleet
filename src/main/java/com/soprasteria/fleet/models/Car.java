@@ -1,7 +1,7 @@
 package com.soprasteria.fleet.models;
 
-import com.soprasteria.fleet.enums.Brand;
-import com.soprasteria.fleet.enums.FuelType;
+import com.soprasteria.fleet.models.enums.Brand;
+import com.soprasteria.fleet.models.enums.FuelType;
 
 import javax.persistence.*;
 import java.io.Serializable;

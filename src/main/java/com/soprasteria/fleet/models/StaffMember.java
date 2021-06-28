@@ -1,6 +1,6 @@
 package com.soprasteria.fleet.models;
 
-import com.soprasteria.fleet.enums.Language;
+import com.soprasteria.fleet.models.enums.Language;
 
 import javax.persistence.*;
 import java.io.Serializable;

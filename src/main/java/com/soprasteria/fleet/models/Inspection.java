@@ -15,7 +15,7 @@ public class Inspection implements Serializable {
     @Column(name = "car_inspection_id")
     private Integer carInspectionId;
 
-    @Column(name = "inspection_date")
+    @Column(name = "inspection_date", nullable = false)
     private LocalDateTime inspectionDate;
 
     @Column(name= "sent_date")

@@ -1,6 +1,6 @@
 package com.soprasteria.fleet.services.utilServices;
 
-import com.soprasteria.fleet.enums.Language;
+import com.soprasteria.fleet.models.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;

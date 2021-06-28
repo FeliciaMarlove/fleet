@@ -2,12 +2,11 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.enums.filters.InspectionFilter;
+import com.soprasteria.fleet.models.enums.filters.InspectionFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.InspectionRepository;
-import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
 import org.springframework.stereotype.Service;
 

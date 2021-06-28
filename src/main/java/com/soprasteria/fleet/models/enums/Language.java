@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.enums;
+package com.soprasteria.fleet.models.enums;
 
 public enum Language {
     FR,

@@ -2,9 +2,9 @@ package com.soprasteria.fleet;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.TankFillingDTO;
-import com.soprasteria.fleet.enums.Brand;
-import com.soprasteria.fleet.enums.DiscrepancyType;
-import com.soprasteria.fleet.enums.FuelType;
+import com.soprasteria.fleet.models.enums.Brand;
+import com.soprasteria.fleet.models.enums.DiscrepancyType;
+import com.soprasteria.fleet.models.enums.FuelType;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.businessServices.interfaces.TankFillingService;
 import org.junit.jupiter.api.BeforeEach;
