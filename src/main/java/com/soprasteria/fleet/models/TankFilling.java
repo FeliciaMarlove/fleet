@@ -17,10 +17,10 @@ public class TankFilling implements Serializable {
     @Column(name = "tank_filling_id")
     private Integer tankFillingId;
 
-    @Column(name = "km_before")
+    @Column(name = "km_before", nullable = false)
     private Integer kmBefore;
 
-    @Column(name = "km_after")
+    @Column(name = "km_after", nullable = false)
     private Integer kmAfter;
 
     @Column(name = "is_discrepancy")
@@ -29,13 +29,13 @@ public class TankFilling implements Serializable {
     @Column(name = "discrepancy_type")
     private DiscrepancyType discrepancyType;
 
-    @Column(name = "date_time_filling")
+    @Column(name = "date_time_filling", nullable = false)
     private LocalDateTime dateTimeFilling;
 
-    @Column(name = "fuel")
+    @Column(name = "fuel", nullable = false)
     private FuelType fuelType;
 
-    @Column(name = "liters")
+    @Column(name = "liters", nullable = false)
     private Double liters;
 
     @Column(name = "consumption")
@@ -48,7 +48,7 @@ public class TankFilling implements Serializable {
     private Integer correctedById;
 
     @ManyToOne(targetEntity = Car.class)
-    @JoinColumn(name = "plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_filling_car"))
+    @JoinColumn(name = "plate", nullable = false, referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_filling_car"))
     private Car car;
 
     public Integer getCorrectionForId() {
