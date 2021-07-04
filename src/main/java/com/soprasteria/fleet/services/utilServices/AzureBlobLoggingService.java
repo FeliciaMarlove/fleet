@@ -22,6 +22,13 @@ public class AzureBlobLoggingService {
 
     private int ATTEMPTS = 0;
 
+    /**
+     * Write to logs.txt on Azure storage account
+     * Append text in existing file
+     * Try once again in case of failure
+     * @param newLog The text to write in the logs
+     * @return the code, starting with 2** if sucess (201), or 5** in case of failure
+     */
     public int writeToLoggingFile(String newLog) {
         newLog = "\n" + LocalDateTime.now() + ":::" + newLog;
         try {
