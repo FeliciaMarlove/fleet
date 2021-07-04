@@ -1,7 +1,7 @@
 package com.soprasteria.fleet.models;
 
-import com.soprasteria.fleet.enums.Brand;
-import com.soprasteria.fleet.enums.FuelType;
+import com.soprasteria.fleet.models.enums.Brand;
+import com.soprasteria.fleet.models.enums.FuelType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,35 +15,35 @@ public class Car implements Serializable {
     @Column(name = "plate")
     private String plateNumber;
 
-    @Column(name = "kilometers")
+    @Column(name = "kilometers", nullable = false)
     private Integer kilometers;
 
-    @Column(name = "brand")
+    @Column(name = "brand", nullable = false)
     private Brand brand;
 
-    @Column(name = "model")
+    @Column(name = "model", nullable = false)
     private String model;
 
-    @Column(name = "fuel")
+    @Column(name = "fuel", nullable = false)
     private FuelType fuelType;
 
     @Column(name = "average_consumption")
     private Double averageConsumption;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "ongoing")
+    @Column(name = "ongoing", nullable = false)
     private Boolean ongoing;
 
     @Column(name = "free_text")
     private String freeText;
 
     @ManyToOne(targetEntity = LeasingCompany.class)
-    @JoinColumn(name = "leasing_id", referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
+    @JoinColumn(name = "leasing_id", nullable = false, referencedColumnName = "leasing_id", foreignKey = @ForeignKey(name = "FK_car_leasing_company"))
     private LeasingCompany leasingCompany;
 
     @ManyToOne(targetEntity = StaffMember.class)

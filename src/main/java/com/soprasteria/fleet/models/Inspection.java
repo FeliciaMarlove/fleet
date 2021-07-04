@@ -15,7 +15,7 @@ public class Inspection implements Serializable {
     @Column(name = "car_inspection_id")
     private Integer carInspectionId;
 
-    @Column(name = "inspection_date")
+    @Column(name = "inspection_date", nullable = false)
     private LocalDateTime inspectionDate;
 
     @Column(name= "sent_date")
@@ -34,7 +34,7 @@ public class Inspection implements Serializable {
     private String inspectionReportFile;
 
     @OneToOne
-    @JoinColumn(name = "car_plate", referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
+    @JoinColumn(name = "car_plate", nullable = false, referencedColumnName = "plate", foreignKey = @ForeignKey(name = "FK_inspection_car"))
     private Car car;
 
     public Integer getCarInspectionId() {

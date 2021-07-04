@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.enums.filters;
+package com.soprasteria.fleet.models.enums.filters;
 
 public enum LeasingFilter {
     ALL,
