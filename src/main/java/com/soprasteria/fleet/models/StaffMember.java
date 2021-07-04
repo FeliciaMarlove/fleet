@@ -1,6 +1,6 @@
 package com.soprasteria.fleet.models;
 
-import com.soprasteria.fleet.enums.Language;
+import com.soprasteria.fleet.models.enums.Language;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,22 +17,22 @@ public class StaffMember implements Serializable {
     @Column(name = "staff_id")
     private Integer staffMemberId;
 
-    @Column(name = "staff_name")
+    @Column(name = "staff_name", nullable = false)
     private String staffLastName;
 
-    @Column(name = "staff_firstname")
+    @Column(name = "staff_firstname", nullable = false)
     private String staffFirstName;
 
-    @Column(name = "has_car")
+    @Column(name = "has_car", nullable = false)
     private Boolean hasCar;
 
-    @Column(name = "corporate_email", unique = true)
+    @Column(name = "corporate_email", unique = true, nullable = false)
     private String corporateEmail;
 
-    @Column(name = "language")
+    @Column(name = "language", nullable = false)
     private Language communicationLanguage;
 
-    @Column(name = "discrepancies")
+    @Column(name = "discrepancies", nullable = false)
     private Integer numberDiscrepancies;
 
     @OneToMany(mappedBy = "staffMember", targetEntity = Car.class)

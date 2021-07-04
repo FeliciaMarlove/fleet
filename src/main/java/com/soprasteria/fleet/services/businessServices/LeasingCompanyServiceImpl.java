@@ -2,27 +2,37 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.enums.filters.LeasingFilter;
+import com.soprasteria.fleet.errors.FleetItemNotFoundException;
+import com.soprasteria.fleet.models.enums.filters.LeasingFilter;
 import com.soprasteria.fleet.models.LeasingCompany;
 import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     private final LeasingCompanyRepository repository;
+    private final AzureBlobLoggingService azureBlobLoggingService;
 
-    public LeasingCompanyServiceImpl(LeasingCompanyRepository repository) {
+    public LeasingCompanyServiceImpl(LeasingCompanyRepository repository, AzureBlobLoggingService azureBlobLoggingService) {
         this.repository = repository;
+        this.azureBlobLoggingService = azureBlobLoggingService;
     }
 
     @Override
     public LeasingCompanyDTO read(Integer leasingCompanyId) {
-        LeasingCompany leasingCompany = repository.findById(leasingCompanyId).get();
-        return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
+        Optional<LeasingCompany> optionalLeasingCompany = repository.findById(leasingCompanyId);
+        if (optionalLeasingCompany.isPresent()) {
+            return (LeasingCompanyDTO) new DtoUtils().convertToDto(optionalLeasingCompany.get(), new LeasingCompanyDTO());
+        } else {
+            azureBlobLoggingService.writeToLoggingFile("No leasing company was found with it " + leasingCompanyId);
+        }
+        return null;
     }
 
     @Override
@@ -40,32 +50,43 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
 
     @Override
     public String delete(Integer leasingCompanyId) {
-        LeasingCompany leasingCompany = repository.findById(leasingCompanyId).get();
-        leasingCompany.setActive(false);
-        repository.save(leasingCompany);
-        return leasingCompany.getLeasingCompanyName() + " was set inactive";
+        Optional<LeasingCompany> optionalLeasingCompany = repository.findById(leasingCompanyId);
+        if (optionalLeasingCompany.isPresent()) {
+            LeasingCompany leasingCompany = optionalLeasingCompany.get();
+            leasingCompany.setActive(false);
+            repository.save(leasingCompany);
+            return leasingCompany.getLeasingCompanyName() + " was set inactive";
+        }
+        azureBlobLoggingService.writeToLoggingFile("No leasing company was found with id " + leasingCompanyId);
+        return "An error occurred";
     }
 
     @Override
-    public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) {
-        LeasingCompany leasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId()).get();
-        if (leasingCompanyDTO.isActive() != null) {
-            leasingCompany.setActive(leasingCompanyDTO.isActive());
+    public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) throws FleetItemNotFoundException {
+        Optional<LeasingCompany> optionalLeasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId());
+        if (optionalLeasingCompany.isEmpty()) {
+            azureBlobLoggingService.writeToLoggingFile("No leasing company was found with id " + leasingCompanyDTO.getLeasingCompanyId());
+            return null;
+        } else {
+            LeasingCompany leasingCompany = optionalLeasingCompany.get();
+            if (leasingCompanyDTO.isActive() != null) {
+                leasingCompany.setActive(leasingCompanyDTO.isActive());
+            }
+            if (leasingCompanyDTO.getLeasingCompanyContactPerson() != null) {
+                leasingCompany.setLeasingCompanyContactPerson(leasingCompanyDTO.getLeasingCompanyContactPerson());
+            }
+            if (leasingCompanyDTO.getLeasingCompanyEmail() != null) {
+                leasingCompany.setLeasingCompanyEmail(leasingCompanyDTO.getLeasingCompanyEmail());
+            }
+            if (leasingCompanyDTO.getLeasingCompanyName() != null) {
+                leasingCompany.setLeasingCompanyName(leasingCompanyDTO.getLeasingCompanyName());
+            }
+            if (leasingCompanyDTO.getLeasingCompanyPhone() != null) {
+                leasingCompany.setLeasingCompanyPhone(leasingCompanyDTO.getLeasingCompanyPhone());
+            }
+            repository.save(leasingCompany);
+            return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
         }
-        if (leasingCompanyDTO.getLeasingCompanyContactPerson() != null) {
-            leasingCompany.setLeasingCompanyContactPerson(leasingCompanyDTO.getLeasingCompanyContactPerson());
-        }
-        if (leasingCompanyDTO.getLeasingCompanyEmail() != null) {
-            leasingCompany.setLeasingCompanyEmail(leasingCompanyDTO.getLeasingCompanyEmail());
-        }
-        if (leasingCompanyDTO.getLeasingCompanyName() != null) {
-            leasingCompany.setLeasingCompanyName(leasingCompanyDTO.getLeasingCompanyName());
-        }
-        if (leasingCompanyDTO.getLeasingCompanyPhone() != null) {
-            leasingCompany.setLeasingCompanyPhone(leasingCompanyDTO.getLeasingCompanyPhone());
-        }
-        repository.save(leasingCompany);
-        return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
     }
 
     /* PRIVATE METHODS */
@@ -80,7 +101,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
                 case ACTIVE: return readAllActive(leasingCompanyDTOS);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            azureBlobLoggingService.writeToLoggingFile("LEASING COMPANY Filter could not be applied: " + filter + option);
             return getAll(leasingCompanyDTOS);
         }
     }

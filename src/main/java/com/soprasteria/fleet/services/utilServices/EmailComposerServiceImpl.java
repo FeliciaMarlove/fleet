@@ -1,6 +1,7 @@
 package com.soprasteria.fleet.services.utilServices;
 
-import com.soprasteria.fleet.enums.Language;
+import com.soprasteria.fleet.errors.FleetGenericException;
+import com.soprasteria.fleet.models.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
@@ -53,6 +54,9 @@ public class EmailComposerServiceImpl implements EmailComposerService {
      */
     @Override
     public String writeEmailToStaffAboutInspection(StaffMember staffMember, boolean isInspection) {
+        if (staffMember == null) {
+            throw new FleetGenericException("An inspection e-mail couldn't be sent because staff member is null");
+        }
         StringBuilder stringBuilder = new StringBuilder();
         Language lg = staffMember.getCommunicationLanguage();
         switch (lg) {

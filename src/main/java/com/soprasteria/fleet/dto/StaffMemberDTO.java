@@ -1,7 +1,7 @@
 package com.soprasteria.fleet.dto;
 
 import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
-import com.soprasteria.fleet.enums.Language;
+import com.soprasteria.fleet.models.enums.Language;
 
 public class StaffMemberDTO implements DTOEntity {
     private Integer staffMemberId;
