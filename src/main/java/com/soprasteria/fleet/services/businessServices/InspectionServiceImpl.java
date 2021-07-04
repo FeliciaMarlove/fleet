@@ -2,6 +2,8 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetGenericException;
+import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.filters.InspectionFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.Inspection;
@@ -27,7 +29,7 @@ public class InspectionServiceImpl implements InspectionService {
 
     @Override
     public InspectionDTO read(Integer inspectionId) {
-        Inspection inspection = repository.findById(inspectionId).orElseThrow();
+        Inspection inspection = repository.findById(inspectionId).orElseThrow(() -> new FleetItemNotFoundException("No inspection found with id " + inspectionId));
         return getInspectionDtoAndSetPlateNumberAndStaffId(inspection);
     }
 
@@ -40,19 +42,23 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public InspectionDTO create(InspectionDTO inspectionDTO) {
         Inspection inspection = (Inspection) new DtoUtils().convertToEntity(new Inspection(), inspectionDTO);
-        Car car = carRepository.findById(inspectionDTO.getPlateNumber()).orElseThrow();
+        Car car = carRepository.findById(inspectionDTO.getPlateNumber()).orElseThrow(() -> new FleetItemNotFoundException("No car found with plate number " + inspectionDTO.getPlateNumber()));
         inspection.setCar(car);
 
         car.setInspection(inspection);
         repository.save(inspection);
         carRepository.save(car);
 
-        validateAndSendInspection(inspection);
+        sendInspection(inspection);
         return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
     }
 
-    private void validateAndSendInspection(Inspection inspection) {
-        // TODO send e-mail puis mettre en bas avec les autres private
+    private void sendInspection(Inspection inspection) {
+        try {
+            // TODO send e-mail puis mettre en bas avec les autres private
+        } catch (Exception e) {
+            throw new FleetGenericException("Sending e-mail failed for inspection " + inspection.getCarInspectionId());
+        }
     }
 
     /* PRIVATE METHODS */
@@ -67,8 +73,12 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     private List<InspectionDTO> getAllByStaffMember(String id) {
-        Integer staffMemberId = Integer.valueOf(id);
-        return repository.selectInspectionWhereStaffIdIs(staffMemberId).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
+        try {
+            Integer staffMemberId = Integer.valueOf(id);
+            return repository.selectInspectionWhereStaffIdIs(staffMemberId).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new FleetGenericException("Failed to convert staff id to integer " + id);
+        }
     }
 
     private List<InspectionDTO> getAllWhereCarIsDamaged() {
@@ -76,8 +86,12 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     private List<InspectionDTO> getAllWithDateBiggerThan(String date) {
-        LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
-        return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
+        try {
+            LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
+            return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new FleetGenericException("Failed to convert parse date " + date);
+        }
     }
 
     private List<InspectionDTO> filter(String filter, String option, List<InspectionDTO> inspectionDTOS) {
@@ -90,7 +104,7 @@ public class InspectionServiceImpl implements InspectionService {
                 case DATE_ABOVE: return getAllWithDateBiggerThan(option);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            // TODO log
             return getAllInspections(inspectionDTOS);
         }
     }

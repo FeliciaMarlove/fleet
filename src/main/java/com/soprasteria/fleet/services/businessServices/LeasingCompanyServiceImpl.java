@@ -2,6 +2,7 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.filters.LeasingFilter;
 import com.soprasteria.fleet.models.LeasingCompany;
 import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
@@ -21,7 +22,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
 
     @Override
     public LeasingCompanyDTO read(Integer leasingCompanyId) {
-        LeasingCompany leasingCompany = repository.findById(leasingCompanyId).get();
+        LeasingCompany leasingCompany = repository.findById(leasingCompanyId).orElseThrow(() -> new FleetItemNotFoundException("No leasing company was found with it " + leasingCompanyId));
         return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
     }
 
@@ -40,7 +41,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
 
     @Override
     public String delete(Integer leasingCompanyId) {
-        LeasingCompany leasingCompany = repository.findById(leasingCompanyId).get();
+        LeasingCompany leasingCompany = repository.findById(leasingCompanyId).orElseThrow(() -> new FleetItemNotFoundException("No leasing company was found with id " + leasingCompanyId));
         leasingCompany.setActive(false);
         repository.save(leasingCompany);
         return leasingCompany.getLeasingCompanyName() + " was set inactive";
@@ -48,7 +49,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
 
     @Override
     public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) {
-        LeasingCompany leasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId()).get();
+        LeasingCompany leasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId()).orElseThrow(() -> new FleetItemNotFoundException("No leasing company was found with id " + leasingCompanyDTO.getLeasingCompanyId()));
         if (leasingCompanyDTO.isActive() != null) {
             leasingCompany.setActive(leasingCompanyDTO.isActive());
         }
@@ -80,7 +81,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
                 case ACTIVE: return readAllActive(leasingCompanyDTOS);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            // TODO log
             return getAll(leasingCompanyDTOS);
         }
     }
