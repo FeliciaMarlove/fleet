@@ -1,5 +1,13 @@
 package com.soprasteria.fleet.errors;
 
 public class FleetItemNotFoundException extends FleetGenericException {
-    // return 404 not found
+    public FleetItemNotFoundException() {
+        super("Unwatched not found item");
+        // TODO log (super. ...)
+    }
+
+    public FleetItemNotFoundException(String message) {
+        super(message);
+        // TODO log (super. ...)
+    }
 }
