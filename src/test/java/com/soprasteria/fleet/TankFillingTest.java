@@ -41,7 +41,7 @@ public class TankFillingTest {
     /*
     Static creation of objects for test purpose
      */
-    static CarDTO carDTO = new CarDTO("8-XYZ-123", Brand.Audi, "A3", FuelType.DIESEL, 4.4, LocalDate.now(), null, false, null, 1, null, null);
+    static CarDTO carDTO = new CarDTO("8-XYZ-123", Brand.Audi, "A3", FuelType.DIESEL, 4.4, LocalDate.now(), null, null, 1, null, null);
     static TankFillingDTO tankFillingDtoBase = new TankFillingDTO(0, null, 500, null, null, LocalDateTime.now(), FuelType.DIESEL, 25.6, "8-XYZ-123", null, null, null);
     static TankFillingDTO tankFillingDtoFuelIsGasoline = new TankFillingDTO(0, null, 500, null, null, LocalDateTime.now(), FuelType.GASOLINE, 25.6, "8-XYZ-123", null, null, null);
     static TankFillingDTO tankFillingDtoKmAfter50 = new TankFillingDTO(0, null, 50, null, null, LocalDateTime.now(), FuelType.DIESEL, 25.6, "8-XYZ-123", null, null, null);

@@ -21,7 +21,8 @@ public class CarDTO implements DTOEntity {
     private Integer staffMemberId;
     private Integer carInspectionId;
 
-    public CarDTO(String plateNumber, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, Boolean ongoing, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
+    public CarDTO(String plateNumber, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, LocalDate endDate, String freeText, Integer leasingCompanyId, Integer staffMemberId, Integer carInspectionId) {
+        this();
         this.plateNumber = plateNumber;
         this.brand = brand;
         this.model = model;
@@ -29,7 +30,6 @@ public class CarDTO implements DTOEntity {
         this.averageConsumption = averageConsumption;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.ongoing = ongoing;
         this.freeText = freeText;
         this.leasingCompanyId = leasingCompanyId;
         this.staffMemberId = staffMemberId;
@@ -38,6 +38,7 @@ public class CarDTO implements DTOEntity {
 
     public CarDTO() {
         this.kilometers = 0;
+        this.ongoing = true;
     }
 
     public Integer getCarInspectionId() {
