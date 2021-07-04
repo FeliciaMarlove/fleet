@@ -1,5 +1,6 @@
 package com.soprasteria.fleet.services.utilServices;
 
+import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.models.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
@@ -11,10 +12,6 @@ public class EmailComposerServiceImpl implements EmailComposerService {
 
     @Override
     public String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling) {
-        if (tankFilling.getCar().getStaffMember() == null) {
-            return "null"; // temporary workaround
-            // TODO throw adequate error
-        }
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("A discrepancy has been detected:")
                 .append("\nDate: ")
@@ -57,6 +54,9 @@ public class EmailComposerServiceImpl implements EmailComposerService {
      */
     @Override
     public String writeEmailToStaffAboutInspection(StaffMember staffMember, boolean isInspection) {
+        if (staffMember == null) {
+            throw new FleetGenericException("An inspection e-mail couldn't be sent because staff member is null");
+        }
         StringBuilder stringBuilder = new StringBuilder();
         Language lg = staffMember.getCommunicationLanguage();
         switch (lg) {

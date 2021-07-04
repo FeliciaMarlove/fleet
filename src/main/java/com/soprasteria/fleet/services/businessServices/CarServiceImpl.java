@@ -2,6 +2,7 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.Brand;
 import com.soprasteria.fleet.models.enums.FuelType;
 import com.soprasteria.fleet.models.enums.filters.CarFilter;
@@ -30,7 +31,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDTO read(String plateNumber) {
-        Car car = repository.findById(plateNumber).get();
+        Car car = repository.findById(plateNumber).orElseThrow(() -> new FleetItemNotFoundException("No car with plate " + plateNumber));
         return getCarDtoAndSetMemberId(car);
     }
 
@@ -48,14 +49,14 @@ public class CarServiceImpl implements CarService {
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
         } else {
-            // TODO throw adequate error
+            throw new FleetItemNotFoundException("No staff member with id " + carDTO.getStaffMemberId());
         }
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
 
     @Override
     public CarDTO update(CarDTO carDTO) {
-        Car car = repository.findById(carDTO.getPlateNumber()).get();
+        Car car = repository.findById(carDTO.getPlateNumber()).orElseThrow(() -> new FleetItemNotFoundException("No car with plate " + carDTO.getPlateNumber()));
         if (carDTO.getBrand() != null) {
             car.setBrand(carDTO.getBrand());
         }
@@ -150,7 +151,7 @@ public class CarServiceImpl implements CarService {
                 case INSPECTABLE: return getInspectables(carDTOS);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            // TODO log "No car filter enum with name " + filter + " and/or option " + option
             return getAllCars(carDTOS);
         }
     }
@@ -158,7 +159,7 @@ public class CarServiceImpl implements CarService {
     // ------- DATA TRANSFORMATION -------
 
     private void setStaffMember(Car car, CarDTO carDTO) {
-        StaffMember staffMember = staffMemberRepository.findById(carDTO.getStaffMemberId()).get();
+        StaffMember staffMember = staffMemberRepository.findById(carDTO.getStaffMemberId()).orElseThrow(() -> new FleetItemNotFoundException("No staff member with id " + carDTO.getStaffMemberId()));
         car.setStaffMember(staffMember);
         staffMemberService.setCarOfStaffMember(staffMember.getStaffMemberId(), car.getPlateNumber());
         staffMemberRepository.save(staffMember);

@@ -2,6 +2,8 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetGenericException;
+import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.DiscrepancyType;
 import com.soprasteria.fleet.models.enums.filters.TankFillingFilter;
 import com.soprasteria.fleet.models.Car;
@@ -39,7 +41,7 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public TankFillingDTO read(Integer tankFillingId) {
-        TankFilling tankFilling = repository.findById(tankFillingId).orElseThrow(); // TODO throw adequate error
+        TankFilling tankFilling = repository.findById(tankFillingId).orElseThrow(() -> new FleetItemNotFoundException("No fuel fill-up was found with id " + tankFillingId));
         return getTankFillingDtoAndSetPlateNumber(tankFilling);
     }
 
@@ -52,7 +54,7 @@ public class TankFillingServiceImpl implements TankFillingService {
     @Override
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
-        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).orElseThrow(); // TODO throw adequate error
+        Car car = carRepository.findById(tankFillingDTO.getPlateNumber()).orElseThrow(() -> new FleetItemNotFoundException("No car was found with plate number " + tankFillingDTO.getPlateNumber()));
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
         car.setKilometers(tankFilling.getKmAfter());
@@ -69,11 +71,11 @@ public class TankFillingServiceImpl implements TankFillingService {
 
     @Override
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
-        TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).orElseThrow(); // TODO throw adequate error
+        TankFilling erroneousTankFilling = repository.findById(tankFillingDTO.getTankFillingId()).orElseThrow(() -> new FleetItemNotFoundException("No fuel fill-up was found with id " + tankFillingDTO.getTankFillingId()));
         TankFilling correctionTankFilling = cloneTankFilling(erroneousTankFilling);
         if (erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER)
         || erroneousTankFilling.getDiscrepancyType().equals(DiscrepancyType.QUANTITY_TOO_HIGH)) {
-            Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).orElseThrow(); // TODO throw adequate error
+            Car car = carRepository.findById(correctionTankFilling.getCar().getPlateNumber()).orElseThrow(() -> new FleetItemNotFoundException("No car was found with plate number " + tankFillingDTO.getPlateNumber()));
             correctionTankFilling.setKmAfter(tankFillingDTO.getKmAfter());
             correctionTankFilling.setConsumption(getConsumption(correctionTankFilling));
             Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
@@ -129,10 +131,11 @@ public class TankFillingServiceImpl implements TankFillingService {
         if (staffMember != null) {
             staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ? 1 : staffMember.getNumberDiscrepancies() + 1);
             staffMemberRepository.save(staffMember);
+            sendEmail(tankFilling);
         } else {
-            // TODO throw adequate error
+            sendEmail(tankFilling);
+            throw new FleetGenericException("Tank filling with ID " + tankFilling.getTankFillingId() + " has discrepancy but staffMember could not be retrieved");
         }
-        sendEmail(tankFilling);
     }
 
     // ------- FILTERING -------
@@ -147,7 +150,7 @@ public class TankFillingServiceImpl implements TankFillingService {
                 case WITH_DISCREPANCY_NOT_CORRECTED: return getAllWithDiscrepancyAndNotCorrected();
             }
         } catch (Exception e) {
-            System.out.println(e);
+            // TODO log
             return getAllTankFillings(tankFillingDTOS);
         }
     }
@@ -160,8 +163,12 @@ public class TankFillingServiceImpl implements TankFillingService {
     }
 
     private List<TankFillingDTO> getAllWithDateBiggerThan(String date) {
-        LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
-        return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
+        try {
+            LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
+            return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new FleetGenericException("Failed to convert parse date " + date);
+        }
     }
 
     private List<TankFillingDTO> getAllWithDiscrepancyAndNotCorrected() {
