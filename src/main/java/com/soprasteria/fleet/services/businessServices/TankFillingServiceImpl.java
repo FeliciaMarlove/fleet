@@ -166,9 +166,10 @@ public class TankFillingServiceImpl implements TankFillingService {
         try {
             LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
             return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
-        } catch (Exception e) {
+        } catch (Exception e ) {
             throw new FleetGenericException("Failed to convert parse date " + date);
         }
+
     }
 
     private List<TankFillingDTO> getAllWithDiscrepancyAndNotCorrected() {

@@ -2,7 +2,6 @@ package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
-import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public class CarController {
     private final CarService service;
 
-    public CarController(CarService service, EmailSenderService emailSenderService) {
+    public CarController(CarService service) {
         this.service = service;
     }
 

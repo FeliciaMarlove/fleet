@@ -21,7 +21,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     }
 
     @Override
-    public LeasingCompanyDTO read(Integer leasingCompanyId) {
+    public LeasingCompanyDTO read(Integer leasingCompanyId) throws FleetItemNotFoundException {
         LeasingCompany leasingCompany = repository.findById(leasingCompanyId).orElseThrow(() -> new FleetItemNotFoundException("No leasing company was found with it " + leasingCompanyId));
         return (LeasingCompanyDTO) new DtoUtils().convertToDto(leasingCompany, new LeasingCompanyDTO());
     }
@@ -40,7 +40,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     }
 
     @Override
-    public String delete(Integer leasingCompanyId) {
+    public String delete(Integer leasingCompanyId) throws FleetItemNotFoundException {
         LeasingCompany leasingCompany = repository.findById(leasingCompanyId).orElseThrow(() -> new FleetItemNotFoundException("No leasing company was found with id " + leasingCompanyId));
         leasingCompany.setActive(false);
         repository.save(leasingCompany);
@@ -48,7 +48,7 @@ public class LeasingCompanyServiceImpl implements LeasingCompanyService {
     }
 
     @Override
-    public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) {
+    public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) throws FleetItemNotFoundException {
         LeasingCompany leasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId()).orElseThrow(() -> new FleetItemNotFoundException("No leasing company was found with id " + leasingCompanyDTO.getLeasingCompanyId()));
         if (leasingCompanyDTO.isActive() != null) {
             leasingCompany.setActive(leasingCompanyDTO.isActive());
