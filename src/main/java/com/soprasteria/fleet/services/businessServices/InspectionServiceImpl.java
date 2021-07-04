@@ -28,7 +28,7 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
-    public InspectionDTO read(Integer inspectionId) {
+    public InspectionDTO read(Integer inspectionId) throws FleetItemNotFoundException {
         Inspection inspection = repository.findById(inspectionId).orElseThrow(() -> new FleetItemNotFoundException("No inspection found with id " + inspectionId));
         return getInspectionDtoAndSetPlateNumberAndStaffId(inspection);
     }
@@ -40,7 +40,7 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
-    public InspectionDTO create(InspectionDTO inspectionDTO) {
+    public InspectionDTO create(InspectionDTO inspectionDTO) throws FleetItemNotFoundException {
         Inspection inspection = (Inspection) new DtoUtils().convertToEntity(new Inspection(), inspectionDTO);
         Car car = carRepository.findById(inspectionDTO.getPlateNumber()).orElseThrow(() -> new FleetItemNotFoundException("No car found with plate number " + inspectionDTO.getPlateNumber()));
         inspection.setCar(car);
@@ -53,7 +53,7 @@ public class InspectionServiceImpl implements InspectionService {
         return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
     }
 
-    private void sendInspection(Inspection inspection) {
+    private void sendInspection(Inspection inspection) throws FleetGenericException {
         try {
             // TODO send e-mail puis mettre en bas avec les autres private
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class InspectionServiceImpl implements InspectionService {
         return inspectionDTOS;
     }
 
-    private List<InspectionDTO> getAllByStaffMember(String id) {
+    private List<InspectionDTO> getAllByStaffMember(String id) throws FleetGenericException {
         try {
             Integer staffMemberId = Integer.valueOf(id);
             return repository.selectInspectionWhereStaffIdIs(staffMemberId).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
@@ -85,7 +85,7 @@ public class InspectionServiceImpl implements InspectionService {
         return repository.selectInspectionWhereIsDamagedTrue().stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
     }
 
-    private List<InspectionDTO> getAllWithDateBiggerThan(String date) {
+    private List<InspectionDTO> getAllWithDateBiggerThan(String date) throws FleetGenericException {
         try {
             LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
             return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
