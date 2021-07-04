@@ -10,6 +10,7 @@ import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,10 +21,12 @@ import java.util.Optional;
 public class StaffMemberServiceImpl implements StaffMemberService {
     private final StaffMemberRepository repository;
     private final CarRepository carRepository;
+    private final AzureBlobLoggingService azureBlobLoggingService;
 
-    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository) {
+    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository, AzureBlobLoggingService azureBlobLoggingService) {
         this.repository = repository;
         this.carRepository = carRepository;
+        this.azureBlobLoggingService = azureBlobLoggingService;
     }
 
     @Override
@@ -40,10 +43,15 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public StaffMemberDTO update(StaffMemberDTO staffMemberDTO) {
-        StaffMember staffMember = repository.findById(staffMemberDTO.getStaffMemberId()).orElseThrow(() -> new FleetItemNotFoundException("No staff member was found with id " + staffMemberDTO.getStaffMemberId()));
-        staffMember.setHasCar(staffMemberDTO.getHasCar());
-        repository.save(staffMember);
-        return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
+        Optional<StaffMember> optionalStaffMember = repository.findById(staffMemberDTO.getStaffMemberId());
+        if (optionalStaffMember.isPresent()) {
+            StaffMember staffMember = optionalStaffMember.get();
+            staffMember.setHasCar(staffMemberDTO.getHasCar());
+            repository.save(staffMember);
+            return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
+        }
+        azureBlobLoggingService.writeToLoggingFile("Could not find staff member with id " + staffMemberDTO.getStaffMemberId());
+        return null;
     }
 
     @Override
@@ -58,13 +66,21 @@ public class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
-        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow(() -> new FleetItemNotFoundException("No staff member was found with id " + staffMemberId));
+        Optional<StaffMember> optionalStaffMember = repository.findById(staffMemberId);
+        if (optionalStaffMember.isEmpty()) {
+            azureBlobLoggingService.writeToLoggingFile("No staff member was found with id " + staffMemberId);
+            return null;
+        }
 
+        // Optional is empty if staff member has no car at the moment, not an error case
         Optional<Car> optionalCar = carRepository.selectCarWhereStaffIdIsAndOngoingTrue(staffMemberId);
+        if (optionalCar.isPresent()) {
+            Car car = optionalCar.get();
+            car.setOngoing(false);
+            carRepository.save(car);
+        }
 
-        Car car = optionalCar.orElseThrow(() -> new FleetItemNotFoundException("No car was found as current car for staff member " + staffMemberId));
-        car.setOngoing(false);
-        carRepository.save(car);
+        StaffMember staffMember = optionalStaffMember.get();
 
         if (carPlate != null) {
             Car currentCar = carRepository.findById(carPlate).orElseThrow();
@@ -104,7 +120,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
                     return getAllWithoutCar(staffMemberDTOS);
             }
         } catch (Exception e) {
-            // TODO log
+            azureBlobLoggingService.writeToLoggingFile("STAFF MEMBER Filter could not be applied: " + filter + option);
             return getAllStaff(staffMemberDTOS);
         }
     }

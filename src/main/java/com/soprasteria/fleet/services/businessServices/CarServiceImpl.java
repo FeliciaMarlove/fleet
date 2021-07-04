@@ -136,7 +136,7 @@ public class CarServiceImpl implements CarService {
             return carDTOS;
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("No brand was found with brand name " + brandName);
-            return getAllCars(carDTOS);
+            throw new FleetItemNotFoundException();
         }
     }
 
@@ -151,7 +151,7 @@ public class CarServiceImpl implements CarService {
             return carDTOS;
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("No fuel was found with fuel name " + fuel);
-            return getAllCars(carDTOS);
+            throw new FleetItemNotFoundException();
         }
     }
 
@@ -175,7 +175,7 @@ public class CarServiceImpl implements CarService {
                 case INSPECTABLE: return getInspectables(carDTOS);
             }
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("Filter could not be applied: " + filter + " " + option);
+            azureBlobLoggingService.writeToLoggingFile("CAR Filter could not be applied: " + filter + " " + option);
             return getAllCars(carDTOS);
         }
     }
