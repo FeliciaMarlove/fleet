@@ -13,15 +13,16 @@ public class EmailComposerServiceImpl implements EmailComposerService {
     @Override
     public String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling) {
         StringBuilder stringBuilder = new StringBuilder();
+        boolean staffMember = tankFilling.getCar().getStaffMember() != null;
         stringBuilder.append("A discrepancy has been detected:")
                 .append("\nDate: ")
                 .append(tankFilling.getDateTimeFilling())
                 .append("\nCar: ")
                 .append(tankFilling.getCar().getPlateNumber())
                 .append("\nStaff member: ")
-                .append(tankFilling.getCar().getStaffMember().getStaffFirstName())
+                .append(staffMember ? tankFilling.getCar().getStaffMember().getStaffFirstName() : "{a problem occurred while retrieving the staff member")
                 .append(" ")
-                .append(tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase())
+                .append(staffMember ? tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase() : "")
                 .append("\nDiscrepancy: ")
                 .append(tankFilling.getDiscrepancyType());
 

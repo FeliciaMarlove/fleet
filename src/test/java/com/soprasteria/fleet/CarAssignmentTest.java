@@ -48,7 +48,7 @@ public class CarAssignmentTest {
     /*
     Static creation of objects for test purpose
      */
-    static StaffMember staffMember = new StaffMember(99999, "Dupont", "Jean", true, "jean@test.com", Language.FR, null);
+    static StaffMember staffMember = new StaffMember(99999, "Dupont", "Jean", true, "jean@test.com", Language.FR, 0);
     static CarDTO firstCar = new CarDTO("9-ZZZ-999", Brand.Audi, "A3", FuelType.DIESEL, 7.8, LocalDate.parse("2021-04-01"), null, null, 1, null, null);
     static CarDTO secondCar = new CarDTO("9-YYY-999", Brand.Citroen, "C5", FuelType.DIESEL, 5.0, LocalDate.now(), null, null, 1, null, null);
 
