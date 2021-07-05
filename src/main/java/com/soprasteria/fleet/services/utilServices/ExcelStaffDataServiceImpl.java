@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 @Component
-public class ExcelStaffDataServiceImpl implements ApplicationRunner, ExcelStaffDataService {
+public final class ExcelStaffDataServiceImpl implements ApplicationRunner, ExcelStaffDataService {
     private final StaffMemberRepository staffMemberRepository;
     private final String path = "./src/main/resources/dataloader.xlsx";
 

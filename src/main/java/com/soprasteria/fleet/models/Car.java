@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "car")
-public class Car implements Serializable {
+public final class Car implements Serializable {
     @Id
     @Column(name = "plate")
     private String plateNumber;

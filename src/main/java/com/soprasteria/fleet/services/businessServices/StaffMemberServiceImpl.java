@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StaffMemberServiceImpl implements StaffMemberService {
+public final class StaffMemberServiceImpl implements StaffMemberService {
     private final StaffMemberRepository repository;
     private final CarRepository carRepository;
     private final AzureBlobLoggingService azureBlobLoggingService;

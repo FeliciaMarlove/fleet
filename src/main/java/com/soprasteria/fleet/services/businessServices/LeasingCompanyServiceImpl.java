@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LeasingCompanyServiceImpl implements LeasingCompanyService {
+public final class LeasingCompanyServiceImpl implements LeasingCompanyService {
     private final LeasingCompanyRepository repository;
     private final AzureBlobLoggingService azureBlobLoggingService;
 

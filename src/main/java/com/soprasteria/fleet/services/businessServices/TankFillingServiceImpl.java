@@ -2,7 +2,6 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.TankFillingDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.DiscrepancyType;
 import com.soprasteria.fleet.models.enums.filters.TankFillingFilter;
@@ -25,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class TankFillingServiceImpl implements TankFillingService {
+public final class TankFillingServiceImpl implements TankFillingService {
     private final TankFillingRepository repository;
     private final CarRepository carRepository;
     private final StaffMemberRepository staffMemberRepository;

@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 
 @Service
-public class AzureBlobLoggingService {
+public final class AzureBlobLoggingService {
     private static final String connectionString = "DefaultEndpointsProtocol=https;AccountName=tfefleetstorage;AccountKey=WxW7nXPlyPLNgkLbHvmqrTVDyhqZc4qZmcikoG6rHfvWBcN5F9eP95bIY46FimZuwVWpbzBdI+/0aCVJw1wsEw==;EndpointSuffix=core.windows.net";
 
     // Create a BlobServiceClient object which will be used to create a container client

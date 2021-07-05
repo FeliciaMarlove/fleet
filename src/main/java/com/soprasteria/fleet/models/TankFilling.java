@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tank_filling")
-public class TankFilling implements Serializable {
+public final class TankFilling implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filling_generator")
     @SequenceGenerator(name = "filling_generator", allocationSize = 1, initialValue = 100)
