@@ -30,7 +30,7 @@ public class AzureBlobLoggingService {
      * @return the code, starting with 2** if sucess (201), or 5** in case of failure
      */
     public int writeToLoggingFile(String newLog) {
-        newLog = "\n" + LocalDateTime.now() + ":::" + newLog;
+        newLog = "\nSERVER SIDE:::" + LocalDateTime.now() + ":::" + newLog;
         try {
             ATTEMPTS++;
             InputStream is = new ByteArrayInputStream(newLog.getBytes());
