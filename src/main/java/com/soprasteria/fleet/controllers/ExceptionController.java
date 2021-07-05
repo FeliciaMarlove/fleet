@@ -64,7 +64,7 @@ public class ExceptionController {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
-        azureBlobLoggingService.writeToLoggingFile("Error caught in Exception controller " + ex.getLocalizedMessage());
+        azureBlobLoggingService.writeToLoggingFile("Error caught in Exception controller " + status.value() + " " + ex.getLocalizedMessage());
         return new ResponseEntity<>(headers, status);
     }
 }
