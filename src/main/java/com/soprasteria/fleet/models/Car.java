@@ -47,7 +47,7 @@ public class Car implements Serializable {
     private LeasingCompany leasingCompany;
 
     @ManyToOne(targetEntity = StaffMember.class)
-    @JoinColumn(name = "staff_id", referencedColumnName = "staff_id", foreignKey = @ForeignKey(name = "FK_car_staff_member"))
+    @JoinColumn(name = "staff_id", nullable = false, referencedColumnName = "staff_id", foreignKey = @ForeignKey(name = "FK_car_staff_member"))
     private StaffMember staffMember;
 
     @OneToOne(mappedBy = "car")

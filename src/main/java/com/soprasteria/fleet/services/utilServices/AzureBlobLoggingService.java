@@ -20,7 +20,7 @@ public class AzureBlobLoggingService {
     // Retrieve blob container
     private static final BlobContainerClient bcc = blobServiceClient.getBlobContainerClient("logs");
 
-    private int ATTEMPTS = 0;
+    private int attempts = 0;
 
     /**
      * Write to logs.txt on Azure storage account
@@ -30,9 +30,9 @@ public class AzureBlobLoggingService {
      * @return the code, starting with 2** if sucess (201), or 5** in case of failure
      */
     public int writeToLoggingFile(String newLog) {
-        newLog = "\n" + LocalDateTime.now() + ":::" + newLog;
+        newLog = "\nSERVER SIDE:::" + LocalDateTime.now() + ":::" + newLog;
         try {
-            ATTEMPTS++;
+            attempts++;
             InputStream is = new ByteArrayInputStream(newLog.getBytes());
             AppendBlobClient blobClient = bcc.getBlobClient("logs.txt").getAppendBlobClient();
             if (!blobClient.exists()) {
@@ -41,7 +41,7 @@ public class AzureBlobLoggingService {
             return blobClient.appendBlockWithResponse(is, newLog.length(), null, null, null, null).getStatusCode();
 
         } catch (Exception e) {
-            if (ATTEMPTS < 2) {
+            if (attempts < 2) {
                 writeToLoggingFile(newLog);
             }
             return 500;
