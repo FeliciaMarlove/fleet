@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/car")
 @CrossOrigin
-public class CarController {
+public final class CarController {
     private final CarService service;
 
     public CarController(CarService service) {

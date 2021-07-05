@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
-public class ExceptionController {
+public final class ExceptionController {
     @Autowired
     private AzureBlobLoggingService azureBlobLoggingService;
 

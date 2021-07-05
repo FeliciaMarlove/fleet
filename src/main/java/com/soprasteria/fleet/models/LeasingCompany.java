@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "leasing_company")
-public class LeasingCompany implements Serializable {
+public final class LeasingCompany implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leasing_company_generator")

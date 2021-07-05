@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class InspectionServiceImpl implements InspectionService {
+public final class InspectionServiceImpl implements InspectionService {
     private final AzureBlobLoggingService azureBlobLoggingService;
     private final InspectionRepository repository;
     private final CarRepository carRepository;

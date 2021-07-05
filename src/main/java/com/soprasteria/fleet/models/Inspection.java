@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "car_inspection")
-public class Inspection implements Serializable {
+public final class Inspection implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_inspection_generator")
     @SequenceGenerator(name = "car_inspection_generator", allocationSize = 1, initialValue = 100)

@@ -1,6 +1,6 @@
 package com.soprasteria.fleet.errors;
 
-public class FleetItemNotFoundException extends FleetGenericException {
+public final class FleetItemNotFoundException extends FleetGenericException {
 
     public FleetItemNotFoundException() {
 

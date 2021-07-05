@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Properties;
 
 @Component
-public class EmailSenderServiceImpl implements EmailSenderService {
+public final class EmailSenderServiceImpl implements EmailSenderService {
     @Autowired
     private JavaMailSender emailSender;
     private static final String username = "fleet.tfe.2021@gmail.com";

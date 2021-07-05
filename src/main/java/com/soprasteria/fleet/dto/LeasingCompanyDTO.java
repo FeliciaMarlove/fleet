@@ -2,7 +2,7 @@ package com.soprasteria.fleet.dto;
 
 import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
 
-public class LeasingCompanyDTO implements DTOEntity {
+public final class LeasingCompanyDTO implements DTOEntity {
     private Integer leasingCompanyId;
     private String leasingCompanyName;
     private String leasingCompanyContactPerson;

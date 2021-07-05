@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CarServiceImpl implements CarService {
+public final class CarServiceImpl implements CarService {
     private final AzureBlobLoggingService azureBlobLoggingService;
     private final CarRepository repository;
     private final StaffMemberRepository staffMemberRepository;
