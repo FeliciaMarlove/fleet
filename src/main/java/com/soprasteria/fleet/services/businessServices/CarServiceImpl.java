@@ -50,7 +50,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarDTO create(CarDTO carDTO) throws FleetItemNotFoundException {
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
-        car.setKilometers(0);
         repository.save(car);
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
