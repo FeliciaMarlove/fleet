@@ -2,6 +2,7 @@ package com.soprasteria.fleet.models;
 
 import com.soprasteria.fleet.models.enums.Brand;
 import com.soprasteria.fleet.models.enums.FuelType;
+import com.soprasteria.fleet.services.utilServices.interfaces.Sanitizer;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -66,7 +67,7 @@ public final class Car implements Serializable {
     }
 
     public void setPlateNumber(String plateNumber) {
-        this.plateNumber = plateNumber;
+        this.plateNumber = Sanitizer.stripXSS(plateNumber);
     }
 
     public Integer getKilometers() {
@@ -90,7 +91,7 @@ public final class Car implements Serializable {
     }
 
     public void setModel(String model) {
-        this.model = model;
+        this.model = Sanitizer.stripXSS(model);
     }
 
     public FuelType getFuelType() {
@@ -146,7 +147,7 @@ public final class Car implements Serializable {
     }
 
     public void setFreeText(String freeText) {
-        this.freeText = freeText;
+        this.freeText = Sanitizer.stripXSS(freeText);
     }
 
     public StaffMember getStaffMember() {
