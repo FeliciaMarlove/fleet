@@ -2,7 +2,7 @@ package com.soprasteria.fleet.controllers;
 
 import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,18 +11,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.util.WebUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public final class ExceptionController {
     @Autowired
-    private AzureBlobLoggingService azureBlobLoggingService;
+    private AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
 
     @ExceptionHandler({NoSuchElementException.class})
     protected ResponseEntity noSuchElement(Exception ex, WebRequest request) {
@@ -64,7 +60,7 @@ public final class ExceptionController {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
-        azureBlobLoggingService.writeToLoggingFile("Error caught in Exception controller " + status.value() + " " + ex.getLocalizedMessage());
+        azureBlobLoggingServiceImpl.writeToLoggingFile("Error caught in Exception controller " + status.value() + " " + ex.getLocalizedMessage());
         return new ResponseEntity<>(headers, status);
     }
 }

@@ -10,7 +10,7 @@ import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,12 +21,12 @@ import java.util.Optional;
 public final class StaffMemberServiceImpl implements StaffMemberService {
     private final StaffMemberRepository repository;
     private final CarRepository carRepository;
-    private final AzureBlobLoggingService azureBlobLoggingService;
+    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
 
-    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository, AzureBlobLoggingService azureBlobLoggingService) {
+    public StaffMemberServiceImpl(StaffMemberRepository repository, CarRepository carRepository, AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl) {
         this.repository = repository;
         this.carRepository = carRepository;
-        this.azureBlobLoggingService = azureBlobLoggingService;
+        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
     }
 
     @Override
@@ -50,7 +50,7 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
             repository.save(staffMember);
             return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
         }
-        azureBlobLoggingService.writeToLoggingFile("Could not find staff member with id " + staffMemberDTO.getStaffMemberId());
+        azureBlobLoggingServiceImpl.writeToLoggingFile("Could not find staff member with id " + staffMemberDTO.getStaffMemberId());
         return null;
     }
 
@@ -68,7 +68,7 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
         Optional<StaffMember> optionalStaffMember = repository.findById(staffMemberId);
         if (optionalStaffMember.isEmpty()) {
-            azureBlobLoggingService.writeToLoggingFile("No staff member was found with id " + staffMemberId);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No staff member was found with id " + staffMemberId);
             return null;
         }
 
@@ -120,7 +120,7 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
                     return getAllWithoutCar(staffMemberDTOS);
             }
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("STAFF MEMBER Filter could not be applied: " + filter + option);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("STAFF MEMBER Filter could not be applied: " + filter + option);
             return getAllStaff(staffMemberDTOS);
         }
     }

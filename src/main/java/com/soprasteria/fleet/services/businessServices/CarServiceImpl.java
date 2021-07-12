@@ -12,7 +12,7 @@ import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import java.util.Optional;
 
 @Service
 public final class CarServiceImpl implements CarService {
-    private final AzureBlobLoggingService azureBlobLoggingService;
+    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final CarRepository repository;
     private final StaffMemberRepository staffMemberRepository;
     private final StaffMemberService staffMemberService;
 
-    public CarServiceImpl(AzureBlobLoggingService azureBlobLoggingService, CarRepository repository, StaffMemberRepository staffMemberRepository, StaffMemberService staffMemberService) {
-        this.azureBlobLoggingService = azureBlobLoggingService;
+    public CarServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, CarRepository repository, StaffMemberRepository staffMemberRepository, StaffMemberService staffMemberService) {
+        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
         this.repository = repository;
         this.staffMemberRepository = staffMemberRepository;
         this.staffMemberService = staffMemberService;
@@ -37,7 +37,7 @@ public final class CarServiceImpl implements CarService {
     public CarDTO read(String plateNumber) {
         Optional<Car> car = repository.findById(plateNumber);
         if (car.isPresent()) return getCarDtoAndSetMemberId(car.get());
-        else azureBlobLoggingService.writeToLoggingFile("No car found with plate " + plateNumber);
+        else azureBlobLoggingServiceImpl.writeToLoggingFile("No car found with plate " + plateNumber);
         return null;
     }
 
@@ -54,7 +54,7 @@ public final class CarServiceImpl implements CarService {
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
         } else {
-            azureBlobLoggingService.writeToLoggingFile("Saving car with plate" + carDTO.getPlateNumber() + ". No staff member with id " + carDTO.getStaffMemberId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving car with plate" + carDTO.getPlateNumber() + ". No staff member with id " + carDTO.getStaffMemberId());
         }
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
@@ -63,7 +63,7 @@ public final class CarServiceImpl implements CarService {
     public CarDTO update(CarDTO carDTO) throws FleetItemNotFoundException {
         Optional<Car> optionalCar = repository.findById(carDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
-            azureBlobLoggingService.writeToLoggingFile("No car with plate " + carDTO.getPlateNumber());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No car with plate " + carDTO.getPlateNumber());
             return null;
         } else {
             Car car = optionalCar.get();
@@ -134,7 +134,7 @@ public final class CarServiceImpl implements CarService {
             });
             return carDTOS;
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("No brand was found with brand name " + brandName);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No brand was found with brand name " + brandName);
             throw new FleetItemNotFoundException();
         }
     }
@@ -149,7 +149,7 @@ public final class CarServiceImpl implements CarService {
             });
             return carDTOS;
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("No fuel was found with fuel name " + fuel);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel was found with fuel name " + fuel);
             throw new FleetItemNotFoundException();
         }
     }
@@ -174,7 +174,7 @@ public final class CarServiceImpl implements CarService {
                 case INSPECTABLE: return getInspectables(carDTOS);
             }
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("CAR Filter could not be applied: " + filter + " " + option);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("CAR Filter could not be applied: " + filter + " " + option);
             return getAllCars(carDTOS);
         }
     }
@@ -184,7 +184,7 @@ public final class CarServiceImpl implements CarService {
     private void setStaffMember(Car car, CarDTO carDTO) {
         Optional<StaffMember> optionalStaffMember = staffMemberRepository.findById(carDTO.getStaffMemberId());
         if (optionalStaffMember.isEmpty()) {
-            azureBlobLoggingService.writeToLoggingFile("No staff member with id " + carDTO.getStaffMemberId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No staff member with id " + carDTO.getStaffMemberId());
         } else {
             StaffMember staffMember = optionalStaffMember.get();
             car.setStaffMember(staffMember);
