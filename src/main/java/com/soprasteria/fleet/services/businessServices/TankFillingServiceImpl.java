@@ -11,7 +11,7 @@ import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import com.soprasteria.fleet.services.businessServices.interfaces.TankFillingService;
@@ -30,16 +30,16 @@ public final class TankFillingServiceImpl implements TankFillingService {
     private final StaffMemberRepository staffMemberRepository;
     private final EmailComposerService emailComposerService;
     private final EmailSenderService emailSenderService;
-    private final AzureBlobLoggingService azureBlobLoggingService;
+    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final Integer TOLERANCE_PERCENTAGE = 15;
 
-    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository, EmailComposerService emailComposerService, EmailSenderService emailSenderService, AzureBlobLoggingService azureBlobLoggingService) {
+    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository, EmailComposerService emailComposerService, EmailSenderService emailSenderService, AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl) {
         this.repository = repository;
         this.carRepository = carRepository;
         this.staffMemberRepository = staffMemberRepository;
         this.emailComposerService = emailComposerService;
         this.emailSenderService = emailSenderService;
-        this.azureBlobLoggingService = azureBlobLoggingService;
+        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
     }
 
     @Override
@@ -49,7 +49,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
             return getTankFillingDtoAndSetPlateNumber(optionalTankFilling.get());
 
         }
-        azureBlobLoggingService.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingId);
+        azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingId);
         return null;
     }
 
@@ -64,7 +64,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
         Optional<Car> optionalCar = carRepository.findById(tankFillingDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
-            azureBlobLoggingService.writeToLoggingFile("No car was found with plate number " + tankFillingDTO.getPlateNumber() + "\nTANK FILLUP CREATION FAILED " + tankFillingDTO.getTankFillingId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No car was found with plate number " + tankFillingDTO.getPlateNumber() + "\nTANK FILLUP CREATION FAILED " + tankFillingDTO.getTankFillingId());
             return null;
         }
         Car car = optionalCar.get();
@@ -86,7 +86,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
         Optional<TankFilling> optionalTankFilling = repository.findById(tankFillingDTO.getTankFillingId());
         if (optionalTankFilling.isEmpty()) {
-            azureBlobLoggingService.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingDTO.getTankFillingId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingDTO.getTankFillingId());
             return null;
         }
         TankFilling erroneousTankFilling = optionalTankFilling.get();
@@ -150,7 +150,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
             staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ? 1 : staffMember.getNumberDiscrepancies() + 1);
             staffMemberRepository.save(staffMember);
         } else {
-            azureBlobLoggingService.writeToLoggingFile("Tank filling with ID " + tankFilling.getTankFillingId() + " has discrepancy but staffMember could not be retrieved");
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Tank filling with ID " + tankFilling.getTankFillingId() + " has discrepancy but staffMember could not be retrieved");
         }
         sendEmail(tankFilling);
     }
@@ -167,7 +167,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
                 case WITH_DISCREPANCY_NOT_CORRECTED: return getAllWithDiscrepancyAndNotCorrected();
             }
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("TANK FILLING Filter could not be applied: " + filter + option);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("TANK FILLING Filter could not be applied: " + filter + option);
             return getAllTankFillings(tankFillingDTOS);
         }
     }
@@ -184,7 +184,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
             LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
             return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
         } catch (Exception e ) {
-            azureBlobLoggingService.writeToLoggingFile("Failed to convert parse date " + date);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Failed to convert parse date " + date);
             throw new FleetItemNotFoundException();
         }
     }
