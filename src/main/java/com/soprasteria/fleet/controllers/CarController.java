@@ -21,10 +21,10 @@ public final class CarController {
         return service.read(id);
     }
 
-//    @GetMapping("/{filter}/{option}")
-//    public List<CarDTO> getCars(@PathVariable("filter") String filter, @PathVariable("option") String option) {
-//        return service.read(filter, option);
-//    }
+    @GetMapping("/{filter}/{option}")
+    public List<CarDTO> getCars(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+        return service.read(filter, option);
+    }
 
     @PostMapping
     public CarDTO createCar(@RequestBody CarDTO carDTO) {
