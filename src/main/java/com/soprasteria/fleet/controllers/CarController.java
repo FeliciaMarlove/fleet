@@ -8,8 +8,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/car")
-@CrossOrigin
-public class CarController {
+@CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
+public final class CarController {
     private final CarService service;
 
     public CarController(CarService service) {

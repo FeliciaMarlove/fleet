@@ -16,10 +16,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {FleetApplication.class})
 @SpringBootTest
-public class LeasingCompanyTest {
+public final class LeasingCompanyTest {
 
     static LeasingCompany leasingCompany = new LeasingCompany(99999, "Test company", "Contact perso", "050225588", "somemail@test.com");
-    static LeasingCompanyDTO leasingCompanyDTO = new LeasingCompanyDTO(99999, "Test company", "Contact perso", "050225588", "somemail@test.com", true);
+    static LeasingCompanyDTO leasingCompanyDTO = new LeasingCompanyDTO(99999, "Test company", "Contact perso", "050225588", "somemail@test.com");
 
     /**
      * Phone number is saved as a string. Front-end client may send phone number with white spaces in it.

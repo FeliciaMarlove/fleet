@@ -10,7 +10,7 @@ import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.InspectionRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingService;
+import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,13 +20,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class InspectionServiceImpl implements InspectionService {
-    private final AzureBlobLoggingService azureBlobLoggingService;
+public final class InspectionServiceImpl implements InspectionService {
+    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final InspectionRepository repository;
     private final CarRepository carRepository;
 
-    public InspectionServiceImpl(AzureBlobLoggingService azureBlobLoggingService, InspectionRepository repository, CarRepository carRepository) {
-        this.azureBlobLoggingService = azureBlobLoggingService;
+    public InspectionServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, InspectionRepository repository, CarRepository carRepository) {
+        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
         this.repository = repository;
         this.carRepository = carRepository;
     }
@@ -37,7 +37,7 @@ public class InspectionServiceImpl implements InspectionService {
         if (optionalInspection.isPresent()) {
             return getInspectionDtoAndSetPlateNumberAndStaffId(optionalInspection.get());
         } else {
-            azureBlobLoggingService.writeToLoggingFile("No inspection found with id " + inspectionId);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No inspection found with id " + inspectionId);
         }
         return null;
     }
@@ -59,7 +59,7 @@ public class InspectionServiceImpl implements InspectionService {
             carRepository.save(car);
             sendInspection(inspection);
         } else {
-            azureBlobLoggingService.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getPlateNumber() + ". Inspection was not sent.");
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getPlateNumber() + ". Inspection was not sent.");
         }
         repository.save(inspection);
         return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
@@ -96,7 +96,7 @@ public class InspectionServiceImpl implements InspectionService {
             LocalDateTime localDate = LocalDateTime.parse("date" + "T00:00:00");
             return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("Failed to convert parse date " + date);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Failed to convert parse date " + date);
             throw new FleetItemNotFoundException();
         }
     }
@@ -111,7 +111,7 @@ public class InspectionServiceImpl implements InspectionService {
                 case DATE_ABOVE: return getAllWithDateBiggerThan(option);
             }
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("INSPECTION Filter could not be applied: " + filter + option);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("INSPECTION Filter could not be applied: " + filter + option);
             return getAllInspections(inspectionDTOS);
         }
     }
@@ -134,7 +134,7 @@ public class InspectionServiceImpl implements InspectionService {
         try {
             // TODO
         } catch (Exception e) {
-            azureBlobLoggingService.writeToLoggingFile("Sending e-mail failed for inspection " + inspection.getCarInspectionId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Sending e-mail failed for inspection " + inspection.getCarInspectionId());
         }
     }
 }

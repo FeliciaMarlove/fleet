@@ -1,6 +1,7 @@
 package com.soprasteria.fleet.models;
 
 import com.soprasteria.fleet.models.enums.Language;
+import com.soprasteria.fleet.services.utilServices.interfaces.Sanitizer;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "staff_member")
-public class StaffMember implements Serializable {
+public final class StaffMember implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "staff_member_generator")
     @SequenceGenerator(name = "staff_member_generator", allocationSize = 1, initialValue = 100)
@@ -51,7 +52,7 @@ public class StaffMember implements Serializable {
     }
 
     public void setStaffLastName(String staffLastName) {
-        this.staffLastName = staffLastName;
+        this.staffLastName = Sanitizer.stripXSS(staffLastName);
     }
 
     public String getStaffFirstName() {
@@ -59,7 +60,7 @@ public class StaffMember implements Serializable {
     }
 
     public void setStaffFirstName(String staffFirstName) {
-        this.staffFirstName = staffFirstName;
+        this.staffFirstName = Sanitizer.stripXSS(staffFirstName);
     }
 
     public Boolean getHasCar() {
@@ -75,7 +76,7 @@ public class StaffMember implements Serializable {
     }
 
     public void setCorporateEmail(String corporateEmail) {
-        this.corporateEmail = corporateEmail;
+        this.corporateEmail = Sanitizer.stripXSS(corporateEmail);
     }
 
     public Language getCommunicationLanguage() {

@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/fillup")
 @CrossOrigin
-public class TankFillingController {
+public final class TankFillingController {
     private final TankFillingService service;
 
     public TankFillingController(TankFillingService service) {

@@ -2,7 +2,7 @@ package com.soprasteria.fleet.dto.dtoUtils;
 
 import org.modelmapper.ModelMapper;
 
-public class DtoUtils {
+public final class DtoUtils {
 
     public DTOEntity convertToDto(Object obj, DTOEntity mapper) {
         return new ModelMapper().map(obj, mapper.getClass());

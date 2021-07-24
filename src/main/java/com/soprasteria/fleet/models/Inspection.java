@@ -1,5 +1,7 @@
 package com.soprasteria.fleet.models;
 
+import com.soprasteria.fleet.services.utilServices.interfaces.Sanitizer;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -8,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "car_inspection")
-public class Inspection implements Serializable {
+public final class Inspection implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_inspection_generator")
     @SequenceGenerator(name = "car_inspection_generator", allocationSize = 1, initialValue = 100)
@@ -58,7 +60,7 @@ public class Inspection implements Serializable {
     }
 
     public void setExpertisedBy(String expertisedBy) {
-        this.expertisedBy = expertisedBy;
+        this.expertisedBy = Sanitizer.stripXSS(expertisedBy);
     }
 
     public Boolean isDamaged() {
@@ -74,7 +76,7 @@ public class Inspection implements Serializable {
     }
 
     public void setPicturesFolder(String picturesFolder) {
-        this.picturesFolder = picturesFolder;
+        this.picturesFolder = Sanitizer.stripXSS(picturesFolder);
     }
 
     public String getInspectionReportFile() {
@@ -82,7 +84,7 @@ public class Inspection implements Serializable {
     }
 
     public void setInspectionReportFile(String inspectionReportFile) {
-        this.inspectionReportFile = inspectionReportFile;
+        this.inspectionReportFile = Sanitizer.stripXSS(inspectionReportFile);
     }
 
     public Car getCar() {
