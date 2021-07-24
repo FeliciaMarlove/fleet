@@ -2,6 +2,7 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.Brand;
 import com.soprasteria.fleet.models.enums.FuelType;
@@ -48,7 +49,11 @@ public final class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDTO create(CarDTO carDTO) throws FleetItemNotFoundException {
+    public CarDTO create(CarDTO carDTO) {
+        // manual check because if not using auto-generated ids, repository.save does update on existing ID
+        if(repository.findById(carDTO.getPlateNumber()).isPresent()) {
+            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber() + " .Car plate already exists");
+        }
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
         repository.save(car);
         if (carDTO.getStaffMemberId() != null) {
@@ -60,7 +65,7 @@ public final class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDTO update(CarDTO carDTO) throws FleetItemNotFoundException {
+    public CarDTO update(CarDTO carDTO) {
         Optional<Car> optionalCar = repository.findById(carDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
             azureBlobLoggingServiceImpl.writeToLoggingFile("No car with plate " + carDTO.getPlateNumber());
