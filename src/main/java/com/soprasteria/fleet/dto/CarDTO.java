@@ -6,7 +6,7 @@ import com.soprasteria.fleet.models.enums.FuelType;
 
 import java.time.LocalDate;
 
-public class CarDTO implements DTOEntity {
+public final class CarDTO implements DTOEntity {
     private String plateNumber;
     private Integer kilometers;
     private Brand brand;

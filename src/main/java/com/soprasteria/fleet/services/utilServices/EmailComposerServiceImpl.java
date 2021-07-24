@@ -8,7 +8,7 @@ import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerServi
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmailComposerServiceImpl implements EmailComposerService {
+public final class EmailComposerServiceImpl implements EmailComposerService {
 
     @Override
     public String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling) {

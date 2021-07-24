@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/leasing")
 @CrossOrigin
-public class LeasingCompanyController {
+public final class LeasingCompanyController {
     public final LeasingCompanyService service;
 
     public LeasingCompanyController(LeasingCompanyService service) {

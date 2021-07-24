@@ -6,7 +6,7 @@ import com.soprasteria.fleet.models.enums.FuelType;
 
 import java.time.LocalDateTime;
 
-public class TankFillingDTO implements DTOEntity {
+public final class TankFillingDTO implements DTOEntity {
     private Integer tankFillingId;
     private Integer kmBefore;
     private Integer kmAfter;

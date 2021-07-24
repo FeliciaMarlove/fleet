@@ -2,7 +2,7 @@ package com.soprasteria.fleet.dto;
 
 import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
 
-public class LeasingCompanyDTO implements DTOEntity {
+public final class LeasingCompanyDTO implements DTOEntity {
     private Integer leasingCompanyId;
     private String leasingCompanyName;
     private String leasingCompanyContactPerson;
@@ -10,7 +10,7 @@ public class LeasingCompanyDTO implements DTOEntity {
     private String leasingCompanyEmail;
     private Boolean active;
 
-    public LeasingCompanyDTO(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail, Boolean active) {
+    public LeasingCompanyDTO(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail) {
         this();
         this.leasingCompanyId = leasingCompanyId;
         this.leasingCompanyName = leasingCompanyName;
@@ -52,7 +52,7 @@ public class LeasingCompanyDTO implements DTOEntity {
     }
 
     public void setLeasingCompanyPhone(String leasingCompanyPhone) {
-        this.leasingCompanyPhone = leasingCompanyPhone.replaceAll("\\s","");
+        this.leasingCompanyPhone = leasingCompanyPhone != null ? leasingCompanyPhone.replaceAll("\\s","") : null;
     }
 
     public String getLeasingCompanyEmail() {

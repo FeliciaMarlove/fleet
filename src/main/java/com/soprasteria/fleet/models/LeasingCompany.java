@@ -1,12 +1,14 @@
 package com.soprasteria.fleet.models;
 
+import com.soprasteria.fleet.services.utilServices.interfaces.Sanitizer;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "leasing_company")
-public class LeasingCompany implements Serializable {
+public final class LeasingCompany implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leasing_company_generator")
@@ -42,7 +44,7 @@ public class LeasingCompany implements Serializable {
     }
 
     public void setLeasingCompanyName(String leasingCompanyName) {
-        this.leasingCompanyName = leasingCompanyName;
+        this.leasingCompanyName = Sanitizer.stripXSS(leasingCompanyName);
     }
 
     public String getLeasingCompanyContactPerson() {
@@ -50,7 +52,7 @@ public class LeasingCompany implements Serializable {
     }
 
     public void setLeasingCompanyContactPerson(String leasingCompanyContactPerson) {
-        this.leasingCompanyContactPerson = leasingCompanyContactPerson;
+        this.leasingCompanyContactPerson = Sanitizer.stripXSS(leasingCompanyContactPerson);
     }
 
     public String getLeasingCompanyPhone() {
@@ -58,7 +60,7 @@ public class LeasingCompany implements Serializable {
     }
 
     public void setLeasingCompanyPhone(String leasingCompanyPhone) {
-        this.leasingCompanyPhone = leasingCompanyPhone.replaceAll("\\s","");
+        this.leasingCompanyPhone = leasingCompanyPhone != null ? Sanitizer.stripXSS(leasingCompanyPhone).replaceAll("\\s","") : null;
     }
 
     public String getLeasingCompanyEmail() {
@@ -66,7 +68,7 @@ public class LeasingCompany implements Serializable {
     }
 
     public void setLeasingCompanyEmail(String leasingCompanyEmail) {
-        this.leasingCompanyEmail = leasingCompanyEmail;
+        this.leasingCompanyEmail = Sanitizer.stripXSS(leasingCompanyEmail);
     }
 
     public Boolean isActive() {
@@ -80,10 +82,10 @@ public class LeasingCompany implements Serializable {
     public LeasingCompany(Integer leasingCompanyId, String leasingCompanyName, String leasingCompanyContactPerson, String leasingCompanyPhone, String leasingCompanyEmail) {
         this();
         this.leasingCompanyId = leasingCompanyId;
-        this.leasingCompanyName = leasingCompanyName;
-        this.leasingCompanyContactPerson = leasingCompanyContactPerson;
-        this.leasingCompanyPhone = leasingCompanyPhone;
-        this.leasingCompanyEmail = leasingCompanyEmail;
+        this.leasingCompanyName = Sanitizer.stripXSS(leasingCompanyName);
+        this.leasingCompanyContactPerson = Sanitizer.stripXSS(leasingCompanyContactPerson);
+        this.leasingCompanyPhone = Sanitizer.stripXSS(leasingCompanyPhone);
+        this.leasingCompanyEmail = Sanitizer.stripXSS(leasingCompanyEmail);
     }
 
     public LeasingCompany() {

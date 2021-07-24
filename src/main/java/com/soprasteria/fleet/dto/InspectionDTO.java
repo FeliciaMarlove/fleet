@@ -4,7 +4,7 @@ import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
 
 import java.time.LocalDateTime;
 
-public class InspectionDTO implements DTOEntity {
+public final class InspectionDTO implements DTOEntity {
     private Integer carInspectionId;
     private LocalDateTime inspectionDate;
     private LocalDateTime sentDate;
