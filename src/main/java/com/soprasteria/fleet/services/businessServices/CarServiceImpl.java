@@ -4,12 +4,14 @@ import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
+import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.models.enums.Brand;
 import com.soprasteria.fleet.models.enums.FuelType;
 import com.soprasteria.fleet.models.enums.filters.CarFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.repositories.CarRepository;
+import com.soprasteria.fleet.repositories.InspectionRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
@@ -26,12 +28,14 @@ public final class CarServiceImpl implements CarService {
     private final CarRepository repository;
     private final StaffMemberRepository staffMemberRepository;
     private final StaffMemberService staffMemberService;
+    private final InspectionRepository inspectionRepository;
 
-    public CarServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, CarRepository repository, StaffMemberRepository staffMemberRepository, StaffMemberService staffMemberService) {
+    public CarServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, CarRepository repository, StaffMemberRepository staffMemberRepository, StaffMemberService staffMemberService, InspectionRepository inspectionRepository) {
         this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
         this.repository = repository;
         this.staffMemberRepository = staffMemberRepository;
         this.staffMemberService = staffMemberService;
+        this.inspectionRepository = inspectionRepository;
     }
 
     @Override
@@ -110,6 +114,7 @@ public final class CarServiceImpl implements CarService {
         for(Car car: repository.findAll()) {
             carDTOS.add(getCarDtoAndSetMemberId(car));
         }
+        setInspectionId(carDTOS);
         return carDTOS;
     }
 
@@ -118,6 +123,7 @@ public final class CarServiceImpl implements CarService {
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
+        setInspectionId(carDTOS);
         return carDTOS;
     }
 
@@ -126,6 +132,7 @@ public final class CarServiceImpl implements CarService {
         cars.forEach( car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
+        setInspectionId(carDTOS);
         return carDTOS;
     }
 
@@ -137,6 +144,7 @@ public final class CarServiceImpl implements CarService {
             cars.forEach( car -> {
                 carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
             });
+            setInspectionId(carDTOS);
             return carDTOS;
         } catch (Exception e) {
             azureBlobLoggingServiceImpl.writeToLoggingFile("No brand was found with brand name " + brandName);
@@ -152,6 +160,7 @@ public final class CarServiceImpl implements CarService {
             cars.forEach( car -> {
                 carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
             });
+            setInspectionId(carDTOS);
             return carDTOS;
         } catch (Exception e) {
             azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel was found with fuel name " + fuel);
@@ -197,6 +206,13 @@ public final class CarServiceImpl implements CarService {
             staffMemberRepository.save(staffMember);
             repository.save(car);
         }
+    }
+
+    private void setInspectionId(List<CarDTO> carDTOS) {
+        carDTOS.forEach(carDTO -> {
+            Optional<Inspection> optionalInspection = inspectionRepository.selectInspectionWhereCarPlateIs(carDTO.getPlateNumber());
+            optionalInspection.ifPresent(inspection -> carDTO.setCarInspectionId(inspection.getCarInspectionId()));
+        });
     }
 
     /**
