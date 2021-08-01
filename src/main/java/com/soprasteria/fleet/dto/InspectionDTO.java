@@ -10,9 +10,9 @@ public final class InspectionDTO implements DTOEntity {
     private LocalDateTime sentDate;
     private String expertisedBy;
     private Boolean damaged;
-    private String picturesFolder;
+    private String picturesFiles;
     private String inspectionReportFile;
-    private String plateNumber;
+    private String car;
     private Integer staffMemberId;
 
     public Integer getStaffMemberId() {
@@ -67,12 +67,12 @@ public final class InspectionDTO implements DTOEntity {
         return damaged;
     }
 
-    public String getPicturesFolder() {
-        return picturesFolder;
+    public String getPicturesFiles() {
+        return picturesFiles;
     }
 
-    public void setPicturesFolder(String picturesFolder) {
-        this.picturesFolder = picturesFolder;
+    public void setPicturesFiles(String picturesFiles) {
+        this.picturesFiles = picturesFiles;
     }
 
     public String getInspectionReportFile() {
@@ -83,41 +83,28 @@ public final class InspectionDTO implements DTOEntity {
         this.inspectionReportFile = inspectionReportFile;
     }
 
-    public String getPlateNumber() {
-        return plateNumber;
+    public String getCar() {
+        return car;
     }
 
-    public void setPlateNumber(String plateNumber) {
-        this.plateNumber = plateNumber;
+    public void setCar(String car) {
+        this.car = car;
     }
 
-    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFolder, String inspectionReportFile, String plateNumber, Integer staffMemberId) {
+    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFiles, String inspectionReportFile, String car, Integer staffMemberId) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
         this.expertisedBy = expertisedBy;
         this.damaged = damaged;
-        this.picturesFolder = picturesFolder;
+        this.picturesFiles = picturesFiles;
         this.inspectionReportFile = inspectionReportFile;
-        this.plateNumber = plateNumber;
+        this.car = car;
         this.staffMemberId = staffMemberId;
     }
 
     public InspectionDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "InspectionDTO{" +
-                "carInspectionId=" + carInspectionId +
-                ", inspectionDate=" + inspectionDate +
-                ", sentDate=" + sentDate +
-                ", expertisedBy='" + expertisedBy +
-                ", damaged=" + damaged +
-                ", picturesFolder=" + picturesFolder +
-                ", inspectionReportFile=" + inspectionReportFile +
-                ", plateNumber=" + plateNumber +
-                ", staffMember=" + staffMemberId +
-                '}';
-    }
+
 }
