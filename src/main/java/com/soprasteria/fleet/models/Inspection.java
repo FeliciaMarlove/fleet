@@ -74,8 +74,8 @@ public final class Inspection implements Serializable {
         return picturesFiles;
     }
 
-    public void setPicturesFiles(String picturesFolder) {
-        this.picturesFiles = Sanitizer.stripXSS(picturesFolder);
+    public void setPicturesFiles(String picturesFiles) {
+        this.picturesFiles = Sanitizer.stripXSS(picturesFiles);
     }
 
     public String getInspectionReportFile() {
@@ -110,10 +110,10 @@ public final class Inspection implements Serializable {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
-        this.expertisedBy = expertisedBy;
+        this.expertisedBy = Sanitizer.stripXSS(expertisedBy);
         this.damaged = damaged;
-        this.picturesFiles = picturesFiles;
-        this.inspectionReportFile = inspectionReportFile;
+        this.picturesFiles = Sanitizer.stripXSS(picturesFiles);
+        this.inspectionReportFile = Sanitizer.stripXSS(inspectionReportFile);
         this.car = car;
     }
 

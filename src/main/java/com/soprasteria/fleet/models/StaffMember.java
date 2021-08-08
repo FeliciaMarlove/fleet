@@ -115,10 +115,10 @@ public final class StaffMember implements Serializable {
 
     public StaffMember(String staffLastName, String staffFirstName, Boolean hasCar, String corporateEmail, Language communicationLanguage) {
         this();
-        this.staffLastName = staffLastName;
-        this.staffFirstName = staffFirstName;
+        this.staffLastName = Sanitizer.stripXSS(staffLastName);
+        this.staffFirstName = Sanitizer.stripXSS(staffFirstName);
         this.hasCar = hasCar;
-        this.corporateEmail = corporateEmail;
+        this.corporateEmail = Sanitizer.stripXSS(corporateEmail);
         this.communicationLanguage = communicationLanguage;
     }
 
