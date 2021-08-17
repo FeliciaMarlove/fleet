@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/inspection")
-@CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
+@CrossOrigin
 public final class InspectionController {
     private final InspectionService service;
 
