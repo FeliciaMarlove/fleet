@@ -51,7 +51,9 @@ public final class InspectionServiceImpl implements InspectionService {
     @Override
     public InspectionDTO create(InspectionDTO inspectionDTO) throws FleetItemNotFoundException {
         Inspection inspection = (Inspection) new DtoUtils().convertToEntity(new Inspection(), inspectionDTO);
-        Optional<Car> optionalCar = carRepository.findById(inspectionDTO.getPlateNumber());
+        inspection.setCar(carRepository.findById(inspectionDTO.getCar()).get());
+        repository.save(inspection);
+        Optional<Car> optionalCar = carRepository.findById(inspectionDTO.getCar());
         if (optionalCar.isPresent()) {
             Car car = optionalCar.get();
             inspection.setCar(car);
@@ -59,7 +61,7 @@ public final class InspectionServiceImpl implements InspectionService {
             carRepository.save(car);
             sendInspection(inspection);
         } else {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getPlateNumber() + ". Inspection was not sent.");
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getCar() + ". Inspection was not sent.");
         }
         repository.save(inspection);
         return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
@@ -125,7 +127,7 @@ public final class InspectionServiceImpl implements InspectionService {
      */
     private InspectionDTO getInspectionDtoAndSetPlateNumberAndStaffId(Inspection inspection) {
         InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
-        inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
+        inspectionDTO.setCar(inspection.getCar().getPlateNumber());
         inspectionDTO.setStaffMemberId(inspection.getCar().getStaffMember().getStaffMemberId());
         return inspectionDTO;
     }

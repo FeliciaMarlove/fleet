@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/fillup")
-@CrossOrigin
 public final class TankFillingController {
     private final TankFillingService service;
 
