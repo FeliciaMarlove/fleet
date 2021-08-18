@@ -79,10 +79,11 @@
             <version>1.14.1</version>
         </dependency>
         <!-- Azure blob storage -->
+        <!-- https://mvnrepository.com/artifact/com.azure/azure-storage-blob -->
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.6.0</version>
+            <version>12.13.0</version>
         </dependency>
     </dependencies>
 
