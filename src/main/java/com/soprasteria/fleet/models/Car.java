@@ -160,14 +160,14 @@ public final class Car implements Serializable {
 
     public Car(String plateNumber, Integer kilometers, Brand brand, String model, FuelType fuelType, Double averageConsumption, LocalDate startDate, String freeText, LeasingCompany leasingCompany, StaffMember staffMember) {
         this();
-        this.plateNumber = plateNumber;
+        this.plateNumber = Sanitizer.stripXSS(plateNumber);
         this.kilometers = kilometers;
         this.brand = brand;
-        this.model = model;
+        this.model = Sanitizer.stripXSS(model);
         this.fuelType = fuelType;
         this.averageConsumption = averageConsumption;
         this.startDate = startDate;
-        this.freeText = freeText;
+        this.freeText = Sanitizer.stripXSS(freeText);
         this.leasingCompany = leasingCompany;
         this.staffMember = staffMember;
     }

@@ -5,7 +5,6 @@ import com.soprasteria.fleet.services.utilServices.interfaces.Sanitizer;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -20,17 +19,17 @@ public final class Inspection implements Serializable {
     @Column(name = "inspection_date", nullable = false)
     private LocalDateTime inspectionDate;
 
-    @Column(name= "sent_date")
+    @Column(name= "sent_date", nullable = false)
     private LocalDateTime sentDate;
 
-    @Column(name = "inspection_by")
+    @Column(name = "inspection_by", nullable = false)
     private String expertisedBy;
 
     @Column(name = "is_damaged")
     private boolean damaged;
 
     @Column(name = "pictures")
-    private String picturesFolder;
+    private String picturesFiles;
 
     @Column(name = "inspection_report")
     private String inspectionReportFile;
@@ -71,12 +70,12 @@ public final class Inspection implements Serializable {
         this.damaged = damaged;
     }
 
-    public String getPicturesFolder() {
-        return picturesFolder;
+    public String getPicturesFiles() {
+        return picturesFiles;
     }
 
-    public void setPicturesFolder(String picturesFolder) {
-        this.picturesFolder = Sanitizer.stripXSS(picturesFolder);
+    public void setPicturesFiles(String picturesFiles) {
+        this.picturesFiles = Sanitizer.stripXSS(picturesFiles);
     }
 
     public String getInspectionReportFile() {
@@ -107,14 +106,14 @@ public final class Inspection implements Serializable {
         this.damaged = damaged;
     }
 
-    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean damaged, String picturesFolder, String inspectionReportFile, Car car) {
+    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean damaged, String picturesFiles, String inspectionReportFile, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
-        this.expertisedBy = expertisedBy;
+        this.expertisedBy = Sanitizer.stripXSS(expertisedBy);
         this.damaged = damaged;
-        this.picturesFolder = picturesFolder;
-        this.inspectionReportFile = inspectionReportFile;
+        this.picturesFiles = Sanitizer.stripXSS(picturesFiles);
+        this.inspectionReportFile = Sanitizer.stripXSS(inspectionReportFile);
         this.car = car;
     }
 
@@ -129,7 +128,7 @@ public final class Inspection implements Serializable {
                 ", sentDate=" + sentDate +
                 ", expertisedBy='" + expertisedBy + '\'' +
                 ", damaged=" + damaged +
-                ", picturesFolder='" + picturesFolder + '\'' +
+                ", picturesFolder='" + picturesFiles + '\'' +
                 ", inspectionReportFile='" + inspectionReportFile + '\'' +
                 ", car=" + car.getPlateNumber() +
                 '}';
