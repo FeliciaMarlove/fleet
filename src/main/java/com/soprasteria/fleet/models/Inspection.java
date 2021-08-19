@@ -67,7 +67,11 @@ public final class Inspection implements Serializable {
     }
 
     public void setDamaged(Boolean damaged) {
-        this.damaged = damaged;
+        if (damaged == null) {
+            this.damaged = false;
+        } else {
+            this.damaged = damaged;
+        }
     }
 
     public String getPicturesFiles() {
@@ -106,12 +110,12 @@ public final class Inspection implements Serializable {
         this.damaged = damaged;
     }
 
-    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, boolean damaged, String picturesFiles, String inspectionReportFile, Car car) {
+    public Inspection(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFiles, String inspectionReportFile, Car car) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
         this.expertisedBy = Sanitizer.stripXSS(expertisedBy);
-        this.damaged = damaged;
+        this.damaged = damaged == null ? false : damaged;
         this.picturesFiles = Sanitizer.stripXSS(picturesFiles);
         this.inspectionReportFile = Sanitizer.stripXSS(inspectionReportFile);
         this.car = car;
