@@ -12,8 +12,8 @@ public final class InspectionDTO implements DTOEntity {
     private Boolean damaged;
     private String picturesFiles;
     private String inspectionReportFile;
-    private String car;
     private Integer staffMemberId;
+    private String plateNumber;
 
     public Integer getStaffMemberId() {
         return staffMemberId;
@@ -83,15 +83,15 @@ public final class InspectionDTO implements DTOEntity {
         this.inspectionReportFile = inspectionReportFile;
     }
 
-    public String getCar() {
-        return car;
+    public String getPlateNumber() {
+        return plateNumber;
     }
 
-    public void setCar(String car) {
-        this.car = car;
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
     }
 
-    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFiles, String inspectionReportFile, String car, Integer staffMemberId) {
+    public InspectionDTO(Integer carInspectionId, LocalDateTime inspectionDate, LocalDateTime sentDate, String expertisedBy, Boolean damaged, String picturesFiles, String inspectionReportFile, Integer staffMemberId, String plateNumber) {
         this.carInspectionId = carInspectionId;
         this.inspectionDate = inspectionDate;
         this.sentDate = sentDate;
@@ -99,8 +99,8 @@ public final class InspectionDTO implements DTOEntity {
         this.damaged = damaged;
         this.picturesFiles = picturesFiles;
         this.inspectionReportFile = inspectionReportFile;
-        this.car = car;
         this.staffMemberId = staffMemberId;
+        this.plateNumber = plateNumber;
     }
 
     public InspectionDTO() {

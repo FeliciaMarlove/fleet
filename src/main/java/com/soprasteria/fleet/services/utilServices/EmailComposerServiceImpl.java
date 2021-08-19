@@ -21,16 +21,11 @@ public final class EmailComposerServiceImpl implements EmailComposerService {
         StringBuilder stringBuilder = new StringBuilder();
         boolean staffMember = tankFilling.getCar().getStaffMember() != null;
         stringBuilder.append("A discrepancy has been detected:")
-                .append("\nDate: ")
-                .append(tankFilling.getDateTimeFilling())
-                .append("\nCar: ")
-                .append(tankFilling.getCar().getPlateNumber())
-                .append("\nStaff member: ")
-                .append(staffMember ? tankFilling.getCar().getStaffMember().getStaffFirstName() : "{a problem occurred while retrieving the staff member")
-                .append(" ")
-                .append(staffMember ? tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase() : "")
-                .append("\nDiscrepancy: ")
-                .append(tankFilling.getDiscrepancyType());
+                .append("\nDate: ").append(tankFilling.getDateTimeFilling())
+                .append("\nCar: ").append(tankFilling.getCar().getPlateNumber())
+                .append("\nStaff member: ").append(staffMember ? tankFilling.getCar().getStaffMember().getStaffFirstName() : "{a problem occurred while retrieving the staff member")
+                .append(" ").append(staffMember ? tankFilling.getCar().getStaffMember().getStaffLastName().toUpperCase() : "")
+                .append("\nDiscrepancy: ").append(tankFilling.getDiscrepancyType());
 
         switch (tankFilling.getDiscrepancyType()) {
             case BEFORE_BIGGER_THAN_AFTER :
@@ -80,14 +75,8 @@ public final class EmailComposerServiceImpl implements EmailComposerService {
             stringBuilder.append(" revealed no damage.");
         } else {
             stringBuilder.append(" revealed some damage.")
-                    .append("\nPlease consult the report at this address ")
-                    .append("<a href=\"" + inspection.getInspectionReportFile() + "\">Report</a>")
-                    .append("\n and attached pictures:");
-            String[] pictures = inspection.getPicturesFiles().split(",");
-            for (String pic: pictures) {
-                stringBuilder.append("\n<a href=\"" + pic + "\"> Picture </a>");
-            }
-            stringBuilder.append("\nYou will receive information about the financial implication in the coming days");
+                    .append("\nPlease consult the report at " + inspection.getInspectionReportFile());
+            stringBuilder.append("\nYou will receive information about the financial implication in the coming days.");
         }
         stringBuilder.append("\nBest regards,\nThe fleet manager");
         return stringBuilder.toString();
