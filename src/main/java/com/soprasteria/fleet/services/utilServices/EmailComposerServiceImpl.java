@@ -1,6 +1,7 @@
 package com.soprasteria.fleet.services.utilServices;
 
 import com.soprasteria.fleet.errors.FleetGenericException;
+import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.models.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
@@ -9,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public final class EmailComposerServiceImpl implements EmailComposerService {
+    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
+
+    public EmailComposerServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl) {
+        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
+    }
 
     @Override
     public String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling) {
@@ -49,41 +55,53 @@ public final class EmailComposerServiceImpl implements EmailComposerService {
         return stringBuilder.toString();
     }
 
-    /*
-    // TODO
-    deal with end of contract without damage and with inspection
-     */
     @Override
-    public String writeEmailToStaffAboutInspection(StaffMember staffMember, boolean isInspection) {
+    public String writeEmailToStaffAboutInspection(Inspection inspection, StaffMember staffMember) {
         if (staffMember == null) {
+            azureBlobLoggingServiceImpl.writeToLoggingFile("An inspection e-mail couldn't be sent because staff member is null");
             throw new FleetGenericException("An inspection e-mail couldn't be sent because staff member is null");
         }
-        StringBuilder stringBuilder = new StringBuilder();
         Language lg = staffMember.getCommunicationLanguage();
         switch (lg) {
-            case FR : writeFrench(stringBuilder, staffMember);
-            break;
-            case NL : writeDutch(stringBuilder, staffMember);
-            break;
-            case EN : default : writeEnglish(stringBuilder, staffMember);
-            break;
+            case FR : //return writeFrench(inspection, staffMember); // TODO
+            case NL : //return writeDutch(inspection, staffMember); // TODO
+            case EN : default : return writeEnglish(inspection, staffMember);
         }
+    }
+
+    private String writeEnglish(Inspection inspection, StaffMember staffMember) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("To ")
+                .append(staffMember.getStaffFirstName()).append(" ")
+                .append(staffMember.getStaffLastName().toUpperCase())
+                .append("\nThe inspection of your car ")
+                .append(inspection.getCar().getPlateNumber());
+        if(!inspection.isDamaged()) {
+            stringBuilder.append(" revealed no damage.");
+        } else {
+            stringBuilder.append(" revealed some damage.")
+                    .append("\nPlease consult the report at this address ")
+                    .append("<a href=\"" + inspection.getInspectionReportFile() + "\">Report</a>")
+                    .append("\n and attached pictures:");
+            String[] pictures = inspection.getPicturesFiles().split(",");
+            for (String pic: pictures) {
+                stringBuilder.append("\n<a href=\"" + pic + "\"> Picture </a>");
+            }
+            stringBuilder.append("\nYou will receive information about the financial implication in the coming days");
+        }
+        stringBuilder.append("\nBest regards,\nThe fleet manager");
         return stringBuilder.toString();
     }
 
-
-    private void writeDutch(StringBuilder stringBuilder, StaffMember staffMember) {
+    private String writeDutch(Inspection inspection, StaffMember staffMember) {
+        StringBuilder stringBuilder = new StringBuilder();
         // TODO
+        return stringBuilder.toString();
     }
 
-    private void writeFrench(StringBuilder stringBuilder, StaffMember staffMember) {
-        stringBuilder.append("A l'attention de ")
-                .append(staffMember.getStaffFirstName()).append(" ")
-                .append(staffMember.getStaffLastName().toUpperCase());
+    private String writeFrench(Inspection inspection, StaffMember staffMember) {
+        StringBuilder stringBuilder = new StringBuilder();
         // TODO
-    }
-
-    private void writeEnglish(StringBuilder stringBuilder, StaffMember staffMember) {
-        // TODO
+        return stringBuilder.toString();
     }
 }
