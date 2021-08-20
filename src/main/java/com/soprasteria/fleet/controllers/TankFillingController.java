@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/fillup")
 public final class TankFillingController {
@@ -16,21 +15,25 @@ public final class TankFillingController {
         this.service = service;
     }
 
+    @CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
     @GetMapping("/{id}")
     public TankFillingDTO getFillup(@PathVariable("id") Integer id) {
         return service.read(id);
     }
 
+    @CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
     @GetMapping("/{filter}/{option}")
     public List<TankFillingDTO> getFillups(@PathVariable("filter") String filter, @PathVariable("option") String option) {
         return service.read(filter, option);
     }
 
+    @CrossOrigin({"http://localhost:4200"}) //TODO add origin of Python script
     @PostMapping
     public TankFillingDTO createFillup(@RequestBody TankFillingDTO tankFillingDTO) {
         return service.create(tankFillingDTO);
     }
 
+    @CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
     @PostMapping("/correction")
     public TankFillingDTO updateFillup(@RequestBody TankFillingDTO tankFillingDTO) {
         return service.update(tankFillingDTO);

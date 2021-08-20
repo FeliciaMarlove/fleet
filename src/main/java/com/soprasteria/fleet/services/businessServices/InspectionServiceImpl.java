@@ -4,6 +4,7 @@ import com.soprasteria.fleet.dto.InspectionDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
 import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
+import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.enums.filters.InspectionFilter;
 import com.soprasteria.fleet.models.Car;
 import com.soprasteria.fleet.models.Inspection;
@@ -11,6 +12,8 @@ import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.InspectionRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
 import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
+import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,11 +27,15 @@ public final class InspectionServiceImpl implements InspectionService {
     private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final InspectionRepository repository;
     private final CarRepository carRepository;
+    private final EmailSenderService emailSenderService;
+    private final EmailComposerService emailComposerService;
 
-    public InspectionServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, InspectionRepository repository, CarRepository carRepository) {
+    public InspectionServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, InspectionRepository repository, CarRepository carRepository, EmailSenderService emailSenderService, EmailComposerService emailComposerService) {
         this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
         this.repository = repository;
         this.carRepository = carRepository;
+        this.emailSenderService = emailSenderService;
+        this.emailComposerService = emailComposerService;
     }
 
     @Override
@@ -51,19 +58,21 @@ public final class InspectionServiceImpl implements InspectionService {
     @Override
     public InspectionDTO create(InspectionDTO inspectionDTO) throws FleetItemNotFoundException {
         Inspection inspection = (Inspection) new DtoUtils().convertToEntity(new Inspection(), inspectionDTO);
-        inspection.setCar(carRepository.findById(inspectionDTO.getCar()).get());
+        inspection.setCar(carRepository.findById(inspectionDTO.getPlateNumber()).get());
         repository.save(inspection);
-        Optional<Car> optionalCar = carRepository.findById(inspectionDTO.getCar());
+        Optional<Car> optionalCar = carRepository.findById(inspectionDTO.getPlateNumber());
         if (optionalCar.isPresent()) {
             Car car = optionalCar.get();
             inspection.setCar(car);
             car.setInspection(inspection);
             carRepository.save(car);
-            sendInspection(inspection);
+            StaffMember staffMember = car.getStaffMember();
+            sendInspection(staffMember, inspection);
         } else {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getCar() + ". Inspection was not sent.");
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getPlateNumber() + ". Inspection was not sent.");
         }
         repository.save(inspection);
+
         return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
     }
 
@@ -95,7 +104,7 @@ public final class InspectionServiceImpl implements InspectionService {
 
     private List<InspectionDTO> getAllWithDateBiggerThan(String date) throws FleetGenericException {
         try {
-            LocalDateTime localDate = LocalDateTime.parse("date" + "T00:00:00");
+            LocalDateTime localDate = LocalDateTime.parse(date + "T00:00:00");
             return repository.selectInspectionWhereDateGreaterThan(localDate).stream().map(this::getInspectionDtoAndSetPlateNumberAndStaffId).collect(Collectors.toList());
         } catch (Exception e) {
             azureBlobLoggingServiceImpl.writeToLoggingFile("Failed to convert parse date " + date);
@@ -113,7 +122,7 @@ public final class InspectionServiceImpl implements InspectionService {
                 case DATE_ABOVE: return getAllWithDateBiggerThan(option);
             }
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("INSPECTION Filter could not be applied: " + filter + option);
+            azureBlobLoggingServiceImpl.writeToLoggingFile("INSPECTION Filter could not be applied: " + filter + " " + option);
             return getAllInspections(inspectionDTOS);
         }
     }
@@ -127,16 +136,20 @@ public final class InspectionServiceImpl implements InspectionService {
      */
     private InspectionDTO getInspectionDtoAndSetPlateNumberAndStaffId(Inspection inspection) {
         InspectionDTO inspectionDTO = (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
-        inspectionDTO.setCar(inspection.getCar().getPlateNumber());
+        inspectionDTO.setPlateNumber(inspection.getCar().getPlateNumber());
         inspectionDTO.setStaffMemberId(inspection.getCar().getStaffMember().getStaffMemberId());
         return inspectionDTO;
     }
 
-    private void sendInspection(Inspection inspection) throws FleetGenericException {
+    // ------- EMAILING -------
+
+    private void sendInspection(StaffMember staffMember, Inspection inspection) {
         try {
-            // TODO
+            emailSenderService.sendSimpleMessage(staffMember.getCorporateEmail(), "Your car was inspected",
+                    emailComposerService.writeEmailToStaffAboutInspection(inspection, staffMember));
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Sending e-mail failed for inspection " + inspection.getCarInspectionId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Sending e-mail failed for inspection "
+                    + inspection.getCarInspectionId());
         }
     }
 }
