@@ -71,7 +71,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
         car.setKilometers(tankFilling.getKmAfter());
-        tankFilling.setDateTimeFilling(LocalDateTime.now());
+        tankFilling.setDateTimeFilling(LocalDateTime.now()); // this information should come from the emitter!
         tankFilling.setConsumption(getConsumption(tankFilling));
         Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
         checkForDiscrepancies(tankFilling, averageCarConsumptionWithTolerance);
@@ -129,9 +129,15 @@ public final class TankFillingServiceImpl implements TankFillingService {
         return car.getAverageConsumption() + (car.getAverageConsumption() / 100 * TOLERANCE_PERCENTAGE);
     }
 
+    /**
+     * Search for discrepancies based on received data and set discrepancy type
+     * Increment number of discrepancies of staff member if discrepancy
+     * Send an email to fleet manager if discrepancy
+     * @param tankFilling
+     * @param consumptionWithTolerance
+     */
     private void checkForDiscrepancies(TankFilling tankFilling, Double consumptionWithTolerance) {
         Car car = tankFilling.getCar();
-        StaffMember staffMember = car.getStaffMember();
         if (car.getFuelType() != tankFilling.getFuelType()) {
             tankFilling.setConsumption(0.0);
             tankFilling.setDiscrepancyType(DiscrepancyType.WRONG_FUEL);
@@ -146,6 +152,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
         }
         // executed if the app doesn't enter the "else" instruction, thus in case of discrepancy:
         tankFilling.setDiscrepancy(true);
+        StaffMember staffMember = car.getStaffMember();
         if (staffMember != null) {
             staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ? 1 : staffMember.getNumberDiscrepancies() + 1);
             staffMemberRepository.save(staffMember);
@@ -223,6 +230,12 @@ public final class TankFillingServiceImpl implements TankFillingService {
     // ------- EMAILING -------
 
     private void sendEmail(TankFilling tankFilling) {
-        emailSenderService.sendSimpleMessage("fleet.tfe.2021@gmail.com", "New discrepancy", emailComposerService.writeEmailToFleetManagerAboutDiscrepancy(tankFilling));
+        try {
+            emailSenderService.sendSimpleMessage("fleet.tfe.2021@gmail.com", "New discrepancy",
+                    emailComposerService.writeEmailToFleetManagerAboutDiscrepancy(tankFilling));
+        } catch (Exception e) {
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Sending e-mail failed for erroneous tank fillup "
+                    + tankFilling.getTankFillingId());
+        }
     }
 }
