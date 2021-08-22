@@ -25,7 +25,7 @@ public final class EmailSenderServiceImpl implements EmailSenderService {
 
     @Override
     public void sendSimpleMessage(String to, String subject, String text) {
-        Session session = setSession(to, subject, text);
+        Session session = setSession();
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
@@ -41,7 +41,7 @@ public final class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
-    private Session setSession(String to, String subject, String text) {
+    private Session setSession() {
         Session session = Session.getInstance(props,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
