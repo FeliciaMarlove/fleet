@@ -140,18 +140,6 @@ public final class TankFillingDTO implements DTOEntity {
 
     @Override
     public String toString() {
-        return "TankFillingDTO{" +
-                "tankFillingId=" + tankFillingId +
-                ", kmBefore=" + kmBefore +
-                ", kmAfter=" + kmAfter +
-                ", discrepancy=" + discrepancy +
-                ", discrepancyType=" + discrepancyType +
-                ", dateTimeFilling=" + dateTimeFilling +
-                ", fuelType=" + fuelType +
-                ", liters=" + liters +
-                ", plateNumber=" + plateNumber +
-                ", correction for=" + correctionForId +
-                ", corrected by=" + correctedById +
-                '}';
+        return "TankFillingDTO : " + this.getTankFillingId();
     }
 }
