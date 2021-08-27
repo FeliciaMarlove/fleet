@@ -112,6 +112,7 @@ public final class CarServiceImpl implements CarService {
 
     /**
      * Check every day (or at startup) if there are terminated contracts and update car status
+     * Dummy method
      */
     @Bean
     @Scheduled(fixedDelay = 86_400_000) // in production with an app running continuously, use Cron expression
