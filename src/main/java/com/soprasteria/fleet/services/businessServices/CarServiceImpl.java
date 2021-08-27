@@ -16,13 +16,18 @@ import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
 import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@EnableScheduling
 public final class CarServiceImpl implements CarService {
     private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final CarRepository repository;
@@ -105,6 +110,20 @@ public final class CarServiceImpl implements CarService {
         }
     }
 
+    /**
+     * Check every day (or at startup) if there are terminated contracts and update car status
+     */
+    @Bean
+    @Scheduled(fixedDelay = 86_400_000) // in production with an app running continuously, use Cron expression
+    public void updateCarList() {
+        repository.findAll().forEach(car -> {
+            if (car.getEndDate() != null && LocalDate.now().isAfter(car.getEndDate())) {
+                car.setOngoing(false);
+                repository.save(car);
+                azureBlobLoggingServiceImpl.writeToLoggingFile("Car " + car.getStaffMember() + " was archived");
+            }
+        });
+    }
 
     /* PRIVATE METHODS */
 
