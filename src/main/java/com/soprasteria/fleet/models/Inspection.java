@@ -126,16 +126,7 @@ public final class Inspection implements Serializable {
 
     @Override
     public String toString() {
-        return "Inspection{" +
-                "carInspectionId=" + carInspectionId +
-                ", inspectionDate=" + inspectionDate +
-                ", sentDate=" + sentDate +
-                ", expertisedBy='" + expertisedBy + '\'' +
-                ", damaged=" + damaged +
-                ", picturesFolder='" + picturesFiles + '\'' +
-                ", inspectionReportFile='" + inspectionReportFile + '\'' +
-                ", car=" + car.getPlateNumber() +
-                '}';
+        return "Inspection : " + this.getCarInspectionId();
     }
 
     @Override

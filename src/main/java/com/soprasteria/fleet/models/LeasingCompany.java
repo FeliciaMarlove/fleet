@@ -94,14 +94,7 @@ public final class LeasingCompany implements Serializable {
 
     @Override
     public String toString() {
-        return "LeasingCompany{" +
-                "leasingCompanyId=" + leasingCompanyId +
-                ", leasingCompanyName='" + leasingCompanyName + '\'' +
-                ", leasingCompanyContactPerson='" + leasingCompanyContactPerson + '\'' +
-                ", leasingCompanyPhone='" + leasingCompanyPhone + '\'' +
-                ", leasingCompanyEmail='" + leasingCompanyEmail + '\'' +
-                ", isActive=" + active +
-                '}';
+        return "LeasingCompany : " + this.getLeasingCompanyId();
     }
 
     @Override
