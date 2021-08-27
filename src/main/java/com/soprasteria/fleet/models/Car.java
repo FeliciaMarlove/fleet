@@ -179,21 +179,7 @@ public final class Car implements Serializable {
 
     @Override
     public String toString() {
-        return "Car{" +
-                "plateNumber='" + plateNumber + '\'' +
-                ", kilometers=" + kilometers +
-                ", brand=" + brand +
-                ", model='" + model + '\'' +
-                ", fuelType=" + fuelType +
-                ", averageConsumption=" + averageConsumption +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", ongoing=" + ongoing +
-                ", freeText='" + freeText + '\'' +
-                ", leasingCompany=" + leasingCompany.getLeasingCompanyName() +
-                ", staffMember=" + (staffMember != null ?staffMember.getStaffFirstName() + " " + staffMember.getStaffLastName() : "No staff member") +
-                ", inspection=" + (inspection != null ? inspection.getCarInspectionId() : null) +
-                '}';
+        return "Car : " + this.getPlateNumber();
     }
 
     @Override

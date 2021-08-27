@@ -128,15 +128,7 @@ public final class StaffMember implements Serializable {
 
     @Override
     public String toString() {
-        return "StaffMember{" +
-                "staffMemberId=" + staffMemberId +
-                ", staffLastName='" + staffLastName + '\'' +
-                ", staffFirstName='" + staffFirstName + '\'' +
-                ", hasCar=" + hasCar +
-                ", corporateEmail='" + corporateEmail + '\'' +
-                ", communicationLanguage=" + communicationLanguage +
-                ", numberDiscrepancies=" + numberDiscrepancies +
-                '}';
+        return "StaffMember : " + this.getStaffMemberId();
     }
 
     @Override
