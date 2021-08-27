@@ -84,14 +84,6 @@ public final class StaffMemberDTO implements DTOEntity {
 
     @Override
     public String toString() {
-        return "leasingCompanyDTO{" +
-                "staffMemberId=" + staffMemberId +
-                ", staffLastName='" + staffLastName + '\'' +
-                ", staffFirstName='" + staffFirstName + '\'' +
-                ", hasCar=" + hasCar +
-                ", corporateEmail='" + corporateEmail + '\'' +
-                ", communicationLanguage=" + communicationLanguage +
-                ", numberActualDiscrepancies=" + numberDiscrepancies +
-                '}';
+        return "staffMemberDTO : " + this.getStaffMemberId();
     }
 }
