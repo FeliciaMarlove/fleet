@@ -118,10 +118,10 @@ public final class CarServiceImpl implements CarService {
     @Scheduled(fixedDelay = 86_400_000) // in production with an app running continuously, use Cron expression
     public void updateCarList() {
         repository.findAll().forEach(car -> {
-            if (car.getEndDate() != null && LocalDate.now().isAfter(car.getEndDate())) {
+            if (car.getEndDate() != null && car.getOngoing() && LocalDate.now().isAfter(car.getEndDate())) {
                 car.setOngoing(false);
                 repository.save(car);
-                azureBlobLoggingServiceImpl.writeToLoggingFile("Car " + car.getStaffMember() + " was archived");
+                azureBlobLoggingServiceImpl.writeToLoggingFile("Car " + car.getPlateNumber() + " was archived, contract terminated " + car.getEndDate());
             }
         });
     }
