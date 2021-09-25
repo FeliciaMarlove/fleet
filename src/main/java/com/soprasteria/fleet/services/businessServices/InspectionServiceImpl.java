@@ -16,6 +16,7 @@ import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerServi
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public final class InspectionServiceImpl implements InspectionService {
+public class InspectionServiceImpl implements InspectionService {
     private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final InspectionRepository repository;
     private final CarRepository carRepository;
@@ -56,6 +57,7 @@ public final class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
+    @Transactional
     public InspectionDTO create(InspectionDTO inspectionDTO) throws FleetItemNotFoundException {
         Inspection inspection = (Inspection) new DtoUtils().convertToEntity(new Inspection(), inspectionDTO);
         inspection.setCar(carRepository.findById(inspectionDTO.getPlateNumber()).get());
