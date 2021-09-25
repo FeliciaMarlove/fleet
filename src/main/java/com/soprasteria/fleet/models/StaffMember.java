@@ -27,7 +27,8 @@ public final class StaffMember implements Serializable {
     @Column(name = "has_car", nullable = false)
     private Boolean hasCar;
 
-    @Column(name = "corporate_email", unique = true, nullable = false)
+    @Column(name = "corporate_email", /*unique = true,*/ nullable = false)
+    // env de développement : not unique pour pouvoir affecter mon adresse mail à tous les staff members
     private String corporateEmail;
 
     @Column(name = "language", nullable = false)
