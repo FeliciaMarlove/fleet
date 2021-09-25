@@ -231,7 +231,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
 
     private void sendEmail(TankFilling tankFilling) {
         try {
-            emailSenderService.sendSimpleMessage("fleet.tfe.2021@gmail.com", "New discrepancy",
+            emailSenderService.sendSimpleMessage("florence.mary@iramps.email", "New discrepancy",
                     emailComposerService.writeEmailToFleetManagerAboutDiscrepancy(tankFilling));
         } catch (Exception e) {
             azureBlobLoggingServiceImpl.writeToLoggingFile("Sending e-mail failed for erroneous tank fillup "

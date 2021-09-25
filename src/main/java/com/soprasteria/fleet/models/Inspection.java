@@ -28,10 +28,10 @@ public final class Inspection implements Serializable {
     @Column(name = "is_damaged")
     private boolean damaged;
 
-    @Column(name = "pictures")
+    @Column(name = "pictures", length = 2500)
     private String picturesFiles;
 
-    @Column(name = "inspection_report")
+    @Column(name = "inspection_report", length = 2500)
     private String inspectionReportFile;
 
     @OneToOne
