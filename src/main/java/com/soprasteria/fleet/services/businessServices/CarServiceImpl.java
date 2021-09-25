@@ -21,6 +21,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Optional;
 
 @Service
 @EnableScheduling
-public final class CarServiceImpl implements CarService {
+public class CarServiceImpl implements CarService {
     private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
     private final CarRepository repository;
     private final StaffMemberRepository staffMemberRepository;
@@ -58,10 +59,11 @@ public final class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public CarDTO create(CarDTO carDTO) {
         // manual check because if not using auto-generated ids, repository.save does update on existing ID
         if(repository.findById(carDTO.getPlateNumber()).isPresent()) {
-            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber() + " .Car plate already exists");
+            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber() + " . Car plate already exists");
         }
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
         repository.save(car);
@@ -74,6 +76,7 @@ public final class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public CarDTO update(CarDTO carDTO) {
         Optional<Car> optionalCar = repository.findById(carDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
