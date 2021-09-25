@@ -17,6 +17,7 @@ import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService
 import com.soprasteria.fleet.services.businessServices.interfaces.TankFillingService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public final class TankFillingServiceImpl implements TankFillingService {
+public class TankFillingServiceImpl implements TankFillingService {
     private final TankFillingRepository repository;
     private final CarRepository carRepository;
     private final StaffMemberRepository staffMemberRepository;
@@ -60,6 +61,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
     }
 
     @Override
+    @Transactional
     public TankFillingDTO create(TankFillingDTO tankFillingDTO) {
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
         Optional<Car> optionalCar = carRepository.findById(tankFillingDTO.getPlateNumber());
@@ -83,6 +85,7 @@ public final class TankFillingServiceImpl implements TankFillingService {
     }
 
     @Override
+    @Transactional
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
         Optional<TankFilling> optionalTankFilling = repository.findById(tankFillingDTO.getTankFillingId());
         if (optionalTankFilling.isEmpty()) {
