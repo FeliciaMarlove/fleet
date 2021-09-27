@@ -66,19 +66,25 @@ public class TankFillingServiceImpl implements TankFillingService {
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
         Optional<Car> optionalCar = carRepository.findById(tankFillingDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No car was found with plate number " + tankFillingDTO.getPlateNumber() + "\nTANK FILLUP CREATION FAILED " + tankFillingDTO.getTankFillingId());
+            azureBlobLoggingServiceImpl.writeToLoggingFile("No car was found with plate number "
+                    + tankFillingDTO.getPlateNumber() + "\nTANK FILLUP CREATION FAILED " + tankFillingDTO.getTankFillingId());
             return null;
         }
         Car car = optionalCar.get();
         tankFilling.setCar(car);
         tankFilling.setKmBefore(car.getKilometers());
-        car.setKilometers(tankFilling.getKmAfter());
-        tankFilling.setDateTimeFilling(LocalDateTime.now()); // this information should come from the emitter!
+        tankFilling.setDateTimeFilling(LocalDateTime.now());
         tankFilling.setConsumption(getConsumption(tankFilling));
         Double averageCarConsumptionWithTolerance = getAverageCarConsumptionWithTolerance(car);
         checkForDiscrepancies(tankFilling, averageCarConsumptionWithTolerance);
+        boolean kilometersToCorrect = tankFilling.getDiscrepancy() && (
+                tankFilling.getDiscrepancyType().equals(DiscrepancyType.BEFORE_BIGGER_THAN_AFTER)
+                        || tankFilling.getDiscrepancyType().equals(DiscrepancyType.WRONG_FUEL));
+        if (!kilometersToCorrect) {
+            car.setKilometers(tankFilling.getKmAfter());
+            carRepository.save(car);
+        }
         repository.save(tankFilling);
-        carRepository.save(car);
         TankFillingDTO dto = (TankFillingDTO) new DtoUtils().convertToDto(tankFilling, new TankFillingDTO());
         dto.setPlateNumber(car.getPlateNumber());
         return dto;
@@ -157,10 +163,12 @@ public class TankFillingServiceImpl implements TankFillingService {
         tankFilling.setDiscrepancy(true);
         StaffMember staffMember = car.getStaffMember();
         if (staffMember != null) {
-            staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ? 1 : staffMember.getNumberDiscrepancies() + 1);
+            staffMember.setNumberDiscrepancies(staffMember.getNumberDiscrepancies() == null ?
+                    1 : staffMember.getNumberDiscrepancies() + 1);
             staffMemberRepository.save(staffMember);
         } else {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Tank filling with ID " + tankFilling.getTankFillingId() + " has discrepancy but staffMember could not be retrieved");
+            azureBlobLoggingServiceImpl.writeToLoggingFile("Tank filling with ID "
+                    + tankFilling.getTankFillingId() + " has discrepancy but staffMember could not be retrieved");
         }
         sendEmail(tankFilling);
     }
