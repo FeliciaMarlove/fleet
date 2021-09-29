@@ -5,15 +5,16 @@ import com.soprasteria.fleet.models.Inspection;
 import com.soprasteria.fleet.models.enums.Language;
 import com.soprasteria.fleet.models.StaffMember;
 import com.soprasteria.fleet.models.TankFilling;
+import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
 import org.springframework.stereotype.Component;
 
 @Component
 public final class EmailComposerServiceImpl implements EmailComposerService {
-    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
+    private final AzureBlobLoggingService azureBlobLoggingService;
 
-    public EmailComposerServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl) {
-        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
+    public EmailComposerServiceImpl(AzureBlobLoggingService azureBlobLoggingService) {
+        this.azureBlobLoggingService = azureBlobLoggingService;
     }
 
     @Override
@@ -53,7 +54,7 @@ public final class EmailComposerServiceImpl implements EmailComposerService {
     @Override
     public String writeEmailToStaffAboutInspection(Inspection inspection, StaffMember staffMember) {
         if (staffMember == null) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("An inspection e-mail couldn't be sent because staff member is null");
+            azureBlobLoggingService.writeToLoggingFile("An inspection e-mail couldn't be sent because staff member is null");
             throw new FleetGenericException("An inspection e-mail couldn't be sent because staff member is null");
         }
         Language lg = staffMember.getCommunicationLanguage();

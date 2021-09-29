@@ -15,7 +15,7 @@ import com.soprasteria.fleet.repositories.InspectionRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
 import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
+import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,14 +30,14 @@ import java.util.Optional;
 @Service
 @EnableScheduling
 public class CarServiceImpl implements CarService {
-    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
+    private final AzureBlobLoggingService azureBlobLoggingService;
     private final CarRepository repository;
     private final StaffMemberRepository staffMemberRepository;
     private final StaffMemberService staffMemberService;
     private final InspectionRepository inspectionRepository;
 
-    public CarServiceImpl(AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl, CarRepository repository, StaffMemberRepository staffMemberRepository, StaffMemberService staffMemberService, InspectionRepository inspectionRepository) {
-        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
+    public CarServiceImpl(AzureBlobLoggingService azureBlobLoggingService, CarRepository repository, StaffMemberRepository staffMemberRepository, StaffMemberService staffMemberService, InspectionRepository inspectionRepository) {
+        this.azureBlobLoggingService = azureBlobLoggingService;
         this.repository = repository;
         this.staffMemberRepository = staffMemberRepository;
         this.staffMemberService = staffMemberService;
@@ -48,7 +48,7 @@ public class CarServiceImpl implements CarService {
     public CarDTO read(String plateNumber) {
         Optional<Car> car = repository.findById(plateNumber);
         if (car.isPresent()) return getCarDtoAndSetMemberId(car.get());
-        else azureBlobLoggingServiceImpl.writeToLoggingFile("No car found with plate " + plateNumber);
+        else azureBlobLoggingService.writeToLoggingFile("No car found with plate " + plateNumber);
         return null;
     }
 
@@ -70,7 +70,7 @@ public class CarServiceImpl implements CarService {
         if (carDTO.getStaffMemberId() != null) {
             setStaffMember(car, carDTO);
         } else {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Saving car with plate" + carDTO.getPlateNumber() + ". No staff member with id " + carDTO.getStaffMemberId());
+            azureBlobLoggingService.writeToLoggingFile("Saving car with plate" + carDTO.getPlateNumber() + ". No staff member with id " + carDTO.getStaffMemberId());
         }
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
@@ -80,7 +80,7 @@ public class CarServiceImpl implements CarService {
     public CarDTO update(CarDTO carDTO) {
         Optional<Car> optionalCar = repository.findById(carDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No car with plate " + carDTO.getPlateNumber());
+            azureBlobLoggingService.writeToLoggingFile("No car with plate " + carDTO.getPlateNumber());
             return null;
         } else {
             Car car = optionalCar.get();
@@ -124,7 +124,7 @@ public class CarServiceImpl implements CarService {
             if (car.getEndDate() != null && LocalDate.now().isAfter(car.getEndDate())) {
                 car.setOngoing(false);
                 repository.save(car);
-                azureBlobLoggingServiceImpl.writeToLoggingFile("Car " + car.getPlateNumber()
+                azureBlobLoggingService.writeToLoggingFile("Car " + car.getPlateNumber()
                         + " was archived, contract terminated " + car.getEndDate());
             }
         });
@@ -171,7 +171,7 @@ public class CarServiceImpl implements CarService {
             setInspectionId(carDTOS);
             return carDTOS;
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No brand was found with brand name " + brandName);
+            azureBlobLoggingService.writeToLoggingFile("No brand was found with brand name " + brandName);
             throw new FleetItemNotFoundException();
         }
     }
@@ -187,7 +187,7 @@ public class CarServiceImpl implements CarService {
             setInspectionId(carDTOS);
             return carDTOS;
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel was found with fuel name " + fuel);
+            azureBlobLoggingService.writeToLoggingFile("No fuel was found with fuel name " + fuel);
             throw new FleetItemNotFoundException();
         }
     }
@@ -212,7 +212,7 @@ public class CarServiceImpl implements CarService {
                 case INSPECTABLE: return getInspectables(carDTOS);
             }
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("CAR Filter could not be applied: " + filter + " " + option);
+            azureBlobLoggingService.writeToLoggingFile("CAR Filter could not be applied: " + filter + " " + option);
             return getAllCars(carDTOS);
         }
     }
@@ -222,7 +222,7 @@ public class CarServiceImpl implements CarService {
     private void setStaffMember(Car car, CarDTO carDTO) {
         Optional<StaffMember> optionalStaffMember = staffMemberRepository.findById(carDTO.getStaffMemberId());
         if (optionalStaffMember.isEmpty()) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No staff member with id " + carDTO.getStaffMemberId());
+            azureBlobLoggingService.writeToLoggingFile("No staff member with id " + carDTO.getStaffMemberId());
         } else {
             StaffMember staffMember = optionalStaffMember.get();
             car.setStaffMember(staffMember);

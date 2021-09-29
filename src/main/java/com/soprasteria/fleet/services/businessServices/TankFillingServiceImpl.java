@@ -11,7 +11,7 @@ import com.soprasteria.fleet.models.TankFilling;
 import com.soprasteria.fleet.repositories.CarRepository;
 import com.soprasteria.fleet.repositories.StaffMemberRepository;
 import com.soprasteria.fleet.repositories.TankFillingRepository;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
+import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
 import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
 import com.soprasteria.fleet.services.businessServices.interfaces.TankFillingService;
@@ -31,16 +31,16 @@ public class TankFillingServiceImpl implements TankFillingService {
     private final StaffMemberRepository staffMemberRepository;
     private final EmailComposerService emailComposerService;
     private final EmailSenderService emailSenderService;
-    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
+    private final AzureBlobLoggingService azureBlobLoggingService;
     private final Integer TOLERANCE_PERCENTAGE = 15;
 
-    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository, EmailComposerService emailComposerService, EmailSenderService emailSenderService, AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl) {
+    public TankFillingServiceImpl(TankFillingRepository repository, CarRepository carRepository, StaffMemberRepository staffMemberRepository, EmailComposerService emailComposerService, EmailSenderService emailSenderService, AzureBlobLoggingService azureBlobLoggingService) {
         this.repository = repository;
         this.carRepository = carRepository;
         this.staffMemberRepository = staffMemberRepository;
         this.emailComposerService = emailComposerService;
         this.emailSenderService = emailSenderService;
-        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
+        this.azureBlobLoggingService = azureBlobLoggingService;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class TankFillingServiceImpl implements TankFillingService {
             return getTankFillingDtoAndSetPlateNumber(optionalTankFilling.get());
 
         }
-        azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingId);
+        azureBlobLoggingService.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingId);
         return null;
     }
 
@@ -66,7 +66,7 @@ public class TankFillingServiceImpl implements TankFillingService {
         TankFilling tankFilling = (TankFilling) new DtoUtils().convertToEntity(new TankFilling(), tankFillingDTO);
         Optional<Car> optionalCar = carRepository.findById(tankFillingDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No car was found with plate number "
+            azureBlobLoggingService.writeToLoggingFile("No car was found with plate number "
                     + tankFillingDTO.getPlateNumber() + "\nTANK FILLUP CREATION FAILED " + tankFillingDTO.getTankFillingId());
             return null;
         }
@@ -95,7 +95,7 @@ public class TankFillingServiceImpl implements TankFillingService {
     public TankFillingDTO update(TankFillingDTO tankFillingDTO) {
         Optional<TankFilling> optionalTankFilling = repository.findById(tankFillingDTO.getTankFillingId());
         if (optionalTankFilling.isEmpty()) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingDTO.getTankFillingId());
+            azureBlobLoggingService.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingDTO.getTankFillingId());
             return null;
         }
         TankFilling erroneousTankFilling = optionalTankFilling.get();
@@ -167,7 +167,7 @@ public class TankFillingServiceImpl implements TankFillingService {
                     1 : staffMember.getNumberDiscrepancies() + 1);
             staffMemberRepository.save(staffMember);
         } else {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Tank filling with ID "
+            azureBlobLoggingService.writeToLoggingFile("Tank filling with ID "
                     + tankFilling.getTankFillingId() + " has discrepancy but staffMember could not be retrieved");
         }
         sendEmail(tankFilling);
@@ -185,7 +185,7 @@ public class TankFillingServiceImpl implements TankFillingService {
                 case WITH_DISCREPANCY_NOT_CORRECTED: return getAllWithDiscrepancyAndNotCorrected();
             }
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("TANK FILLING Filter could not be applied: " + filter + option);
+            azureBlobLoggingService.writeToLoggingFile("TANK FILLING Filter could not be applied: " + filter + option);
             return getAllTankFillings(tankFillingDTOS);
         }
     }
@@ -202,7 +202,7 @@ public class TankFillingServiceImpl implements TankFillingService {
             LocalDateTime localDateTime = LocalDateTime.parse(date + "T00:00:00");
             return repository.selectFillupWhereDateGreaterThan(localDateTime).stream().map(this::getTankFillingDtoAndSetPlateNumber).collect(Collectors.toList());
         } catch (Exception e ) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Failed to convert parse date " + date);
+            azureBlobLoggingService.writeToLoggingFile("Failed to convert parse date " + date);
             throw new FleetItemNotFoundException();
         }
     }
@@ -245,7 +245,7 @@ public class TankFillingServiceImpl implements TankFillingService {
             emailSenderService.sendSimpleMessage("florence.mary@iramps.email", "New discrepancy",
                     emailComposerService.writeEmailToFleetManagerAboutDiscrepancy(tankFilling));
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("Sending e-mail failed for erroneous tank fillup "
+            azureBlobLoggingService.writeToLoggingFile("Sending e-mail failed for erroneous tank fillup "
                     + tankFilling.getTankFillingId());
         }
     }
