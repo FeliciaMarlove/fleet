@@ -49,7 +49,6 @@ public class TankFillingServiceImpl implements TankFillingService {
         Optional<TankFilling> optionalTankFilling = repository.findById(tankFillingId);
         if (optionalTankFilling.isPresent()) {
             return getTankFillingDtoAndSetPlateNumber(optionalTankFilling.get());
-
         }
         azureBlobLoggingService.writeToLoggingFile("No fuel fill-up was found with id " + tankFillingId);
         throw new FleetItemNotFoundException();
