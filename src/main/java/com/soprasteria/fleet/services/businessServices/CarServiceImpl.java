@@ -49,7 +49,7 @@ public class CarServiceImpl implements CarService {
         Optional<Car> car = repository.findById(plateNumber);
         if (car.isPresent()) return getCarDtoAndSetMemberId(car.get());
         else azureBlobLoggingService.writeToLoggingFile("No car found with plate " + plateNumber);
-        return null;
+        throw new FleetItemNotFoundException();
     }
 
     @Override
@@ -62,8 +62,9 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public CarDTO create(CarDTO carDTO) {
         // manual check because if not using auto-generated ids, repository.save does update on existing ID
-        if(repository.findById(carDTO.getPlateNumber()).isPresent()) {
-            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber() + " . Car plate already exists");
+        if (repository.findById(carDTO.getPlateNumber()).isPresent()) {
+            azureBlobLoggingService.writeToLoggingFile("Can't create car with plate " + carDTO.getPlateNumber() + ". Car plate already exists.");
+            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber());
         }
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
         repository.save(car);
@@ -71,6 +72,7 @@ public class CarServiceImpl implements CarService {
             setStaffMember(car, carDTO);
         } else {
             azureBlobLoggingService.writeToLoggingFile("Saving car with plate" + carDTO.getPlateNumber() + ". No staff member with id " + carDTO.getStaffMemberId());
+            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber());
         }
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
@@ -81,7 +83,7 @@ public class CarServiceImpl implements CarService {
         Optional<Car> optionalCar = repository.findById(carDTO.getPlateNumber());
         if (optionalCar.isEmpty()) {
             azureBlobLoggingService.writeToLoggingFile("No car with plate " + carDTO.getPlateNumber());
-            return null;
+            throw new FleetItemNotFoundException();
         } else {
             Car car = optionalCar.get();
             if (carDTO.getBrand() != null) {
@@ -135,7 +137,7 @@ public class CarServiceImpl implements CarService {
     // ------- FILTERING -------
 
     private List<CarDTO> getAllCars(List<CarDTO> carDTOS) {
-        for(Car car: repository.findAll()) {
+        for (Car car : repository.findAll()) {
             carDTOS.add(getCarDtoAndSetMemberId(car));
         }
         setInspectionId(carDTOS);
@@ -144,7 +146,7 @@ public class CarServiceImpl implements CarService {
 
     private List<CarDTO> getAllActive(List<CarDTO> carDTOS) {
         List<Car> cars = repository.selectFromCarWhereOngoing();
-        cars.forEach( car -> {
+        cars.forEach(car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
         setInspectionId(carDTOS);
@@ -153,7 +155,7 @@ public class CarServiceImpl implements CarService {
 
     private List<CarDTO> getAllArchived(List<CarDTO> carDTOS) {
         List<Car> cars = repository.selectFromCarWhereNotOngoing();
-        cars.forEach( car -> {
+        cars.forEach(car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
         setInspectionId(carDTOS);
@@ -165,7 +167,7 @@ public class CarServiceImpl implements CarService {
         try {
             brand = Brand.valueOf(brandName);
             List<Car> cars = repository.selectFromCarWhereBrandIs(brand.ordinal());
-            cars.forEach( car -> {
+            cars.forEach(car -> {
                 carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
             });
             setInspectionId(carDTOS);
@@ -181,7 +183,7 @@ public class CarServiceImpl implements CarService {
         try {
             fuelType = FuelType.valueOf(fuel);
             List<Car> cars = repository.selectFromCarWhereFuelIs(fuelType.ordinal());
-            cars.forEach( car -> {
+            cars.forEach(car -> {
                 carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
             });
             setInspectionId(carDTOS);
@@ -194,7 +196,7 @@ public class CarServiceImpl implements CarService {
 
     private List<CarDTO> getInspectables(List<CarDTO> carDTOS) {
         List<Car> cars = repository.selectFromCarWhereEndDateSmallerThanNowAndBiggerThan6MonthsAgoAndNoInspection();
-        cars.forEach( car -> {
+        cars.forEach(car -> {
             carDTOS.add((CarDTO) new DtoUtils().convertToDto(car, new CarDTO()));
         });
         return carDTOS;
@@ -204,25 +206,40 @@ public class CarServiceImpl implements CarService {
         try {
             CarFilter carFilter = CarFilter.valueOf(filter);
             switch (carFilter) {
-                case ALL: default: return getAllCars(carDTOS);
-                case ACTIVE: return getAllActive(carDTOS);
-                case ARCHIVED: return getAllArchived(carDTOS);
-                case FUEL: return getByFuel(carDTOS, option);
-                case BRAND: return getByBrand(carDTOS, option);
-                case INSPECTABLE: return getInspectables(carDTOS);
+                case ALL:
+                    return getAllCars(carDTOS);
+                case ACTIVE:
+                    return getAllActive(carDTOS);
+                case ARCHIVED:
+                    return getAllArchived(carDTOS);
+                case FUEL:
+                    return getByFuel(carDTOS, option);
+                case BRAND:
+                    return getByBrand(carDTOS, option);
+                case INSPECTABLE:
+                    return getInspectables(carDTOS);
+                default:
+                    throw new FleetGenericException();
             }
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("CAR Filter could not be applied: " + filter + " " + option);
-            return getAllCars(carDTOS);
+            throw new FleetGenericException();
         }
     }
 
     // ------- DATA TRANSFORMATION -------
 
+    /**
+     * Set the staff member of a car
+     * Throw an exception if staff member cannot be found
+     * @param car the car to be saved or updated
+     * @param carDTO the DTO of the car to create or update
+     */
     private void setStaffMember(Car car, CarDTO carDTO) {
         Optional<StaffMember> optionalStaffMember = staffMemberRepository.findById(carDTO.getStaffMemberId());
         if (optionalStaffMember.isEmpty()) {
             azureBlobLoggingService.writeToLoggingFile("No staff member with id " + carDTO.getStaffMemberId());
+            throw new FleetItemNotFoundException();
         } else {
             StaffMember staffMember = optionalStaffMember.get();
             car.setStaffMember(staffMember);
@@ -232,6 +249,10 @@ public class CarServiceImpl implements CarService {
         }
     }
 
+    /**
+     * Add inspection ID to car DTO object that have an inspection related to them
+     * @param carDTOS the objets to complete with inspection ID if relevant
+     */
     private void setInspectionId(List<CarDTO> carDTOS) {
         carDTOS.forEach(carDTO -> {
             Optional<Inspection> optionalInspection = inspectionRepository.selectInspectionWhereCarPlateIs(carDTO.getPlateNumber());
@@ -248,7 +269,11 @@ public class CarServiceImpl implements CarService {
         CarDTO carDTO = (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
         if (car.getStaffMember() != null) {
             carDTO.setStaffMemberId(car.getStaffMember().getStaffMemberId());
+            return carDTO;
+        } else {
+            azureBlobLoggingService.writeToLoggingFile("Car " + carDTO.getPlateNumber()
+                    + " has no staff member linked, or staff member " + carDTO.getStaffMemberId() + " could not be found");
+            throw new FleetGenericException();
         }
-        return carDTO;
     }
 }

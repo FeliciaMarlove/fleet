@@ -7,5 +7,6 @@ public final class FleetItemNotFoundException extends FleetGenericException {
     }
 
     public FleetItemNotFoundException(String message) {
+        super(message);
     }
 }

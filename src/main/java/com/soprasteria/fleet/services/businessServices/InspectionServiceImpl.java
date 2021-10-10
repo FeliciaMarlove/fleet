@@ -46,8 +46,8 @@ public class InspectionServiceImpl implements InspectionService {
             return getInspectionDtoAndSetPlateNumberAndStaffId(optionalInspection.get());
         } else {
             azureBlobLoggingService.writeToLoggingFile("No inspection found with id " + inspectionId);
+            throw new FleetItemNotFoundException();
         }
-        return null;
     }
 
     @Override
@@ -70,22 +70,20 @@ public class InspectionServiceImpl implements InspectionService {
             carRepository.save(car);
             StaffMember staffMember = car.getStaffMember();
             sendInspection(staffMember, inspection);
+            repository.save(inspection);
+            return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
         } else {
-            azureBlobLoggingService.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId()+ ". No car found with plate number " + inspectionDTO.getPlateNumber() + ". Inspection was not sent.");
+            azureBlobLoggingService.writeToLoggingFile("Saving inspection with ID " + inspection.getCarInspectionId() + ". No car found with plate number " + inspectionDTO.getPlateNumber() + ". Inspection was not sent.");
+            throw new FleetGenericException();
         }
-        repository.save(inspection);
-
-        return (InspectionDTO) new DtoUtils().convertToDto(inspection, new InspectionDTO());
     }
-
-
 
     /* PRIVATE METHODS */
 
     // ------- FILTERING -------
 
     private List<InspectionDTO> getAllInspections(List<InspectionDTO> inspectionDTOS) {
-        for (Inspection inspection: repository.findAll()) {
+        for (Inspection inspection : repository.findAll()) {
             inspectionDTOS.add(getInspectionDtoAndSetPlateNumberAndStaffId(inspection));
         }
         return inspectionDTOS;
@@ -118,14 +116,20 @@ public class InspectionServiceImpl implements InspectionService {
         try {
             InspectionFilter inspectionFilter = InspectionFilter.valueOf(filter);
             switch (inspectionFilter) {
-                case ALL: default: return getAllInspections(inspectionDTOS);
-                case STAFF: return getAllByStaffMember(option);
-                case DAMAGED: return getAllWhereCarIsDamaged();
-                case DATE_ABOVE: return getAllWithDateBiggerThan(option);
+                case ALL:
+                    return getAllInspections(inspectionDTOS);
+                case STAFF:
+                    return getAllByStaffMember(option);
+                case DAMAGED:
+                    return getAllWhereCarIsDamaged();
+                case DATE_ABOVE:
+                    return getAllWithDateBiggerThan(option);
+                default:
+                    throw new FleetGenericException();
             }
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("INSPECTION Filter could not be applied: " + filter + " " + option);
-            return getAllInspections(inspectionDTOS);
+            throw new FleetGenericException();
         }
     }
 
@@ -152,6 +156,7 @@ public class InspectionServiceImpl implements InspectionService {
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("Sending e-mail failed for inspection "
                     + inspection.getCarInspectionId());
+            throw new FleetGenericException("Problem occured when trying to send e-mail");
         }
     }
 }

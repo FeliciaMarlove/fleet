@@ -1,9 +1,16 @@
 package com.soprasteria.fleet.models.enums;
 
 public enum FuelType {
-    DIESEL,
-    GASOLINE,
-    HYBRID_GASOLINE,
-    HYBRID_DIESEL,
-    FULL_ELECTRIC
+    DIESEL(1),
+    GASOLINE(2),
+    HYBRID_GASOLINE(2),
+    HYBRID_DIESEL(1),
+    FULL_ELECTRIC(3);
+    private int code;
+    FuelType(int code) {
+        this.code = code;
+    }
+    public int getCode() {
+        return this.code;
+    }
 }
