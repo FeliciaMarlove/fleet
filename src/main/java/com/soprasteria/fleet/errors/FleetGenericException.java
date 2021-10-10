@@ -8,6 +8,7 @@ public class FleetGenericException extends RuntimeException {
     }
 
     public FleetGenericException(String message) {
+        super(message);
     }
 
 }

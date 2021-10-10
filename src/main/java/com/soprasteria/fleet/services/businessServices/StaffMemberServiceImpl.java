@@ -3,6 +3,7 @@ package com.soprasteria.fleet.services.businessServices;
 import com.soprasteria.fleet.dto.CarDTO;
 import com.soprasteria.fleet.dto.StaffMemberDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.filters.StaffFilter;
 import com.soprasteria.fleet.models.Car;
@@ -13,12 +14,13 @@ import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberSer
 import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public final class StaffMemberServiceImpl implements StaffMemberService {
+public class StaffMemberServiceImpl implements StaffMemberService {
     private final StaffMemberRepository repository;
     private final CarRepository carRepository;
     private final AzureBlobLoggingService azureBlobLoggingService;
@@ -31,7 +33,7 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
 
     @Override
     public StaffMemberDTO read(Integer staffMemberId) {
-        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow(() -> new FleetItemNotFoundException("No staff member was found with id " + staffMemberId));
+        StaffMember staffMember = repository.findById(staffMemberId).orElseThrow(FleetItemNotFoundException::new);
         return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
     }
 
@@ -51,7 +53,7 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
             return (StaffMemberDTO) new DtoUtils().convertToDto(staffMember, new StaffMemberDTO());
         }
         azureBlobLoggingService.writeToLoggingFile("Could not find staff member with id " + staffMemberDTO.getStaffMemberId());
-        return null;
+        throw new FleetItemNotFoundException();
     }
 
     @Override
@@ -65,11 +67,12 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
     }
 
     @Override
+    @Transactional
     public CarDTO setCarOfStaffMember(Integer staffMemberId, String carPlate) {
         Optional<StaffMember> optionalStaffMember = repository.findById(staffMemberId);
         if (optionalStaffMember.isEmpty()) {
             azureBlobLoggingService.writeToLoggingFile("No staff member was found with id " + staffMemberId);
-            return null;
+            throw new FleetItemNotFoundException();
         }
 
         // Optional is empty if staff member has no car at the moment, not an error case
@@ -93,7 +96,7 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
             }
             return (CarDTO) new DtoUtils().convertToDto(currentCar, new CarDTO());
         } else {
-            return null;
+            throw new FleetItemNotFoundException();
         }
     }
 
@@ -112,16 +115,16 @@ public final class StaffMemberServiceImpl implements StaffMemberService {
             StaffFilter staffFilter = StaffFilter.valueOf(filter);
             switch (staffFilter) {
                 case ALL:
-                default:
                     return getAllStaff(staffMemberDTOS);
                 case WITH:
                     return getAllWithCar(staffMemberDTOS);
                 case WITHOUT:
                     return getAllWithoutCar(staffMemberDTOS);
+                default: throw new FleetGenericException();
             }
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("STAFF MEMBER Filter could not be applied: " + filter + option);
-            return getAllStaff(staffMemberDTOS);
+            throw new FleetGenericException();
         }
     }
 
