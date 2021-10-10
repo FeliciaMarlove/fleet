@@ -27,7 +27,7 @@ public final class TankFillingController {
         return service.read(filter, option);
     }
 
-    @CrossOrigin({"http://localhost:4200"}) //TODO add origin of Python script
+    @CrossOrigin({"http://localhost:4200, http://domainFromTheTankFillingService.domain"})
     @PostMapping
     public TankFillingDTO createFillup(@RequestBody TankFillingDTO tankFillingDTO) {
         return service.create(tankFillingDTO);
