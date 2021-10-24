@@ -9,7 +9,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/staff")
-@CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
+@CrossOrigin({ "http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io",
+        "http://fleetfront-play.86f699d3c029485c8755.westeurope.aksapp.io" })
 public final class StaffMemberController {
     private final StaffMemberService service;
 

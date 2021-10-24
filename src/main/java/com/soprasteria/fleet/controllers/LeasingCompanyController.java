@@ -8,7 +8,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/leasing")
-@CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
+@CrossOrigin({ "http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io",
+        "http://fleetfront-play.86f699d3c029485c8755.westeurope.aksapp.io" })
 public final class LeasingCompanyController {
     public final LeasingCompanyService service;
 
@@ -22,7 +23,8 @@ public final class LeasingCompanyController {
     }
 
     @GetMapping("/{filter}/{option}")
-    public List<LeasingCompanyDTO> getLeasingCompanies(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+    public List<LeasingCompanyDTO> getLeasingCompanies(@PathVariable("filter") String filter,
+            @PathVariable("option") String option) {
         return service.read(filter, option);
     }
 

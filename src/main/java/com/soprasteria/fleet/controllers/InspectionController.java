@@ -8,7 +8,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/inspection")
-@CrossOrigin({"http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io"})
+@CrossOrigin({ "http://localhost:4200", "http://fleetfront.8f6e75564cde45eeb707.westeurope.aksapp.io",
+        "http://fleetfront-play.86f699d3c029485c8755.westeurope.aksapp.io" })
 public final class InspectionController {
     private final InspectionService service;
 
@@ -22,7 +23,8 @@ public final class InspectionController {
     }
 
     @GetMapping("/{filter}/{option}")
-    public List<InspectionDTO> getInspections(@PathVariable("filter") String filter, @PathVariable("option") String option) {
+    public List<InspectionDTO> getInspections(@PathVariable("filter") String filter,
+            @PathVariable("option") String option) {
         return service.read(filter, option);
     }
 
