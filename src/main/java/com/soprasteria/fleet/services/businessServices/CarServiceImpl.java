@@ -64,7 +64,7 @@ public class CarServiceImpl implements CarService {
         // manual check because if not using auto-generated ids, repository.save does update on existing ID
         if (repository.findById(carDTO.getPlateNumber()).isPresent()) {
             azureBlobLoggingService.writeToLoggingFile("Can't create car with plate " + carDTO.getPlateNumber() + ". Car plate already exists.");
-            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber());
+            throw new FleetGenericException("Can't create car");
         }
         Car car = (Car) new DtoUtils().convertToEntity(new Car(), carDTO);
         repository.save(car);
@@ -72,7 +72,7 @@ public class CarServiceImpl implements CarService {
             setStaffMember(car, carDTO);
         } else {
             azureBlobLoggingService.writeToLoggingFile("Saving car with plate" + carDTO.getPlateNumber() + ". No staff member with id " + carDTO.getStaffMemberId());
-            throw new FleetGenericException("Can't create car with plate " + carDTO.getPlateNumber());
+            throw new FleetGenericException("Can't create car");
         }
         return (CarDTO) new DtoUtils().convertToDto(car, new CarDTO());
     }
@@ -126,7 +126,7 @@ public class CarServiceImpl implements CarService {
             if (car.getEndDate() != null && LocalDate.now().isAfter(car.getEndDate())) {
                 car.setOngoing(false);
                 repository.save(car);
-                azureBlobLoggingService.writeToLoggingFile("Car " + car.getPlateNumber()
+                azureBlobLoggingService.writeToLoggingFile("-info - Car " + car.getPlateNumber()
                         + " was archived, contract terminated " + car.getEndDate());
             }
         });
