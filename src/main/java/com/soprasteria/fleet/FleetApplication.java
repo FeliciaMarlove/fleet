@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -30,10 +29,10 @@ public class FleetApplication extends SpringBootServletInitializer {
             public void addCorsMappings(CorsRegistry registry) {
                 String urlClient = env.getProperty("cors.url.client");
                 CorsRegistration regClient = registry.addMapping("/api/**");
-                regClient.allowedOrigins(urlClient);
+                regClient.allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins(urlClient);
                 String urlExt = env.getProperty("cors.url.external");
                 CorsRegistration regExternal = registry.addMapping("/external/**");
-                regExternal.allowedOrigins(urlExt);
+                regExternal.allowedMethods("POST").allowedOrigins(urlExt);
             }
         };
     }
