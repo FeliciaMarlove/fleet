@@ -27,7 +27,7 @@ public final class CarDTO implements DTOEntity {
         this.brand = brand;
         this.model = model;
         this.fuelType = fuelType;
-        this.averageConsumption = averageConsumption;
+        this.averageConsumption =  averageConsumption != null ? Math.abs(averageConsumption) : null;
         this.startDate = startDate;
         this.endDate = endDate;
         this.freeText = freeText;

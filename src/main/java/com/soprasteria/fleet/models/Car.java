@@ -107,7 +107,7 @@ public final class Car implements Serializable {
     }
 
     public void setAverageConsumption(Double averageConsumption) {
-        this.averageConsumption = Math.abs(averageConsumption);
+        this.averageConsumption = averageConsumption;
     }
 
     public LeasingCompany getLeasingCompany() {
@@ -165,7 +165,7 @@ public final class Car implements Serializable {
         this.brand = brand;
         this.model = Sanitizer.stripXSS(model);
         this.fuelType = fuelType;
-        this.averageConsumption = Math.abs(averageConsumption);
+        this.averageConsumption = averageConsumption;
         this.startDate = startDate;
         this.freeText = Sanitizer.stripXSS(freeText);
         this.leasingCompany = leasingCompany;
