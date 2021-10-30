@@ -134,7 +134,7 @@ public final class CarDTO implements DTOEntity {
     }
 
     public void setAverageConsumption(Double averageConsumption) {
-        this.averageConsumption = averageConsumption;
+        this.averageConsumption = Math.abs(averageConsumption);
     }
 
     public Integer getLeasingCompanyId() {
