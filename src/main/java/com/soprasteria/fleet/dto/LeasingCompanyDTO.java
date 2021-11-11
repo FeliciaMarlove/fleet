@@ -73,13 +73,6 @@ public final class LeasingCompanyDTO implements DTOEntity {
 
     @Override
     public String toString() {
-        return "LeasingCompanyDTO{" +
-                "leasingCompanyId=" + leasingCompanyId +
-                ", leasingCompanyName='" + leasingCompanyName + '\'' +
-                ", leasingCompanyContactPerson='" + leasingCompanyContactPerson + '\'' +
-                ", leasingCompanyPhone='" + leasingCompanyPhone + '\'' +
-                ", leasingCompanyEmail='" + leasingCompanyEmail + '\'' +
-                ", isActive=" + active +
-                '}';
+        return "LeasingCompanyDTO : " + this.getLeasingCompanyId();
     }
 }

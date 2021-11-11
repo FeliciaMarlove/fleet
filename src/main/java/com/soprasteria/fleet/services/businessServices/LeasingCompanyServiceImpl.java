@@ -2,12 +2,13 @@ package com.soprasteria.fleet.services.businessServices;
 
 import com.soprasteria.fleet.dto.LeasingCompanyDTO;
 import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
+import com.soprasteria.fleet.errors.FleetGenericException;
 import com.soprasteria.fleet.errors.FleetItemNotFoundException;
 import com.soprasteria.fleet.models.enums.filters.LeasingFilter;
 import com.soprasteria.fleet.models.LeasingCompany;
 import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
 import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
+import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ import java.util.Optional;
 @Service
 public final class LeasingCompanyServiceImpl implements LeasingCompanyService {
     private final LeasingCompanyRepository repository;
-    private final AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl;
+    private final AzureBlobLoggingService azureBlobLoggingService;
 
-    public LeasingCompanyServiceImpl(LeasingCompanyRepository repository, AzureBlobLoggingServiceImpl azureBlobLoggingServiceImpl) {
+    public LeasingCompanyServiceImpl(LeasingCompanyRepository repository, AzureBlobLoggingService azureBlobLoggingService) {
         this.repository = repository;
-        this.azureBlobLoggingServiceImpl = azureBlobLoggingServiceImpl;
+        this.azureBlobLoggingService = azureBlobLoggingService;
     }
 
     @Override
@@ -30,9 +31,9 @@ public final class LeasingCompanyServiceImpl implements LeasingCompanyService {
         if (optionalLeasingCompany.isPresent()) {
             return (LeasingCompanyDTO) new DtoUtils().convertToDto(optionalLeasingCompany.get(), new LeasingCompanyDTO());
         } else {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No leasing company was found with it " + leasingCompanyId);
+            azureBlobLoggingService.writeToLoggingFile("No leasing company was found with it " + leasingCompanyId);
+            throw new FleetItemNotFoundException();
         }
-        return null;
     }
 
     @Override
@@ -57,16 +58,16 @@ public final class LeasingCompanyServiceImpl implements LeasingCompanyService {
             repository.save(leasingCompany);
             return leasingCompany.getLeasingCompanyName() + " was set inactive";
         }
-        azureBlobLoggingServiceImpl.writeToLoggingFile("No leasing company was found with id " + leasingCompanyId);
-        return "An error occurred";
+        azureBlobLoggingService.writeToLoggingFile("Soft delete failed. No leasing company was found with id " + leasingCompanyId);
+        throw new FleetGenericException();
     }
 
     @Override
     public LeasingCompanyDTO update(LeasingCompanyDTO leasingCompanyDTO) throws FleetItemNotFoundException {
         Optional<LeasingCompany> optionalLeasingCompany = repository.findById(leasingCompanyDTO.getLeasingCompanyId());
         if (optionalLeasingCompany.isEmpty()) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("No leasing company was found with id " + leasingCompanyDTO.getLeasingCompanyId());
-            return null;
+            azureBlobLoggingService.writeToLoggingFile("No leasing company was found with id " + leasingCompanyDTO.getLeasingCompanyId());
+            throw new FleetItemNotFoundException();
         } else {
             LeasingCompany leasingCompany = optionalLeasingCompany.get();
             if (leasingCompanyDTO.isActive() != null) {
@@ -97,12 +98,13 @@ public final class LeasingCompanyServiceImpl implements LeasingCompanyService {
         try {
             LeasingFilter leasingFilter = LeasingFilter.valueOf(filter);
             switch (leasingFilter) {
-                case ALL: default: return getAll(leasingCompanyDTOS);
+                case ALL: return getAll(leasingCompanyDTOS);
                 case ACTIVE: return readAllActive(leasingCompanyDTOS);
+                default: throw new FleetGenericException();
             }
         } catch (Exception e) {
-            azureBlobLoggingServiceImpl.writeToLoggingFile("LEASING COMPANY Filter could not be applied: " + filter + option);
-            return getAll(leasingCompanyDTOS);
+            azureBlobLoggingService.writeToLoggingFile("LEASING COMPANY Filter could not be applied: " + filter + option);
+            throw new FleetGenericException();
         }
     }
 

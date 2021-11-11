@@ -147,20 +147,6 @@ public final class CarDTO implements DTOEntity {
 
     @Override
     public String toString() {
-        return "CarDTO{" +
-                "plateNumber='" + plateNumber + '\'' +
-                ", kilometers=" + kilometers +
-                ", brand=" + brand +
-                ", model='" + model + '\'' +
-                ", fuelType=" + fuelType +
-                ", averageConsumption=" + averageConsumption +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isOngoing=" + ongoing +
-                ", freeText='" + freeText + '\'' +
-                ", leasingCompanyId=" + leasingCompanyId +
-                ", staffMemberId=" + staffMemberId +
-                ", carInspectionId=" + carInspectionId +
-                '}';
+        return "CarDTO : " + this.getPlateNumber();
     }
 }

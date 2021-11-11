@@ -28,10 +28,10 @@ public final class Inspection implements Serializable {
     @Column(name = "is_damaged")
     private boolean damaged;
 
-    @Column(name = "pictures")
+    @Column(name = "pictures", length = 2500)
     private String picturesFiles;
 
-    @Column(name = "inspection_report")
+    @Column(name = "inspection_report", length = 2500)
     private String inspectionReportFile;
 
     @OneToOne
@@ -126,16 +126,7 @@ public final class Inspection implements Serializable {
 
     @Override
     public String toString() {
-        return "Inspection{" +
-                "carInspectionId=" + carInspectionId +
-                ", inspectionDate=" + inspectionDate +
-                ", sentDate=" + sentDate +
-                ", expertisedBy='" + expertisedBy + '\'' +
-                ", damaged=" + damaged +
-                ", picturesFolder='" + picturesFiles + '\'' +
-                ", inspectionReportFile='" + inspectionReportFile + '\'' +
-                ", car=" + car.getPlateNumber() +
-                '}';
+        return "Inspection : " + this.getCarInspectionId();
     }
 
     @Override
