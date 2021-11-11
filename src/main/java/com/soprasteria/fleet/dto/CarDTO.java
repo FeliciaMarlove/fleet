@@ -114,7 +114,7 @@ public final class CarDTO implements DTOEntity {
     }
 
     public String getModel() {
-        return model.toUpperCase();
+        return model;
     }
 
     public void setModel(String model) {
