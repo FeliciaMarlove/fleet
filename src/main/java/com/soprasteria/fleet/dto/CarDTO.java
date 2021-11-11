@@ -27,7 +27,7 @@ public final class CarDTO implements DTOEntity {
         this.brand = brand;
         this.model = model;
         this.fuelType = fuelType;
-        this.averageConsumption = averageConsumption;
+        this.averageConsumption =  averageConsumption != null ? Math.abs(averageConsumption) : null;
         this.startDate = startDate;
         this.endDate = endDate;
         this.freeText = freeText;
@@ -114,7 +114,7 @@ public final class CarDTO implements DTOEntity {
     }
 
     public String getModel() {
-        return model;
+        return model.toUpperCase();
     }
 
     public void setModel(String model) {
@@ -134,7 +134,7 @@ public final class CarDTO implements DTOEntity {
     }
 
     public void setAverageConsumption(Double averageConsumption) {
-        this.averageConsumption = averageConsumption;
+        this.averageConsumption = averageConsumption != null ? Math.abs(averageConsumption) : null;
     }
 
     public Integer getLeasingCompanyId() {
