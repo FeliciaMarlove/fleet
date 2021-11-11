@@ -106,5 +106,8 @@ public final class InspectionDTO implements DTOEntity {
     public InspectionDTO() {
     }
 
-
+    @Override
+    public String toString() {
+        return "InspectionDTO : " + this.getCarInspectionId();
+    }
 }

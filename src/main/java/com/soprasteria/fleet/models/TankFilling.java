@@ -164,17 +164,7 @@ public final class TankFilling implements Serializable {
 
     @Override
     public String toString() {
-        return "TankFilling{" +
-                "tankFillingId=" + tankFillingId +
-                ", kmBefore=" + kmBefore +
-                ", kmAfter=" + kmAfter +
-                ", discrepancy=" + discrepancy +
-                ", discrepancyType=" + discrepancyType +
-                ", dateTimeFilling=" + dateTimeFilling +
-                ", fuelType=" + fuelType +
-                ", liters=" + liters +
-                ", car=" + (car != null ? car.getPlateNumber() : "no car") +
-                '}';
+        return "TankFilling : " + this.getTankFillingId();
     }
 
     @Override
