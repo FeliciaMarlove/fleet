@@ -156,7 +156,7 @@ public class InspectionServiceImpl implements InspectionService {
         } catch (Exception e) {
             azureBlobLoggingService.writeToLoggingFile("Sending e-mail failed for inspection "
                     + inspection.getCarInspectionId());
-            throw new FleetGenericException("Problem occured when trying to send e-mail");
+            throw new FleetGenericException("Problem occurred when trying to send e-mail");
         }
     }
 }
