@@ -21,19 +21,4 @@ public class FleetApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(FleetApplication.class, args);
     }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                String urlClient = env.getProperty("cors.url.client");
-                CorsRegistration regClient = registry.addMapping("/api/**");
-                regClient.allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins(urlClient);
-                String urlExt = env.getProperty("cors.url.external");
-                CorsRegistration regExternal = registry.addMapping("/external/**");
-                regExternal.allowedMethods("POST").allowedOrigins(urlExt);
-            }
-        };
-    }
 }

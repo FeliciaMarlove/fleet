@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/staff")
+@CrossOrigin
 public final class StaffMemberController {
     private final StaffMemberService service;
 

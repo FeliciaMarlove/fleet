@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/leasing")
+@CrossOrigin
 public final class LeasingCompanyController {
     public final LeasingCompanyService service;
 

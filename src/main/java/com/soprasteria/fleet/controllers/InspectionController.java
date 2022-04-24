@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/inspection")
+@CrossOrigin
 public final class InspectionController {
     private final InspectionService service;
 

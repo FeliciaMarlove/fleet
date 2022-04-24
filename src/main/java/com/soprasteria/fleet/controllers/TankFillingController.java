@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/fillup")
+@CrossOrigin
 public final class TankFillingController {
 
     @RestController
