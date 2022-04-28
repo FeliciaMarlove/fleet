@@ -1,7 +1,6 @@
-package com.soprasteria.fleet.repositories;
+package com.thecompany.fleet.repositories;
 
-import com.soprasteria.fleet.models.Car;
-import com.soprasteria.fleet.models.Inspection;
+import com.thecompany.fleet.models.Inspection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

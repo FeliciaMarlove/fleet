@@ -1,7 +1,7 @@
-package com.soprasteria.fleet.controllers;
+package com.thecompany.fleet.controllers;
 
-import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.services.businessServices.interfaces.CarService;
+import com.thecompany.fleet.dto.CarDTO;
+import com.thecompany.fleet.services.businessServices.interfaces.CarService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

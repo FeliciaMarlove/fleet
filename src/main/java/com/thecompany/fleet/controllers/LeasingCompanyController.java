@@ -1,7 +1,7 @@
-package com.soprasteria.fleet.controllers;
+package com.thecompany.fleet.controllers;
 
-import com.soprasteria.fleet.dto.LeasingCompanyDTO;
-import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
+import com.thecompany.fleet.dto.LeasingCompanyDTO;
+import com.thecompany.fleet.services.businessServices.interfaces.LeasingCompanyService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

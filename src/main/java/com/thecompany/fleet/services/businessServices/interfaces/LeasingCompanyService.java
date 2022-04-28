@@ -1,7 +1,6 @@
-package com.soprasteria.fleet.services.businessServices.interfaces;
+package com.thecompany.fleet.services.businessServices.interfaces;
 
-import com.soprasteria.fleet.dto.LeasingCompanyDTO;
-import com.soprasteria.fleet.errors.FleetItemNotFoundException;
+import com.thecompany.fleet.dto.LeasingCompanyDTO;
 
 import java.util.List;
 

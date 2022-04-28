@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.dto.dtoUtils;
+package com.thecompany.fleet.dto.dtoUtils;
 
 import org.modelmapper.ModelMapper;
 

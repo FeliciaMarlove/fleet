@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.services.utilServices.interfaces;
+package com.thecompany.fleet.services.utilServices.interfaces;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;

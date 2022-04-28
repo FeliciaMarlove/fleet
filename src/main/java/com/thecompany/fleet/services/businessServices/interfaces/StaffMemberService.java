@@ -1,7 +1,7 @@
-package com.soprasteria.fleet.services.businessServices.interfaces;
+package com.thecompany.fleet.services.businessServices.interfaces;
 
-import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.dto.StaffMemberDTO;
+import com.thecompany.fleet.dto.CarDTO;
+import com.thecompany.fleet.dto.StaffMemberDTO;
 
 import java.util.List;
 

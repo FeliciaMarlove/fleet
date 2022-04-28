@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.models.enums.filters;
+package com.thecompany.fleet.models.enums.filters;
 
 public enum InspectionFilter {
     DAMAGED,

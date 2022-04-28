@@ -1,4 +1,4 @@
-package com.soprasteria.fleet.errors;
+package com.thecompany.fleet.errors;
 
 /**
  * Represent an unqualified exception

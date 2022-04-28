@@ -1,7 +1,7 @@
-package com.soprasteria.fleet.models;
+package com.thecompany.fleet.models;
 
-import com.soprasteria.fleet.models.enums.Language;
-import com.soprasteria.fleet.services.utilServices.interfaces.Sanitizer;
+import com.thecompany.fleet.models.enums.Language;
+import com.thecompany.fleet.services.utilServices.interfaces.Sanitizer;
 
 import javax.persistence.*;
 import java.io.Serializable;

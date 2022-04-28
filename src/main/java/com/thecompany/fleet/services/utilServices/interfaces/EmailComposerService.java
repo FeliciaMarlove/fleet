@@ -1,8 +1,8 @@
-package com.soprasteria.fleet.services.utilServices.interfaces;
+package com.thecompany.fleet.services.utilServices.interfaces;
 
-import com.soprasteria.fleet.models.Inspection;
-import com.soprasteria.fleet.models.StaffMember;
-import com.soprasteria.fleet.models.TankFilling;
+import com.thecompany.fleet.models.Inspection;
+import com.thecompany.fleet.models.StaffMember;
+import com.thecompany.fleet.models.TankFilling;
 
 public interface EmailComposerService {
     String writeEmailToFleetManagerAboutDiscrepancy(TankFilling tankFilling);

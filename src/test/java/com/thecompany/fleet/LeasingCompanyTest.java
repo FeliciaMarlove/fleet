@@ -1,7 +1,7 @@
-package com.soprasteria.fleet;
+package com.thecompany.fleet;
 
-import com.soprasteria.fleet.dto.LeasingCompanyDTO;
-import com.soprasteria.fleet.models.LeasingCompany;
+import com.thecompany.fleet.dto.LeasingCompanyDTO;
+import com.thecompany.fleet.models.LeasingCompany;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.extension.ExtendWith;

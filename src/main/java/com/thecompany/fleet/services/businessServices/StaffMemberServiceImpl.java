@@ -1,17 +1,17 @@
-package com.soprasteria.fleet.services.businessServices;
+package com.thecompany.fleet.services.businessServices;
 
-import com.soprasteria.fleet.dto.CarDTO;
-import com.soprasteria.fleet.dto.StaffMemberDTO;
-import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.errors.FleetGenericException;
-import com.soprasteria.fleet.errors.FleetItemNotFoundException;
-import com.soprasteria.fleet.models.enums.filters.StaffFilter;
-import com.soprasteria.fleet.models.Car;
-import com.soprasteria.fleet.models.StaffMember;
-import com.soprasteria.fleet.repositories.CarRepository;
-import com.soprasteria.fleet.repositories.StaffMemberRepository;
-import com.soprasteria.fleet.services.businessServices.interfaces.StaffMemberService;
-import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
+import com.thecompany.fleet.dto.CarDTO;
+import com.thecompany.fleet.dto.StaffMemberDTO;
+import com.thecompany.fleet.dto.dtoUtils.DtoUtils;
+import com.thecompany.fleet.errors.FleetGenericException;
+import com.thecompany.fleet.errors.FleetItemNotFoundException;
+import com.thecompany.fleet.models.enums.filters.StaffFilter;
+import com.thecompany.fleet.models.Car;
+import com.thecompany.fleet.models.StaffMember;
+import com.thecompany.fleet.repositories.CarRepository;
+import com.thecompany.fleet.repositories.StaffMemberRepository;
+import com.thecompany.fleet.services.businessServices.interfaces.StaffMemberService;
+import com.thecompany.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

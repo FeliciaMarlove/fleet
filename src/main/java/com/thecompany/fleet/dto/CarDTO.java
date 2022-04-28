@@ -1,8 +1,8 @@
-package com.soprasteria.fleet.dto;
+package com.thecompany.fleet.dto;
 
-import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
-import com.soprasteria.fleet.models.enums.Brand;
-import com.soprasteria.fleet.models.enums.FuelType;
+import com.thecompany.fleet.dto.dtoUtils.DTOEntity;
+import com.thecompany.fleet.models.enums.Brand;
+import com.thecompany.fleet.models.enums.FuelType;
 
 import java.time.LocalDate;
 

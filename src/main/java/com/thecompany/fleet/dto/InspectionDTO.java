@@ -1,6 +1,6 @@
-package com.soprasteria.fleet.dto;
+package com.thecompany.fleet.dto;
 
-import com.soprasteria.fleet.dto.dtoUtils.DTOEntity;
+import com.thecompany.fleet.dto.dtoUtils.DTOEntity;
 
 import java.time.LocalDateTime;
 

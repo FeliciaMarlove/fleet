@@ -1,19 +1,19 @@
-package com.soprasteria.fleet.services.businessServices;
+package com.thecompany.fleet.services.businessServices;
 
-import com.soprasteria.fleet.dto.InspectionDTO;
-import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.errors.FleetGenericException;
-import com.soprasteria.fleet.errors.FleetItemNotFoundException;
-import com.soprasteria.fleet.models.StaffMember;
-import com.soprasteria.fleet.models.enums.filters.InspectionFilter;
-import com.soprasteria.fleet.models.Car;
-import com.soprasteria.fleet.models.Inspection;
-import com.soprasteria.fleet.repositories.CarRepository;
-import com.soprasteria.fleet.repositories.InspectionRepository;
-import com.soprasteria.fleet.services.businessServices.interfaces.InspectionService;
-import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
-import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
-import com.soprasteria.fleet.services.utilServices.interfaces.EmailSenderService;
+import com.thecompany.fleet.dto.InspectionDTO;
+import com.thecompany.fleet.dto.dtoUtils.DtoUtils;
+import com.thecompany.fleet.errors.FleetGenericException;
+import com.thecompany.fleet.errors.FleetItemNotFoundException;
+import com.thecompany.fleet.models.StaffMember;
+import com.thecompany.fleet.models.enums.filters.InspectionFilter;
+import com.thecompany.fleet.models.Car;
+import com.thecompany.fleet.models.Inspection;
+import com.thecompany.fleet.repositories.CarRepository;
+import com.thecompany.fleet.repositories.InspectionRepository;
+import com.thecompany.fleet.services.businessServices.interfaces.InspectionService;
+import com.thecompany.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
+import com.thecompany.fleet.services.utilServices.interfaces.EmailComposerService;
+import com.thecompany.fleet.services.utilServices.interfaces.EmailSenderService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

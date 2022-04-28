@@ -1,9 +1,9 @@
-package com.soprasteria.fleet;
-import com.soprasteria.fleet.models.Car;
-import com.soprasteria.fleet.models.LeasingCompany;
-import com.soprasteria.fleet.models.StaffMember;
-import com.soprasteria.fleet.models.enums.Brand;
-import com.soprasteria.fleet.models.enums.FuelType;
+package com.thecompany.fleet;
+import com.thecompany.fleet.models.Car;
+import com.thecompany.fleet.models.LeasingCompany;
+import com.thecompany.fleet.models.StaffMember;
+import com.thecompany.fleet.models.enums.Brand;
+import com.thecompany.fleet.models.enums.FuelType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;

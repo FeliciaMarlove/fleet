@@ -1,8 +1,8 @@
-package com.soprasteria.fleet.controllers;
+package com.thecompany.fleet.controllers;
 
-import com.soprasteria.fleet.errors.FleetGenericException;
-import com.soprasteria.fleet.errors.FleetItemNotFoundException;
-import com.soprasteria.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
+import com.thecompany.fleet.errors.FleetGenericException;
+import com.thecompany.fleet.errors.FleetItemNotFoundException;
+import com.thecompany.fleet.services.utilServices.AzureBlobLoggingServiceImpl;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

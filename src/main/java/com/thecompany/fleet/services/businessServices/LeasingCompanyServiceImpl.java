@@ -1,14 +1,14 @@
-package com.soprasteria.fleet.services.businessServices;
+package com.thecompany.fleet.services.businessServices;
 
-import com.soprasteria.fleet.dto.LeasingCompanyDTO;
-import com.soprasteria.fleet.dto.dtoUtils.DtoUtils;
-import com.soprasteria.fleet.errors.FleetGenericException;
-import com.soprasteria.fleet.errors.FleetItemNotFoundException;
-import com.soprasteria.fleet.models.enums.filters.LeasingFilter;
-import com.soprasteria.fleet.models.LeasingCompany;
-import com.soprasteria.fleet.repositories.LeasingCompanyRepository;
-import com.soprasteria.fleet.services.businessServices.interfaces.LeasingCompanyService;
-import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
+import com.thecompany.fleet.dto.LeasingCompanyDTO;
+import com.thecompany.fleet.dto.dtoUtils.DtoUtils;
+import com.thecompany.fleet.errors.FleetGenericException;
+import com.thecompany.fleet.errors.FleetItemNotFoundException;
+import com.thecompany.fleet.models.enums.filters.LeasingFilter;
+import com.thecompany.fleet.models.LeasingCompany;
+import com.thecompany.fleet.repositories.LeasingCompanyRepository;
+import com.thecompany.fleet.services.businessServices.interfaces.LeasingCompanyService;
+import com.thecompany.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

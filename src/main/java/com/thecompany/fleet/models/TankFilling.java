@@ -1,7 +1,7 @@
-package com.soprasteria.fleet.models;
+package com.thecompany.fleet.models;
 
-import com.soprasteria.fleet.models.enums.DiscrepancyType;
-import com.soprasteria.fleet.models.enums.FuelType;
+import com.thecompany.fleet.models.enums.DiscrepancyType;
+import com.thecompany.fleet.models.enums.FuelType;
 
 import javax.persistence.*;
 import java.io.Serializable;

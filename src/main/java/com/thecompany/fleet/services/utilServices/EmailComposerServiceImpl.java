@@ -1,12 +1,13 @@
-package com.soprasteria.fleet.services.utilServices;
+package com.thecompany.fleet.services.utilServices;
 
-import com.soprasteria.fleet.errors.FleetGenericException;
-import com.soprasteria.fleet.models.Inspection;
-import com.soprasteria.fleet.models.enums.Language;
-import com.soprasteria.fleet.models.StaffMember;
-import com.soprasteria.fleet.models.TankFilling;
-import com.soprasteria.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
-import com.soprasteria.fleet.services.utilServices.interfaces.EmailComposerService;
+import com.thecompany.fleet.errors.FleetGenericException;
+import com.thecompany.fleet.models.Inspection;
+import com.thecompany.fleet.models.enums.Language;
+import com.thecompany.fleet.models.StaffMember;
+import com.thecompany.fleet.models.TankFilling;
+import com.thecompany.fleet.services.utilServices.interfaces.AzureBlobLoggingService;
+import com.thecompany.fleet.services.utilServices.interfaces.EmailComposerService;
+import com.thecompany.fleet.models.enums.DiscrepancyType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,19 +30,19 @@ public final class EmailComposerServiceImpl implements EmailComposerService {
                 .append("\nDiscrepancy: ").append(tankFilling.getDiscrepancyType());
 
         switch (tankFilling.getDiscrepancyType()) {
-            case BEFORE_BIGGER_THAN_AFTER :
+            case DiscrepancyType.BEFORE_BIGGER_THAN_AFTER :
                 stringBuilder.append("\nKm after: ")
                         .append(tankFilling.getKmAfter())
                         .append("\nKm before: ")
                         .append(tankFilling.getKmBefore());
                 break;
-            case WRONG_FUEL:
+            case DiscrepancyType.WRONG_FUEL:
                 stringBuilder.append("\nFuel: ")
                         .append(tankFilling.getFuelType())
                         .append("\nCar Fuel: ")
                         .append(tankFilling.getCar().getFuelType());
                 break;
-            case QUANTITY_TOO_HIGH:
+            case DiscrepancyType.QUANTITY_TOO_HIGH:
                 stringBuilder.append("\nConsumption: ")
                         .append(tankFilling.getConsumption())
                         .append("\nCar consumption: ")
